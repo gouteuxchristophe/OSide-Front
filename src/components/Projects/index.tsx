@@ -8,16 +8,15 @@ function Projects() {
   const projectsList = useAppSelector((state) => state.projects.lists);
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-        {projectsList.map((item) => (
-          <ProjectItem
-            key={item.id}
-            {...item}
-          />
-        ))}
-      </Grid>
-    </Box>
+
+    <Grid container justifyContent="center" p={5} rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+      {projectsList.map((item) => (
+        <ProjectItem
+          key={item.id}
+          {...item}
+        />
+      ))}
+    </Grid>
 
   );
 }
