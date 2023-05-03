@@ -1,0 +1,18 @@
+@use './../../../styles/vars';
+
+.header {
+    display: flex;
+    justify-content: flex-end;
+    gap: 3rem;
+    margin: 1rem;
+    padding: 1rem;
+
+&__title {
+    text-align: center;
+    font-size: 2rem;
+    color: vars.$primary;
+  }
+&__logo {
+    width: 6rem;
+}
+}

@@ -6,10 +6,8 @@
   min-height: 100vh;
   padding: 2rem;
   text-align: center;
+}
 
-  &__title {
-    text-align: center;
-    font-size: 2rem;
-    color: vars.$primary;
-  }
+.vide {
+  height: 600px;
 }
