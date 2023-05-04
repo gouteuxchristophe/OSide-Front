@@ -1,5 +1,5 @@
-import reactLogo from '../../assets/react.svg';
-import Projects from '../Projects';
+import ProjectDetail from '../Project/details';
+
 import './styles.scss';
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
     //   <h1 className="app__title">Vite + React</h1>
     //   <img src={reactLogo} alt="react logo" />
     // </div>
-    <Projects />
+    <ProjectDetail />
   );
 }
 

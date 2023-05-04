@@ -1,7 +1,8 @@
+import { Link } from 'react-router-dom';
 import { Project } from '../../../@types/project';
 
 function ProjectItem({
-  title, status, author, content, member_projet,
+  id, title, status, author, content, member_projet,
 }: Project) {
   const excerpContent = content.substring(0, 100);
   return (
@@ -33,7 +34,7 @@ function ProjectItem({
           {`${excerpContent}...`}
         </div>
         <div>
-          <a className="p-2 mb-2 bg-green-200 rounded-full" href="/">Detail</a>
+          <Link className="p-2 mb-2 bg-green-200 rounded-full" to={`/project/${id}`}>Detail</Link>
         </div>
       </div>
 
