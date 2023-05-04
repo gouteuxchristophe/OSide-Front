@@ -1,8 +1,3 @@
-import { Box, Grid, Link } from '@mui/material';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
 import { Project } from '../../../@types/project';
 
 function ProjectItem({
@@ -10,51 +5,36 @@ function ProjectItem({
 }: Project) {
   const excerpContent = content.substring(0, 100);
   return (
-    <Grid item xs>
-      <Card>
-        <CardContent sx={{
-          minHeight: '450px', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center',
-        }}
-        >
-          <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-            <Typography variant="h5" component="div" align="center">
+    <div className="bg-orange-200">
+      <div>
+        <div>
+          <div>
+            <div>
               {title}
-            </Typography>
-            <Typography
-              sx={{
-                border: 1, borderRadius: 1, backgroundColor: '#0BAD92', padding: '0.5rem',
-              }}
-              variant="subtitle1"
-              component="div"
-              align="center"
-            >
+            </div>
+            <div>
               {status}
-            </Typography>
-          </Box>
-          <Typography
-            component="span"
-            sx={{
-              alignSelf: 'self-start', borderRadius: 1, backgroundColor: '#2BEE86', padding: '0.5rem',
-            }}
-          >
+            </div>
+          </div>
+          <div>
             {author.pseudo}
-          </Typography>
-          <Box>
+          </div>
+          <div>
             {member_projet.map((item) => (
-              <Typography component="span" key={item.id}>
+              <div key={item.id}>
                 {item.pseudo}
-              </Typography>
+              </div>
             ))}
-          </Box>
-          <Typography variant="body2" component="p" marginTop={2}>
+          </div>
+          <div>
             {`${excerpContent}...`}
-          </Typography>
-          <CardActions>
-            <Link href="/" underline="none">Detail</Link>
-          </CardActions>
-        </CardContent>
-      </Card>
-    </Grid>
+          </div>
+          <div>
+            <a href="/">Detail</a>
+          </div>
+        </div>
+      </div>
+    </div>
 
   );
 }
