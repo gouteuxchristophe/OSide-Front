@@ -1,5 +1,3 @@
-import { Grid } from '@mui/material';
-import Box from '@mui/material/Box';
 import { useAppSelector } from '../../hooks/redux';
 import ProjectItem from '../Project/excerp';
 
@@ -9,14 +7,14 @@ function Projects() {
 
   return (
 
-    <Grid container justifyContent="center" p={5} rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+    <div className="grid grid-cols-1 gap-4 p-3 md:grid-cols-3">
       {projectsList.map((item) => (
         <ProjectItem
           key={item.id}
           {...item}
         />
       ))}
-    </Grid>
+    </div>
 
   );
 }

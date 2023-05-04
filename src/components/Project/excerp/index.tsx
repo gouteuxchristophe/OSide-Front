@@ -5,35 +5,38 @@ function ProjectItem({
 }: Project) {
   const excerpContent = content.substring(0, 100);
   return (
-    <div className="bg-orange-200">
-      <div>
-        <div>
-          <div>
-            <div>
-              {title}
-            </div>
-            <div>
-              {status}
-            </div>
+    <div className="border-solid border border-black-200 p-4 rounded">
+      <div className="flex flex-col gap-2 space-y-6 items-center align-middle ">
+        <div className="flex flex-row gap-2 items-center align-middle h-12">
+          <div className="text-center">
+            {title}
           </div>
-          <div>
-            {author.pseudo}
+          <div className="border-solid border border-black-200 p-2 rounded text-center">
+            {status}
           </div>
-          <div>
-            {member_projet.map((item) => (
+        </div>
+        <div className="self-start ">
+          {author.pseudo}
+        </div>
+        <div className="flex flex-row gap-2 items-center h-12">
+          {member_projet.length === 0 ? (
+            <div>Aucun participant</div>
+          )
+            : member_projet.map((item) => (
               <div key={item.id}>
                 {item.pseudo}
               </div>
             ))}
-          </div>
-          <div>
-            {`${excerpContent}...`}
-          </div>
-          <div>
-            <a href="/">Detail</a>
-          </div>
+
+        </div>
+        <div className="h-20">
+          {`${excerpContent}...`}
+        </div>
+        <div>
+          <a className="p-2 mb-2 bg-green-200 rounded-full" href="/">Detail</a>
         </div>
       </div>
+
     </div>
 
   );
