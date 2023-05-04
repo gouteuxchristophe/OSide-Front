@@ -18,13 +18,13 @@ function ProjectItem({
         <div className="self-start ">
           {author.pseudo}
         </div>
-        <div className="flex flex-row gap-2 items-center h-12">
+        <div className="flex flex-row gap-4 items-center h-12">
           {member_projet.length === 0 ? (
             <div>Aucun participant</div>
           )
             : member_projet.map((item) => (
-              <div key={item.id}>
-                {item.pseudo}
+              <div className="relative w-12 h-1 mb-12" key={item.id}>
+                <img className="rounded-full border border-gray-100 shadow-sm hover:scale-[1.7]" src={item.avatar} alt={item.pseudo} />
               </div>
             ))}
 
