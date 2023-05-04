@@ -11,15 +11,15 @@ const data = [
     member_projet: [],
     techno_projet: [
       {
-        id: 1,
+        id: 7,
         label: 'JavaScript',
       },
       {
-        id: 1,
+        id: 6,
         label: 'PHP',
       },
       {
-        id: 1,
+        id: 5,
         label: 'HTML',
       },
     ],
@@ -53,11 +53,11 @@ const data = [
         label: 'Laravel',
       },
       {
-        id: 1,
+        id: 2,
         label: 'Angular',
       },
       {
-        id: 1,
+        id: 3,
         label: 'Docker',
       },
     ],
@@ -82,15 +82,15 @@ const data = [
     ],
     techno_projet: [
       {
-        id: 1,
+        id: 5,
         label: 'HTML',
       },
       {
-        id: 1,
+        id: 4,
         label: 'CSS',
       },
       {
-        id: 1,
+        id: 3,
         label: 'Docker',
       },
     ],
