@@ -1,9 +1,10 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import './styles.scss';
-import Projects from '../Projects';
+
 import ProjectDetail from '../Project/details';
 import Error from '../Error';
+import Projects from '../Projects';
 
 function App() {
   //  Permet de scroller en haut de la page
@@ -13,15 +14,16 @@ function App() {
   }, [location]);
 
   return (
-    // <div className="app">
-    //   <h1 className="app__title">Vite + React</h1>
-    //   <img src={reactLogo} alt="react logo" />
-    // </div>
+
     <Routes>
       <Route
         path="/"
         element={(
-          <Projects />
+          <>
+            {/* <Header /> */}
+            <Projects />
+            {/* <Footer /> */}
+          </>
         )}
       />
       <Route
