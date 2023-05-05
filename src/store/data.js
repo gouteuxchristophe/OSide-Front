@@ -5,20 +5,21 @@ const data = [
     author: {
       id: 1,
       pseudo: 'SuperCodeur',
+      avatar: 'https://randomuser.me/api/portraits/men/19.jpg',
     },
     content: 'Moi je passe pas mal de temps à la taverne. J’ai jamais entendu parlé de celui-là! Ouais… Ouais je me suis gouré… Vous binez pas… Même nous on a pas tout compris.',
     member_projet: [],
     techno_projet: [
       {
-        id: 1,
+        id: 7,
         label: 'JavaScript',
       },
       {
-        id: 1,
+        id: 6,
         label: 'PHP',
       },
       {
-        id: 1,
+        id: 5,
         label: 'HTML',
       },
     ],
@@ -31,16 +32,19 @@ const data = [
     author: {
       id: 2,
       pseudo: 'PHPMan',
+      avatar: 'https://randomuser.me/api/portraits/men/3.jpg',
     },
     content: 'Oui… Ben vous… Occupez vous d’les faire ça s’ra déjà pas mal! Oui mais nous on est trois, enfin, deux et demi. Ben attendez, je vais vous rendre la vôtre. Ben c’est bien ce que j’ai dit! Provençal le Gaulois… le Galois… Ouais je vois ce que vous voulez dire…',
     member_projet: [
       {
         id: 3,
         pseudo: 'Sir Arthur',
+        avatar: 'https://randomuser.me/api/portraits/men/84.jpg',
       },
       {
         id: 2,
         pseudo: 'SuperCodeur',
+        avatar: 'https://randomuser.me/api/portraits/men/19.jpg',
       },
     ],
     techno_projet: [
@@ -49,11 +53,11 @@ const data = [
         label: 'Laravel',
       },
       {
-        id: 1,
+        id: 2,
         label: 'Angular',
       },
       {
-        id: 1,
+        id: 3,
         label: 'Docker',
       },
     ],
@@ -66,25 +70,27 @@ const data = [
     author: {
       id: 3,
       pseudo: 'Sir Arthur',
+      avatar: 'https://randomuser.me/api/portraits/men/84.jpg',
     },
     content: 'Non Provençal c’est mon nom. Moi, prochaine bataille rangée je reste à Kaamelott. Passer la tête? Pour me prendre une flêche dedans? Non merci!',
     member_projet: [
       {
         id: 1,
         pseudo: 'SuperCodeur',
+        avatar: 'https://randomuser.me/api/portraits/men/19.jpg',
       },
     ],
     techno_projet: [
       {
-        id: 1,
+        id: 5,
         label: 'HTML',
       },
       {
-        id: 1,
+        id: 4,
         label: 'CSS',
       },
       {
-        id: 1,
+        id: 3,
         label: 'Docker',
       },
     ],

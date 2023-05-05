@@ -3,11 +3,11 @@ import data from '../data';
 import { Project } from '../../@types/project';
 
 interface ProjectsState {
-  projects: Project[];
+  lists: Project[];
 }
 
 export const initialState: ProjectsState = {
-  projects: data,
+  lists: data,
 };
 
 // Gestion des actions du reducer
