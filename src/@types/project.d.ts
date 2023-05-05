@@ -13,11 +13,13 @@ export interface Project {
 export interface IAuthor {
   id: number
   pseudo: string
+  avatar?: string
 }
 
 export interface IMemberProjet {
   id: number
   pseudo: string
+  avatar?: string
 }
 
 export interface ITechnoProjet {
