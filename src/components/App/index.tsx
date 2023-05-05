@@ -1,10 +1,14 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
+
+import Header from './Header';
+import Footer from './Footer';
 import './styles.scss';
 
-import ProjectDetail from '../Project/details';
-import Error from '../Error';
-import Projects from '../Projects';
+// import ProjectDetail from '../Project/details';
+// import Error from '../Error';
+// import Projects from '../Projects';
+
 
 function App() {
   //  Permet de scroller en haut de la page
@@ -20,16 +24,17 @@ function App() {
         path="/"
         element={(
           <>
-            {/* <Header /> */}
-            <Projects />
-            {/* <Footer /> */}
+            <Header />
+            {/* <Projects /> */}
+            <Footer />
           </>
         )}
       />
-      <Route
+      {/ <Route
         path="/project/:id"
         element={(
-          <ProjectDetail />
+          // <ProjectDetail />
+
         )}
       />
       <Route
@@ -41,5 +46,4 @@ function App() {
     </Routes>
   );
 }
-
 export default App;
