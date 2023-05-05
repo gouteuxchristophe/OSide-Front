@@ -6,6 +6,7 @@ interface ProjectsState {
   lists: Project[];
 }
 
+// Gestion du state initial des projets
 export const initialState: ProjectsState = {
   lists: data,
 };

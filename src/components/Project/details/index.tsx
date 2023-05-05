@@ -5,8 +5,8 @@ import findProject from '../../../store/selectors/project';
 function ProjectDetail() {
   // On récupère l'id du projet recherché
   const { id } = useParams();
-  // On utilise la fonction findProjet qui permet de trouver un projet correponsdant à l'id passé
-  // en paramètre et on lui envoi avec le state
+  // On utilise la fonction findProject qui permet de trouver un projet correspondant à l'id passé
+  // en paramètre et on lui envoi avec le state pour recherche
   const project = useAppSelector((state) => findProject(state.projects.lists, Number(id)));
   // Si on ne trouve pas de projet, on dirige vers la page erreur
   if (!project) {

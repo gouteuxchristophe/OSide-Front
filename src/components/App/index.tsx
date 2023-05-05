@@ -9,7 +9,7 @@ import Error from '../Error';
 import Projects from '../Projects';
 
 function App() {
-  //  Permet de scroller en haut de la page
+  //  Permet de scroller en haut de la page à chaque nouvel affiche url
   const location = useLocation();
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -22,6 +22,7 @@ function App() {
         <Route
           path="/"
           element={(
+            // Affichage des derniers projets
             <Projects />
 
           )}
@@ -29,12 +30,14 @@ function App() {
         <Route
           path="/project/:id"
           element={(
+            // Affichage d'un projet par id
             <ProjectDetail />
           )}
         />
         <Route
           path="/error"
           element={(
+            // Affichage page erreur 404
             <Error />
           )}
         />
