@@ -1,7 +1,5 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
-import './styles.scss';
-
 import Header from './Header';
 import Footer from './Footer';
 import ProjectDetail from '../Project/details';

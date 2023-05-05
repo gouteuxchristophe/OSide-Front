@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Menu as Burger } from 'react-feather';
 import logo from '../../../assets/logo.png';
 import Menu from '../../Menu';
 
@@ -16,9 +17,7 @@ function Header() {
           <Menu />
         )}
         <button type="button" className="space-y-2" onClick={handleClickBtn}>
-          <div className="w-8 h-0.5 bg-gray-600" />
-          <div className="w-8 h-0.5 bg-gray-600" />
-          <div className="w-8 h-0.5 bg-gray-600" />
+          <Burger />
         </button>
       </div>
       <h1 className="text-2xl font-bold">O&apos;Side</h1>

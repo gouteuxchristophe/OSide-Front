@@ -1,8 +1,8 @@
 function Menu() {
   return (
-    <div className="flex flex-col absolute top-12 left-2">
+    <div className="flex flex-col absolute top-12 left-2 bg-primary3 px-3">
       <ul>
-        <a className="hover::underline hover::decoration-solid" href="/">
+        <a href="/">
           <li className="my-2">Accueil</li>
         </a>
         <a href="/login">
