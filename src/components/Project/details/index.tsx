@@ -1,4 +1,5 @@
 import { Navigate, useParams, Link } from 'react-router-dom';
+import { Settings } from 'react-feather';
 import { useAppSelector } from '../../../hooks/redux';
 import findProject from '../../../store/selectors/project';
 
@@ -16,7 +17,7 @@ function ProjectDetail() {
     <div className="sm m-2 text-center border-solid border border-black-200 p-2 rounded flex flex-col gap-8">
       <div className="flex justify-evenly">
         <h2>{project.title}</h2>
-        <button type="button">Settings</button>
+        <button type="button"><Settings /></button>
       </div>
       <p className="p-2 border-solid border border-black-200 rounded w-[200px] mx-auto">{project.status}</p>
       <div className="border-solid border border-black-200 rounded p-2 flex flex-col justify-between gap-10">
