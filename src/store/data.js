@@ -13,7 +13,7 @@ const data = [
       {
         id: 7,
         label: 'JavaScript',
-        color: '##EAD41C',
+        color: '#EAD41C',
       },
       {
         id: 6,
