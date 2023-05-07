@@ -13,14 +13,17 @@ const data = [
       {
         id: 7,
         label: 'JavaScript',
+        color: '##EAD41C',
       },
       {
         id: 6,
         label: 'PHP',
+        color: '#4d588e',
       },
       {
         id: 5,
         label: 'HTML',
+        color: '#D84924',
       },
     ],
     created_at: '2013-11-01',
@@ -51,14 +54,17 @@ const data = [
       {
         id: 1,
         label: 'Laravel',
+        color: '#E3382B',
       },
       {
         id: 2,
         label: 'Angular',
+        color: '#D2002F',
       },
       {
         id: 3,
         label: 'Docker',
+        color: '#0069AD',
       },
     ],
     created_at: '2013-11-01',
@@ -84,14 +90,17 @@ const data = [
       {
         id: 5,
         label: 'HTML',
+        color: '#D84924',
       },
       {
         id: 4,
         label: 'CSS',
+        color: '#F2F2F2',
       },
       {
         id: 3,
         label: 'Docker',
+        color: '#0069AD',
       },
     ],
     created_at: '2013-11-01',
