@@ -1,9 +1,10 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Project } from '../../../@types/project';
 
 function ProjectItem({
   id, title, status, author, content, member_projet,
 }: Project) {
+  const location = useLocation();
   const excerpContent = content.substring(0, 100);
   return (
     <div
@@ -31,7 +32,12 @@ function ProjectItem({
 
           </div>
           <div className="my-4 h-12">
-            <span className="font-light text-sm">{excerpContent}</span>
+            <span className="font-light text-sm">
+              {
+                (location.pathname === '/') ? `${excerpContent}...` : content
+              }
+
+            </span>
           </div>
           <div className="flex justify-center text-[white]">
             <Link to={`/project/${id}`} className="px-4 py-3 rounded-full shadow-xl mt-4 bg-secondary20  text-center border-2 border-solid">
