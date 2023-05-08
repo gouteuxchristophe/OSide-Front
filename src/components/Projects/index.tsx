@@ -7,7 +7,7 @@ function Projects() {
 
   return (
 
-    <div className="grid grid-cols-1 gap-4 p-3 md:grid-cols-3">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-3 p-10">
       {projectsList.map((item) => (
         <ProjectItem
           key={item.id}
