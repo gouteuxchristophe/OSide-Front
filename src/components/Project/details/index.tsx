@@ -20,7 +20,7 @@ function ProjectDetail() {
         <div className="p-4 md:p-12 text-center lg:text-left flex flex-col gap-7">
           <div className="block lg:hidden rounded-full shadow-xl mx-auto -mt-16 h-48 w-48 bg-cover bg-center border-b-4 border-solid border-secondary10" style={{ backgroundImage: `url(${project.author.avatar})` }} />
           <div className="pb-5 border-b-2 border-solid border-secondary23 rounded">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between w-[100%]">
               <h1 className="text-2xl font-bold lg:pt-0 text-left">{project.title}</h1>
               <p className="flex items-center gap-2">
                 <Settings />
@@ -33,7 +33,7 @@ function ProjectDetail() {
             </p>
           </div>
           <p className="pt-8 text-sm">{project.content}</p>
-          <div className="flex justify-center items-center">
+          <div className="flex justify-center items-center py-2 px-4 rounded-full bg-secondary20 border-2 border-solid text-[white] w-[50%] self-center">
             <MessageCircle />
             {' '}
             Voir les commentaires
@@ -41,11 +41,14 @@ function ProjectDetail() {
           <div className="flex flex-col space-y-2">
             <div className="flex space-x-2 justify-center border-2 border-solid border-primary1 flex-wrap gap-2 pb-5 rounded">
               <div className="p-5 mb-0 bg-primary1 w-[100%] font-bold">Participants</div>
-              {project.member_projet.map((member) => (
-                <div className="relative w-24 h-24" key={member.id}>
-                  <img className="rounded-full shadow-sm" src={member.avatar} alt={member.pseudo} />
-                </div>
-              ))}
+              {project.member_projet.length === 0 ? (
+                <div>Aucun participant</div>
+              )
+                : project.member_projet.map((member) => (
+                  <div className="relative w-24 h-24" key={member.id}>
+                    <img className="rounded-full shadow-sm" src={member.avatar} alt={member.pseudo} />
+                  </div>
+                ))}
             </div>
           </div>
           <div className="flex flex-col space-y-2">
@@ -56,11 +59,11 @@ function ProjectDetail() {
               ))}
             </div>
           </div>
-          <div className="pt-12 pb-8 flex justify-around flex-wrap gap-2">
-            <button type="button" className="text-white font-bold py-2 px-4 rounded-full bg-primary0 hover:bg-secondary20">
+          <div className="pt-12 pb-8 flex justify-around flex-wrap gap-2 text-[white]">
+            <button type="button" className="py-2 px-4 rounded-full bg-secondary20 border-2 border-solid">
               Participer
             </button>
-            <Link to="/" className="text-white font-bold py-2 px-4 rounded-full bg-primary0 hover:bg-secondary20">
+            <Link to="/" className="py-2 px-4 rounded-full bg-secondary20 border-2 border-solid">
               Retour à la liste
             </Link>
           </div>
