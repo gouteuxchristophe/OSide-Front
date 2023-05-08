@@ -7,7 +7,7 @@ function Projects() {
 
   return (
 
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-3 p-10">
+    <div className="flex flex-col mb-10 mr-4 items-center md:flex-row md:flex-wrap md:justify-center md:gap-10">
       {projectsList.map((item) => (
         <ProjectItem
           key={item.id}
