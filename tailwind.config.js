@@ -23,6 +23,11 @@ module.exports = {
       secondary23: '#115F81',
       secondary24: '#0F4157',
     },
+    extend: {
+      boxShadow: {
+        '3xl': 'rgba(0, 0, 0, 0.35) 0px 5px 15px;',
+      },
+    },
   },
   plugins: [],
 };

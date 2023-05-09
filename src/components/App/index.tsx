@@ -14,7 +14,7 @@ function App() {
   }, [location]);
 
   return (
-    <>
+    <div className="flex flex-col content-between max-w-screen-xl min-h-screen my-0 mx-auto">
       <Header />
       <Routes>
         <Route
@@ -41,7 +41,7 @@ function App() {
         />
       </Routes>
       <Footer />
-    </>
+    </div>
   );
 }
 export default App;

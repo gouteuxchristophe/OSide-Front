@@ -11,7 +11,7 @@ function Header() {
     setDisplayMenu(!displayMenu);
   };
   return (
-    <div className="flex items-center justify-around p-4">
+    <div className="flex items-center justify-around p-4 bg-secondary10 sticky top-0">
       <div className="relative">
         {displayMenu && (
           <Menu />
@@ -21,7 +21,7 @@ function Header() {
         </button>
       </div>
       <h1 className="text-2xl font-bold">O&apos;Side</h1>
-      <img className="w-20" src={logo} alt="Logo O'Side" />
+      <img className="w-20 rounded-md" src={logo} alt="Logo O'Side" />
     </div>
   );
 }
