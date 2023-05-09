@@ -27,6 +27,14 @@ function App() {
           )}
         />
         <Route
+          path="/projects"
+          element={(
+            // Affichage des derniers projets
+            <Projects />
+
+          )}
+        />
+        <Route
           path="/project/:id"
           element={(
             // Affichage d'un projet par id
