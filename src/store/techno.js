@@ -1,5 +1,21 @@
 const data = [
   {
+    id: 4,
+    label: 'JavaScript',
+    color: 'EAD41C',
+    created_at: '2023-05-09T07:19:18.745Z',
+    updated_at: null,
+    delete_at: null,
+  },
+  {
+    id: 5,
+    label: 'PHP',
+    color: '4d588e',
+    created_at: '2023-05-09T07:19:18.745Z',
+    updated_at: null,
+    delete_at: null,
+  },
+  {
     id: 6,
     label: 'Angular',
     color: 'D2002F',
