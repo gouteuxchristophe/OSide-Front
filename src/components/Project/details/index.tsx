@@ -1,5 +1,5 @@
 import { Navigate, useParams, Link } from 'react-router-dom';
-import { Settings, Clipboard, MessageCircle } from 'react-feather';
+import { Settings, MessageCircle } from 'react-feather';
 import { useAppSelector } from '../../../hooks/redux';
 import findProject from '../../../store/selectors/project';
 
@@ -20,16 +20,15 @@ function ProjectDetail() {
         <div className="p-4 md:p-12 text-center lg:text-left flex flex-col gap-7 relative">
           <div className="block rounded-full shadow-xl mx-auto -mt-16 md:-mt-24 h-24 w-24 bg-cover bg-center border-b-4 border-solid border-secondary10" style={{ backgroundImage: `url(${project.author.avatar})` }} />
           <div className="pb-5 border-b-2 border-solid border-secondary23 rounded">
-            <div className="flex items-center justify-between w-[100%]">
+            <div className="flex items-center justify-between mb-3">
               <h1 className="text-2xl font-bold lg:pt-0 text-left">{project.title}</h1>
               <p className="flex items-center gap-2 absolute top-2 right-2">
                 <Settings />
               </p>
             </div>
-            <p className="pt-4 text-base font-bold flex items-center justify-center lg:justify-start">
-              <Clipboard />
+            <span className="bg-primary0 text-blue-800 text-xs font-medium mr-2 px-2.5 py-1 rounded">
               {project.status}
-            </p>
+            </span>
           </div>
           <p className="pt-8 text-sm">{project.content}</p>
           <div className="flex justify-center items-center py-2 px-4 rounded-full bg-secondary20 border-2 border-solid text-[white] w-[50%] self-center">

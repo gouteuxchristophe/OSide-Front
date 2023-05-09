@@ -15,9 +15,9 @@ function ProjectItem({
             <img src={author.avatar} className="w-8 rounded-full" alt={author.pseudo} />
             <p className="text-[white] font-bold">{author.pseudo}</p>
           </div>
-          <div className="flex flex-wrap items-center justify-between">
-            <div className="font-semibold text-lg md:w-[100%] md:h-20 lg:w-[50%] flex items-center">{title}</div>
-            <div className="text-sm font-light border-2 border-solid rounded p-2 bg-[white]">{status}</div>
+          <div className="flex flex-col items-center justify-center gap-2">
+            <div className="font-semibold text-lg flex items-center">{title}</div>
+            <span className="bg-primary0 text-blue-800 text-xs font-medium mr-2 px-2.5 py-1 rounded text-[white] border-2 border-solid">{status}</span>
           </div>
           <div className="flex flex-wrap justify-center gap-2 h-12 items-center">
             {member_projet.length === 0 ? (
