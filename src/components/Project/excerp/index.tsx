@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { Project } from '../../../@types/project';
 
 function ProjectItem({
-  id, title, status, author, content, member_projet,
+  id, title, status, author, content, techno_projet,
 }: Project) {
   const excerpContent = content.substring(0, 100);
   return (
@@ -19,14 +19,12 @@ function ProjectItem({
             <div className="font-semibold text-lg flex items-center">{title}</div>
             <span className="bg-primary0 text-blue-800 text-xs font-medium mr-2 px-2.5 py-1 rounded text-[white] border-2 border-solid">{status}</span>
           </div>
-          <div className="flex flex-wrap justify-center gap-2 h-12 items-center">
-            {member_projet.length === 0 ? (
-              <div>Aucun participant</div>
+          <div className="flex space-x-2 justify-center flex-wrap gap-5 pb-5 rounded">
+            {techno_projet.length === 0 ? (
+              <div>Aucune techno</div>
             )
-              : member_projet.map((member) => (
-                <div className="relative w-8 h-8" key={member.id}>
-                  <img className="rounded-full shadow-sm" src={member.avatar} alt={member.pseudo} />
-                </div>
+              : techno_projet.map((techno) => (
+                <div key={techno.id} style={{ backgroundColor: `${techno.color}` }} className="text-sm px-3 rounded-full pt-[0.1em] pb-[0.1em]">{techno.label}</div>
               ))}
 
           </div>
