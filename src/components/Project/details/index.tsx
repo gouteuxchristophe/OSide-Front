@@ -17,14 +17,13 @@ function ProjectDetail() {
 
     <div className="max-w-4xl flex items-center h-auto lg:h-screen flex-wrap mx-auto my-32 lg:my-0 relative justify-center">
       <div className="w-full lg:w-3/5 rounded-lg lg:rounded-l-lg lg:rounded-r-none shadow-xl bg-white opacity-75 mx-6 lg:mx-0 border-2 border-solid border-secondary10">
-        <div className="p-4 md:p-12 text-center lg:text-left flex flex-col gap-7">
-          <div className="block lg:hidden rounded-full shadow-xl mx-auto -mt-16 h-48 w-48 bg-cover bg-center border-b-4 border-solid border-secondary10" style={{ backgroundImage: `url(${project.author.avatar})` }} />
+        <div className="p-4 md:p-12 text-center lg:text-left flex flex-col gap-7 relative">
+          <div className="block rounded-full shadow-xl mx-auto -mt-16 md:-mt-24 h-24 w-24 bg-cover bg-center border-b-4 border-solid border-secondary10" style={{ backgroundImage: `url(${project.author.avatar})` }} />
           <div className="pb-5 border-b-2 border-solid border-secondary23 rounded">
             <div className="flex items-center justify-between w-[100%]">
               <h1 className="text-2xl font-bold lg:pt-0 text-left">{project.title}</h1>
-              <p className="flex items-center gap-2">
+              <p className="flex items-center gap-2 absolute top-2 right-2">
                 <Settings />
-                Settings
               </p>
             </div>
             <p className="pt-4 text-base font-bold flex items-center justify-center lg:justify-start">
