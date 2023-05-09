@@ -66,8 +66,8 @@ function SearchProject() {
 
   return (
     <div className="flex flex-col gap-2 items-center">
-      <div className="flex justify-center border-solid border-secondary20 w-[90%] mx-auto rounded-full border-b-8">
-        <form className="w-full rounded bg-primary0 px-2 py-3">
+      <div className="flex justify-center rounded-xl w-[70%]">
+        <form className="w-full bg-primary0 px-2 py-3 rounded-xl opacity-75 m-1 ">
           <div className="flex justify-between">
             <div className="flex gap-2 text-[white] w-full">
               <Search />
@@ -78,9 +78,9 @@ function SearchProject() {
         </form>
       </div>
 
-      <div className="flex space-x-2 justify-center flex-wrap gap-5 pb-5 rounded w-[90%] mt-5">
+      <div className="flex space-x-2 justify-center flex-wrap gap-5 pb-5 rounded w-[70%] mt-5">
         {technosList.map((techno) => (
-          <button onClick={handleChangeTechno} className="py-2 px-4 rounded-full" style={{ backgroundColor: `#${techno.color}` }} type="button" key={techno.id}>{techno.label}</button>
+          <button onClick={handleChangeTechno} className="py-2 px-4 rounded-full w-[40%] sm:w-[20%]" style={{ backgroundColor: `#${techno.color}` }} type="button" key={techno.id}>{techno.label}</button>
         ))}
       </div>
       <div>
