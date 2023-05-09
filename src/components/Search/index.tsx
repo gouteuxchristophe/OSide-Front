@@ -12,19 +12,21 @@ function SearchProject() {
 
   const dispatch = useAppDispatch();
 
-  function handleSearchSubmit(event: React.ChangeEvent<HTMLFormElement>) {
+  const handleSearchSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
     // eslint-disable-next-line max-len
     const correspondance = projectsList.filter((projet) => projet.title.toLowerCase().includes(searchValue));
     dispatch(updatedResultsProjects(correspondance as Project[]));
-  }
+  };
 
-  // dispatch(updatedResultsProjects(findProject as Project));
-
-  function handleChangeValue(event: React.ChangeEvent<HTMLInputElement>) {
+  const handleChangeValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.currentTarget.value;
     dispatch(changeInputSearchField(newValue));
-  }
+  };
+
+  const handleChangeTechno = (event: React.MouseEvent<HTMLButtonElement>) => {
+    console.log(event.currentTarget.textContent);
+  };
 
   return (
     <div className="flex flex-col gap-2 items-center">
@@ -43,7 +45,7 @@ function SearchProject() {
 
       <div className="flex space-x-2 justify-center flex-wrap gap-5 pb-5 rounded">
         {technosList.map((techno) => (
-          <button className="py-2 px-4 rounded-full" style={{ backgroundColor: `#${techno.color}` }} type="button" key={techno.id}>{techno.label}</button>
+          <button onClick={handleChangeTechno} className="py-2 px-4 rounded-full" style={{ backgroundColor: `#${techno.color}` }} type="button" key={techno.id}>{techno.label}</button>
         ))}
       </div>
       <div className="flex flex-col mb-10 mr-4 items-center md:flex-row md:flex-wrap md:justify-center md:gap-10">
