@@ -7,6 +7,7 @@ import { ITechnoProjet, Project } from '../../@types/project';
 import ResultsCount from './ResultsCount';
 import TechnosButtons from './TechnosButtons';
 import InputSearch from './InputSearch';
+import { searchProjectByTitle, searchProjectByTechno } from '../../store/selectors/search';
 
 function SearchProject() {
   const technosList = useAppSelector((state) => state.search.lists);
@@ -21,20 +22,19 @@ function SearchProject() {
   const submitChangeValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.currentTarget.value;
     dispatch(changeInputSearchField(newValue));
-    // eslint-disable-next-line max-len
-    const correspondenceProject = projectsList.filter((project) => project.title.toLowerCase().includes(newValue.toLowerCase()));
+    const matchProject = projectsList.filter((project) => searchProjectByTitle(project, newValue));
     // Mettre à jour les résultats de projet dans le state
     if (newValue.length === 0) {
       dispatch(updatedResultsProjects([]));
     } else {
-      dispatch(updatedResultsProjects(correspondenceProject as Project[]));
+      dispatch(updatedResultsProjects(matchProject as Project[]));
     }
   };
 
   // Gérer la recherche par technologie utilisée
   const submitChangeTechno = (event: React.MouseEvent<HTMLButtonElement>) => {
     // Récupérer la valeur du bouton cliqué (la technologie recherchée)
-    const technoSearched = event.currentTarget.textContent;
+    const technoSearched = event.currentTarget.textContent as string;
     // Trouver l'élément de technologie correspondant dans la liste des technos
     const technoItem = technosList.find((item) => item.label === technoSearched);
     if (technosList.length === 1) {
@@ -47,25 +47,24 @@ function SearchProject() {
       } else {
         // Filtrer les projets correspondant à la valeur de recherche
         // eslint-disable-next-line max-len
-        const correspondenceProject = projectsList.filter((project) => project.title.toLowerCase().includes(searchValue.toLowerCase()));
-        dispatch(updatedResultsProjects(correspondenceProject as Project[]));
+        const matchProject = projectsList.filter((project) => searchProjectByTitle(project, searchValue));
+        dispatch(updatedResultsProjects(matchProject as Project[]));
       }
     } else {
       // Sinon, mettre à jour la liste des technos avec l'élément sélectionné
       // et charger les résultats de projet correspondants
       dispatch(onlyTechnoList(technoItem as ITechnoProjet));
-      // eslint-disable-next-line max-len
       if (searchValue.length === 0) {
         // Filtrer les projets correspondant à la technologie sélectionnée
         // eslint-disable-next-line max-len
-        const correspondenceTechno = projectsList.filter((project) => project.techno_projet.find((techno) => techno.label === technoSearched));
-        dispatch(updatedResultsProjects(correspondenceTechno as Project[]));
+        const matchTechno = projectsList.filter((project) => searchProjectByTechno(project, technoSearched));
+        dispatch(updatedResultsProjects(matchTechno as Project[]));
       } else {
         // Filtrer les projets correspondant à la technologie sélectionnée
         // dans les résultats de recherche actuels
         // eslint-disable-next-line max-len
-        const correspondenceTechno = projectResultSearch.filter((project) => project.techno_projet.find((techno) => techno.label === technoSearched));
-        dispatch(updatedResultsProjects(correspondenceTechno as Project[]));
+        const matchTechno = projectResultSearch.filter((project) => searchProjectByTechno(project, technoSearched));
+        dispatch(updatedResultsProjects(matchTechno as Project[]));
       }
     }
   };
