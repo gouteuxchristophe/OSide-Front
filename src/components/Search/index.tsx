@@ -1,5 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { Search } from 'react-feather';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import ProjectItem from '../Project/excerp';
 import {
@@ -8,6 +6,7 @@ import {
 import { ITechnoProjet, Project } from '../../@types/project';
 import ResultsCount from './ResultsCount';
 import TechnosButtons from './TechnosButtons';
+import InputSearch from './InputSearch';
 
 function SearchProject() {
   const technosList = useAppSelector((state) => state.search.lists);
@@ -19,7 +18,7 @@ function SearchProject() {
   const dispatch = useAppDispatch();
 
   // Mettre à jour la valeur de recherche dans le state et recherché dans la liste de projet
-  const handleChangeValue = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const submitChangeValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.currentTarget.value;
     dispatch(changeInputSearchField(newValue));
     // eslint-disable-next-line max-len
@@ -74,15 +73,10 @@ function SearchProject() {
   return (
     <div className="flex flex-col gap-2 items-center">
       <div className="flex justify-center rounded-xl w-[70%]">
-        <form className="w-full bg-primary0 px-2 py-3 rounded-xl opacity-75 m-1 ">
-          <div className="flex justify-between">
-            <div className="flex gap-2 text-[white] w-full">
-              <Search />
-              <label htmlFor="default-search" className="mb-2 text-sm font-medium sr-only">Search</label>
-              <input onChange={handleChangeValue} defaultValue={searchValue} type="search" id="default-search" className="text-sm bg-primary0 placeholder-[white] w-full" placeholder="Search Projects" required />
-            </div>
-          </div>
-        </form>
+        <InputSearch
+          defaultValue={searchValue}
+          handleChangeValue={submitChangeValue}
+        />
       </div>
       <TechnosButtons
         technosList={technosList}
