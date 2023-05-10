@@ -15,7 +15,7 @@ function App() {
   }, [location]);
 
   return (
-    <div className="flex flex-col content-between max-w-screen-xl min-h-screen my-0 mx-auto">
+    <div className="flex flex-col justify-between max-w-screen-xl min-h-screen my-0 mx-auto">
       <Header />
       <Routes>
         <Route
@@ -55,6 +55,7 @@ function App() {
             <Error />
           )}
         />
+        <Route path="*" element={<Error />} />
       </Routes>
       <Footer />
     </div>

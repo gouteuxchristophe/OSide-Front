@@ -3,8 +3,6 @@ import { useAppSelector } from '../../hooks/redux';
 import ProjectItem from '../Project/excerp';
 
 function Projects() {
-  // On récupère le state
-
   const projectsList = useAppSelector((state) => state.projects.lists);
   const location = useLocation();
 

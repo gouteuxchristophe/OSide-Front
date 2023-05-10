@@ -30,7 +30,7 @@ function SearchProject() {
     const matchProject = technosList.length === 1
       // Si une seule techno, on filtre la recherche de l'input dans le state resultsSearchByTechno qui contient les projets recherché par techno
       ? resultsSearchByTechno.filter((project) => searchProjectByTitle(project, newValue))
-      // Si une plusieurs technos, on filtre la recherche de l'input dans le state projectsLis qui contient tout les projets
+      // Si une plusieurs technos, on filtre la recherche de l'input dans le state projectsList qui contient tout les projets
       : projectsList.filter((project) => searchProjectByTitle(project, newValue));
     // Si l'input est vide, on envoi resultsSearchByTechno dans le state du resultsSearch sinon on envoi le résultat de la recherche
     const updatedResults = newValue.length === 0 ? resultsSearchByTechno : matchProject;

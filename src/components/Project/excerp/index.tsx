@@ -17,7 +17,7 @@ function ProjectItem({
           </div>
           <div className="flex flex-col items-center justify-center gap-2">
             <div className="font-semibold text-lg flex items-center">{title}</div>
-            <span className="bg-primary0 text-blue-800 text-xs font-medium mr-2 px-2.5 py-1 rounded text-[white] border-2 border-solid">{status}</span>
+            <span className="bg-primary0 text-xs font-medium mr-2 px-2.5 py-1 rounded text-[white] border-2 border-solid">{status}</span>
           </div>
           <div className="flex space-x-2 justify-center flex-wrap gap-5 pb-5 rounded">
             {techno_projet.length === 0 ? (
