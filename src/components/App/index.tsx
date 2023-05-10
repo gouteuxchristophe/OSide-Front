@@ -1,7 +1,5 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
-import './styles.scss';
-
 import Header from './Header';
 import Footer from './Footer';
 import ProjectDetail from '../Project/details';
@@ -17,7 +15,7 @@ function App() {
   }, [location]);
 
   return (
-    <>
+    <div className="flex flex-col content-between max-w-screen-xl min-h-screen my-0 mx-auto">
       <Header />
       <Routes>
         <Route
@@ -51,7 +49,7 @@ function App() {
         />
       </Routes>
       <Footer />
-    </>
+    </div>
   );
 }
 export default App;
