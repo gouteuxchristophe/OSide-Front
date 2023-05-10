@@ -7,6 +7,7 @@ import Footer from './Footer';
 import ProjectDetail from '../Project/details';
 import Error from '../Error';
 import Projects from '../Projects';
+import SearchProject from '../Search';
 
 function App() {
   //  Permet de scroller en haut de la page à chaque nouvel affiche url
@@ -32,6 +33,13 @@ function App() {
           element={(
             // Affichage d'un projet par id
             <ProjectDetail />
+          )}
+        />
+        <Route
+          path="/search"
+          element={(
+            // Affichage page erreur 404
+            <SearchProject />
           )}
         />
         <Route

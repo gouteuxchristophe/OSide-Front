@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import projectsReducer from './reducers/projects';
+import searchReducer from './reducers/search';
 
 // Configuration du store avec le reducer
 const store = configureStore({
   reducer: {
     projects: projectsReducer,
+    search: searchReducer,
   },
 });
 
