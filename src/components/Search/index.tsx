@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { Search } from 'react-feather';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import ProjectItem from '../Project/excerp';
@@ -5,6 +6,7 @@ import {
   changeInputSearchField, updatedResultsProjects, onlyTechnoList, allTechnoList,
 } from '../../store/reducers/search';
 import { ITechnoProjet, Project } from '../../@types/project';
+import ResultsCount from './ResultsCount';
 
 function SearchProject() {
   const technosList = useAppSelector((state) => state.search.lists);
@@ -20,9 +22,13 @@ function SearchProject() {
     const newValue = event.currentTarget.value;
     dispatch(changeInputSearchField(newValue));
     // eslint-disable-next-line max-len
-    const correspondenceProject = projectsList.filter((project) => project.title.toLowerCase().includes(searchValue.toLowerCase()));
+    const correspondenceProject = projectsList.filter((project) => project.title.toLowerCase().includes(newValue.toLowerCase()));
     // Mettre à jour les résultats de projet dans le state
-    dispatch(updatedResultsProjects(correspondenceProject as Project[]));
+    if (newValue.length === 0) {
+      dispatch(updatedResultsProjects([]));
+    } else {
+      dispatch(updatedResultsProjects(correspondenceProject as Project[]));
+    }
   };
 
   // Gérer la recherche par technologie utilisée
@@ -83,19 +89,10 @@ function SearchProject() {
           <button onClick={handleChangeTechno} className="py-2 px-4 rounded-full w-[40%] sm:w-[20%]" style={{ backgroundColor: `#${techno.color}` }} type="button" key={techno.id}>{techno.label}</button>
         ))}
       </div>
-      <div>
-        {activeSearched && (
-          <span>
-            Votre recherche a retourné
-            {' '}
-            {projectResultSearch.length}
-            {' '}
-            résultat
-            {projectResultSearch.length !== 1 ? 's' : ''}
-          </span>
-
-        )}
-      </div>
+      <ResultsCount
+        numberProject={projectResultSearch.length}
+        activeSearched={activeSearched}
+      />
       <div className="flex flex-col mb-10 mr-4 items-center md:flex-row md:flex-wrap md:justify-center md:gap-10">
         {projectResultSearch.map((item) => (
           <ProjectItem
