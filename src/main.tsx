@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom/client';
 // On importe notre composant principal
 import { BrowserRouter } from 'react-router-dom';
 import App from './components/App';
-// On importe notre fichier de style global
 
 import store from './store';
 
