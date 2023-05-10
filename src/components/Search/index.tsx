@@ -23,18 +23,12 @@ function SearchProject() {
   const submitChangeValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.currentTarget.value;
     dispatch(changeInputSearchField(newValue));
-    let matchProject = [];
-    if (technosList.length === 1) {
-      matchProject = projectResultSearch.filter((project) => searchProjectByTitle(project, newValue));
-    } else {
-      matchProject = projectsList.filter((project) => searchProjectByTitle(project, newValue));
-    }
-    // Mettre à jour les résultats de projet dans le state
-    if (newValue.length === 0) {
-      dispatch(updatedResultsProjects([]));
-    } else {
-      dispatch(updatedResultsProjects(matchProject as Project[]));
-    }
+
+    const matchProject = technosList.length === 1
+      ? projectResultSearch.filter((project) => searchProjectByTitle(project, newValue))
+      : projectsList.filter((project) => searchProjectByTitle(project, newValue));
+
+    dispatch(updatedResultsProjects(newValue.length === 0 ? [] : matchProject as Project[]));
   };
 
   // Gérer la recherche par technologie utilisée
