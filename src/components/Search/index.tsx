@@ -38,36 +38,27 @@ function SearchProject() {
   };
 
   // Gérer la recherche par technologie utilisée
+  const filterProjectsByTitle = (value: string) => projectsList.filter((project) => searchProjectByTitle(project, value)) as Project[];
+  const filterProjectsByTechno = (technoSearched: string) => projectsList.filter((project) => searchProjectByTechno(project, technoSearched)) as Project[];
+  const filterProjectsByTechnoInResults = (technoSearched: string) => projectResultSearch.filter((project) => searchProjectByTechno(project, technoSearched)) as Project[];
+
   const submitChangeTechno = (event: React.MouseEvent<HTMLButtonElement>) => {
-    // Récupérer la valeur du bouton cliqué (la technologie recherchée)
     const technoSearched = event.currentTarget.textContent as string;
-    // Trouver l'élément de technologie correspondant dans la liste des technos
     const technoItem = technosList.find((item) => item.label === technoSearched);
+
     if (technosList.length === 1) {
-      // Si la liste des technos ne contient qu'un seul élément
-      // réinitialiser la liste complète des technos
       dispatch(allTechnoList(technosList));
       if (searchValue.length === 0) {
-        // Si aucune recherche n'avait été mémorisé, vider les résultats de recherche
         dispatch(updatedResultsProjects([]));
       } else {
-        // Filtrer les projets correspondant à la valeur de recherche
-        const matchProject = projectsList.filter((project) => searchProjectByTitle(project, searchValue));
-        dispatch(updatedResultsProjects(matchProject as Project[]));
+        dispatch(updatedResultsProjects(filterProjectsByTitle(searchValue)));
       }
     } else {
-      // Sinon, mettre à jour la liste des technos avec l'élément sélectionné
-      // et charger les résultats de projet correspondants
       dispatch(onlyTechnoList(technoItem as ITechnoProjet));
       if (searchValue.length === 0) {
-        // Filtrer les projets correspondant à la technologie sélectionnée
-        const matchTechno = projectsList.filter((project) => searchProjectByTechno(project, technoSearched));
-        dispatch(updatedResultsProjects(matchTechno as Project[]));
+        dispatch(updatedResultsProjects(filterProjectsByTechno(technoSearched)));
       } else {
-        // Filtrer les projets correspondant à la technologie sélectionnée
-        // dans les résultats de recherche actuels
-        const matchTechno = projectResultSearch.filter((project) => searchProjectByTechno(project, technoSearched));
-        dispatch(updatedResultsProjects(matchTechno as Project[]));
+        dispatch(updatedResultsProjects(filterProjectsByTechnoInResults(technoSearched)));
       }
     }
   };
