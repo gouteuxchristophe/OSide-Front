@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import ProjectItem from '../Project/excerp';
 import {
@@ -22,7 +23,12 @@ function SearchProject() {
   const submitChangeValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.currentTarget.value;
     dispatch(changeInputSearchField(newValue));
-    const matchProject = projectsList.filter((project) => searchProjectByTitle(project, newValue));
+    let matchProject = [];
+    if (technosList.length === 1) {
+      matchProject = projectResultSearch.filter((project) => searchProjectByTitle(project, newValue));
+    } else {
+      matchProject = projectsList.filter((project) => searchProjectByTitle(project, newValue));
+    }
     // Mettre à jour les résultats de projet dans le state
     if (newValue.length === 0) {
       dispatch(updatedResultsProjects([]));
@@ -46,7 +52,6 @@ function SearchProject() {
         dispatch(updatedResultsProjects([]));
       } else {
         // Filtrer les projets correspondant à la valeur de recherche
-        // eslint-disable-next-line max-len
         const matchProject = projectsList.filter((project) => searchProjectByTitle(project, searchValue));
         dispatch(updatedResultsProjects(matchProject as Project[]));
       }
@@ -56,13 +61,11 @@ function SearchProject() {
       dispatch(onlyTechnoList(technoItem as ITechnoProjet));
       if (searchValue.length === 0) {
         // Filtrer les projets correspondant à la technologie sélectionnée
-        // eslint-disable-next-line max-len
         const matchTechno = projectsList.filter((project) => searchProjectByTechno(project, technoSearched));
         dispatch(updatedResultsProjects(matchTechno as Project[]));
       } else {
         // Filtrer les projets correspondant à la technologie sélectionnée
         // dans les résultats de recherche actuels
-        // eslint-disable-next-line max-len
         const matchTechno = projectResultSearch.filter((project) => searchProjectByTechno(project, technoSearched));
         dispatch(updatedResultsProjects(matchTechno as Project[]));
       }
