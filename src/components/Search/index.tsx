@@ -2,7 +2,7 @@
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import ProjectItem from '../Project/excerp';
 import {
-  changeInputSearchField, updatedResultsProjects, onlyTechnoList, allTechnoList,
+  changeInputSearchField, updatedResultsProjects, onlyTechnoList, allTechnoList, updatedResultsTechno,
 } from '../../store/reducers/search';
 import { ITechnoProjet, Project } from '../../@types/project';
 import ResultsCount from './ResultsCount';
@@ -11,49 +11,58 @@ import InputSearch from './InputSearch';
 import { searchProjectByTitle, searchProjectByTechno } from '../../store/selectors/search';
 
 function SearchProject() {
-  const technosList = useAppSelector((state) => state.search.lists);
+  // Récupération des states
+  const technosList = useAppSelector((state) => state.search.technoLists);
   const searchValue = useAppSelector((state) => state.search.inputValue);
-  const projectResultSearch = useAppSelector((state) => state.search.results);
+  const resultsSearch = useAppSelector((state) => state.search.resultsSearch);
+  const resultsSearchByTechno = useAppSelector((state) => state.search.resultsSearchByTechno);
   const projectsList = useAppSelector((state) => state.projects.lists);
   const activeSearched = useAppSelector((state) => state.search.activeSearched);
-
+  // Récupération du dispatch pour les actions du reducer
   const dispatch = useAppDispatch();
 
-  // Mettre à jour la valeur de recherche dans le state et recherché dans la liste de projet
+  // Recherche du projet par input et techno
   const submitChangeValue = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // On récupère la valeur de l'input et modification du state inputValue
     const newValue = event.currentTarget.value;
     dispatch(changeInputSearchField(newValue));
-
+    // On check la quantité de techno séléctionné
     const matchProject = technosList.length === 1
-      ? projectResultSearch.filter((project) => searchProjectByTitle(project, newValue))
+      // Si une seule techno, on filtre la recherche de l'input dans le state resultsSearchByTechno qui contient les projets recherché par techno
+      ? resultsSearchByTechno.filter((project) => searchProjectByTitle(project, newValue))
+      // Si une plusieurs technos, on filtre la recherche de l'input dans le state projectsLis qui contient tout les projets
       : projectsList.filter((project) => searchProjectByTitle(project, newValue));
-
-    dispatch(updatedResultsProjects(newValue.length === 0 ? [] : matchProject as Project[]));
+    // Si l'input est vide, on envoi resultsSearchByTechno dans le state du resultsSearch sinon on envoi le résultat de la recherche
+    const updatedResults = newValue.length === 0 ? resultsSearchByTechno : matchProject;
+    dispatch(updatedResultsProjects(updatedResults as Project[]));
   };
 
   // Gérer la recherche par technologie utilisée
+  // On créer les fonctions qui vont effectuer les recherches via le selector search
   const filterProjectsByTitle = (value: string) => projectsList.filter((project) => searchProjectByTitle(project, value)) as Project[];
   const filterProjectsByTechno = (technoSearched: string) => projectsList.filter((project) => searchProjectByTechno(project, technoSearched)) as Project[];
-  const filterProjectsByTechnoInResults = (technoSearched: string) => projectResultSearch.filter((project) => searchProjectByTechno(project, technoSearched)) as Project[];
+  const filterProjectsByTechnoInResults = (technoSearched: string) => resultsSearch.filter((project) => searchProjectByTechno(project, technoSearched)) as Project[];
 
+  // On réagit au clic sur les boutons technologies
   const submitChangeTechno = (event: React.MouseEvent<HTMLButtonElement>) => {
+    // On récupère la valeur du bouton et on cherche la correspondance dans la liste des technos
     const technoSearched = event.currentTarget.textContent as string;
     const technoItem = technosList.find((item) => item.label === technoSearched);
 
     if (technosList.length === 1) {
+      // Si une seule techno déja sélectionné, on remet l'ensemble des technos dans le state technosList
       dispatch(allTechnoList(technosList));
-      if (searchValue.length === 0) {
-        dispatch(updatedResultsProjects([]));
-      } else {
-        dispatch(updatedResultsProjects(filterProjectsByTitle(searchValue)));
-      }
+      // Si l'input est vide, on initialise le state resultsSearch à vide, sinon on récupère la liste des projets recherché dans l'input et insertion dans le state
+      dispatch(updatedResultsProjects(searchValue.length === 0 ? [] : filterProjectsByTitle(searchValue)));
     } else {
+      // Si plusieurs techno était affiché, on modifie le state technosList avec la techno recherché
       dispatch(onlyTechnoList(technoItem as ITechnoProjet));
-      if (searchValue.length === 0) {
-        dispatch(updatedResultsProjects(filterProjectsByTechno(technoSearched)));
-      } else {
-        dispatch(updatedResultsProjects(filterProjectsByTechnoInResults(technoSearched)));
-      }
+      // On filtre les projets soit par techno uniquement si l'input est vide soit par les recherches déja effectués avec l'input
+      const filterProjects = searchValue.length === 0 ? filterProjectsByTechno(technoSearched) : filterProjectsByTechnoInResults(technoSearched);
+      // On met à jour le state resultsSearch
+      dispatch(updatedResultsProjects(filterProjects));
+      // On met à jour le state resultsSearchByTechno pour pouvoir l'utiliser dans la recherche par input
+      dispatch(updatedResultsTechno(filterProjects));
     }
   };
 
@@ -71,11 +80,11 @@ function SearchProject() {
       />
 
       <ResultsCount
-        numberProject={projectResultSearch.length}
+        numberProject={resultsSearch.length}
         activeSearched={activeSearched}
       />
       <div className="flex flex-col mb-10 mr-4 items-center md:flex-row md:flex-wrap md:justify-center md:gap-10">
-        {projectResultSearch.map((item) => (
+        {resultsSearch.map((item) => (
           <ProjectItem
             key={item.id}
             {...item}
