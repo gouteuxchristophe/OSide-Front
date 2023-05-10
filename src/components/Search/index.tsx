@@ -7,6 +7,7 @@ import {
 } from '../../store/reducers/search';
 import { ITechnoProjet, Project } from '../../@types/project';
 import ResultsCount from './ResultsCount';
+import TechnosButtons from './TechnosButtons';
 
 function SearchProject() {
   const technosList = useAppSelector((state) => state.search.lists);
@@ -32,7 +33,7 @@ function SearchProject() {
   };
 
   // Gérer la recherche par technologie utilisée
-  const handleChangeTechno = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const submitChangeTechno = (event: React.MouseEvent<HTMLButtonElement>) => {
     // Récupérer la valeur du bouton cliqué (la technologie recherchée)
     const technoSearched = event.currentTarget.textContent;
     // Trouver l'élément de technologie correspondant dans la liste des technos
@@ -83,12 +84,11 @@ function SearchProject() {
           </div>
         </form>
       </div>
+      <TechnosButtons
+        technosList={technosList}
+        handleChangeTechno={submitChangeTechno}
+      />
 
-      <div className="flex space-x-2 justify-center flex-wrap gap-5 pb-5 rounded w-[70%] mt-5">
-        {technosList.map((techno) => (
-          <button onClick={handleChangeTechno} className="py-2 px-4 rounded-full w-[40%] sm:w-[20%]" style={{ backgroundColor: `#${techno.color}` }} type="button" key={techno.id}>{techno.label}</button>
-        ))}
-      </div>
       <ResultsCount
         numberProject={projectResultSearch.length}
         activeSearched={activeSearched}
