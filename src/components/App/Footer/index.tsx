@@ -1,5 +1,3 @@
-import { Link } from 'react-router-dom';
-
 function Footer() {
   return (
     <div className="flex justify-around items-center my-2 bg-secondary10">

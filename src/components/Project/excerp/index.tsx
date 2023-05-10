@@ -2,42 +2,47 @@ import { Link } from 'react-router-dom';
 import { Project } from '../../../@types/project';
 
 function ProjectItem({
-  id, title, status, author, content, member_projet,
+  id, title, status, author, content, techno_projet,
 }: Project) {
   const excerpContent = content.substring(0, 100);
   return (
-    <div className="border-solid border border-black-200 p-4 rounded">
-      <div className="flex flex-col gap-2 space-y-6 items-center align-middle ">
-        <div className="flex flex-row gap-2 items-center align-middle h-12">
-          <div className="text-center">
-            {title}
+    <div
+      className="flex flex-col justify-center items-center mt-10 w-[90%] md:w-[40%]"
+    >
+      <div className="rounded-xl bg-primary0 opacity-75 m-1 w-[100%]">
+        <div className="flex flex-col p-8 rounded-xl shadow-xl translate-x-4 translate-y-4 md:w-auto gap-5 bg-secondary20 bg-opacity-[50%]">
+          <div className="flex flex-wrap items-center gap-2">
+            <img src={author.avatar} className="w-8 rounded-full" alt={author.pseudo} />
+            <p className="text-[white] font-bold">{author.pseudo}</p>
           </div>
-          <div className="border-solid border border-black-200 p-2 rounded text-center">
-            {status}
+          <div className="flex flex-col items-center justify-center gap-2">
+            <div className="font-semibold text-lg flex items-center">{title}</div>
+            <span className="bg-primary0 text-blue-800 text-xs font-medium mr-2 px-2.5 py-1 rounded text-[white] border-2 border-solid">{status}</span>
           </div>
-        </div>
-        <div className="self-start ">
-          {author.pseudo}
-        </div>
-        <div className="flex flex-row gap-4 items-center h-12">
-          {member_projet.length === 0 ? (
-            <div>Aucun participant</div>
-          )
-            : member_projet.map((item) => (
-              <div className="relative w-12 h-1 mb-12" key={item.id}>
-                <img className="rounded-full border border-gray-100 shadow-sm hover:scale-[1.7]" src={item.avatar} alt={item.pseudo} />
-              </div>
-            ))}
+          <div className="flex space-x-2 justify-center flex-wrap gap-5 pb-5 rounded">
+            {techno_projet.length === 0 ? (
+              <div>Aucune techno</div>
+            )
+              : techno_projet.map((techno) => (
+                <div key={techno.id} style={{ backgroundColor: `${techno.color}` }} className="text-sm px-3 rounded-full pt-[0.1em] pb-[0.1em]">{techno.label}</div>
+              ))}
 
-        </div>
-        <div className="h-20">
-          {`${excerpContent}...`}
-        </div>
-        <div>
-          <Link className="p-2 mb-2 bg-green-200 rounded-full" to={`/project/${id}`}>Detail</Link>
+          </div>
+          <div className="my-4 h-12">
+            <span className="font-light text-sm">
+              {
+                `${excerpContent}...`
+              }
+
+            </span>
+          </div>
+          <div className="flex justify-center text-[white]">
+            <Link to={`/project/${id}`} className="px-4 py-3 rounded-full shadow-xl mt-4 bg-secondary20  text-center border-2 border-solid">
+              Détails du projet
+            </Link>
+          </div>
         </div>
       </div>
-
     </div>
 
   );
