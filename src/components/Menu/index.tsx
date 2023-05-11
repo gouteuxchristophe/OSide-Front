@@ -54,9 +54,12 @@ function Menu() {
             <XCircle onClick={handleToogleMenu} />
           </div>
         </div>
-        <div className="border border-solid border-[white] rounded-full p-1 bg-[white]">
+        <Link
+          to="/login"
+          className="border border-solid border-[white] rounded-full p-1 bg-[white]"
+        >
           <User />
-        </div>
+        </Link>
       </div>
     </nav>
   );
