@@ -43,10 +43,8 @@ const contactFormReducer = createReducer(initialState, (builder) => {
     .addCase(changeInputMessage, (state, action) => {
       state.message = action.payload;
     })
-    .addCase(sendMail, (state) => {
-      state.sendMail.sendName = state.name;
-      state.sendMail.sendEmail = state.email;
-      state.sendMail.sendMessage = state.message;
+    .addCase(sendMail, (state, action) => {
+      state.sendMail = action.payload;
       console.log(state.sendMail);
     });
 });
