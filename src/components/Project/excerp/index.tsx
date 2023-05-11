@@ -44,7 +44,6 @@ function ProjectItem({
         </div>
       </div>
     </div>
-
   );
 }
 

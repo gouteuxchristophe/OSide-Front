@@ -46,6 +46,9 @@ function App() {
           path="/about"
           element={(
             <About />
+          )}
+        />
+        <Route
           path="/search"
           element={(
             // Affichage page erreur 404
