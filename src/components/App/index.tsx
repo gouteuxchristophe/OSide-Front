@@ -7,6 +7,10 @@ import Error from '../Error';
 import Projects from '../Projects';
 import About from '../About';
 import SearchProject from '../Search';
+import { getAllProjects } from '../../store/reducers/projects';
+import { useAppDispatch } from '../../hooks/redux';
+import Login from '../Login';
+import Register from '../Register';
 
 function App() {
   //  Permet de scroller en haut de la page à chaque nouvel affiche url
@@ -14,6 +18,12 @@ function App() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [location]);
+
+  // Permet de lancer la requête API
+  // const dispatch = useAppDispatch();
+  // useEffect(() => {
+  //   dispatch(getAllProjects());
+  // }, [dispatch]);
 
   return (
     <div className="flex flex-col justify-between max-w-screen-xl min-h-screen my-0 mx-auto border border-solid border-secondary20">
@@ -53,6 +63,18 @@ function App() {
           element={(
             // Affichage page erreur 404
             <SearchProject />
+          )}
+        />
+        <Route
+          path="/login"
+          element={(
+            <Login />
+          )}
+        />
+        <Route
+          path="/register"
+          element={(
+            <Register />
           )}
         />
         <Route
