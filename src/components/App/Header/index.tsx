@@ -1,28 +1,20 @@
-import { useState } from 'react';
 import logo from '../../../assets/logo.png';
 import Menu from '../../Menu';
 
 function Header() {
-  // State qui gère l'affiche du menu via un toogle booléen
-  const [displayMenu, setDisplayMenu] = useState<boolean>(false);
-  // Fonction qui modifie le state displayMenu
-  const handleClickBtn = () => {
-    setDisplayMenu(!displayMenu);
-  };
   return (
-    <div className="flex items-center justify-around p-4">
-      <div className="relative">
-        {displayMenu && (
-          <Menu />
-        )}
-        <button type="button" className="space-y-2" onClick={handleClickBtn}>
-          <div className="w-8 h-0.5 bg-gray-600" />
-          <div className="w-8 h-0.5 bg-gray-600" />
-          <div className="w-8 h-0.5 bg-gray-600" />
-        </button>
+    <div className="flex items-center justify-between py-4 sticky top-0 z-10 bg-secondary20">
+      <div className="pl-5">
+        <img className="w-20 rounded-full" src={logo} alt="Logo O'Side" />
       </div>
-      <h1 className="text-2xl font-bold">O&apos;Side</h1>
-      <img className="w-20" src={logo} alt="Logo O'Side" />
+      <div className="flex justify-center">
+        <h1 className="text-2xl font-bold">O&apos;Side</h1>
+      </div>
+      <div className="rounded-full flex items-center justify-end px-5">
+        <div className="bg-secondary20 rounded-full">
+          <Menu />
+        </div>
+      </div>
     </div>
   );
 }

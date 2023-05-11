@@ -1,13 +1,12 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
-import './styles.scss';
-
 import Header from './Header';
 import Footer from './Footer';
 import ProjectDetail from '../Project/details';
 import Error from '../Error';
 import Projects from '../Projects';
 import About from '../About';
+import SearchProject from '../Search';
 
 function App() {
   //  Permet de scroller en haut de la page à chaque nouvel affiche url
@@ -17,11 +16,19 @@ function App() {
   }, [location]);
 
   return (
-    <>
+    <div className="flex flex-col justify-between max-w-screen-xl min-h-screen my-0 mx-auto border border-solid border-secondary20">
       <Header />
       <Routes>
         <Route
           path="/"
+          element={(
+            // Affichage des derniers projets
+            <Projects />
+
+          )}
+        />
+        <Route
+          path="/projects"
           element={(
             // Affichage des derniers projets
             <Projects />
@@ -39,6 +46,10 @@ function App() {
           path="/about"
           element={(
             <About />
+          path="/search"
+          element={(
+            // Affichage page erreur 404
+            <SearchProject />
           )}
         />
         <Route
@@ -48,9 +59,10 @@ function App() {
             <Error />
           )}
         />
+        <Route path="*" element={<Error />} />
       </Routes>
       <Footer />
-    </>
+    </div>
   );
 }
 export default App;

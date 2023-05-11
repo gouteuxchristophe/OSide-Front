@@ -4,8 +4,7 @@ import ReactDOM from 'react-dom/client';
 // On importe notre composant principal
 import { BrowserRouter } from 'react-router-dom';
 import App from './components/App';
-// On importe notre fichier de style global
-import './styles/index.scss';
+
 import store from './store';
 
 // Je créer un root pour mon application (a partir d'un élément HTML)
