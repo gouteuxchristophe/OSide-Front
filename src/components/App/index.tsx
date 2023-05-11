@@ -5,6 +5,7 @@ import Footer from './Footer';
 import ProjectDetail from '../Project/details';
 import Error from '../Error';
 import Projects from '../Projects';
+import About from '../About';
 import SearchProject from '../Search';
 
 function App() {
@@ -42,6 +43,9 @@ function App() {
           )}
         />
         <Route
+          path="/about"
+          element={(
+            <About />
           path="/search"
           element={(
             // Affichage page erreur 404
