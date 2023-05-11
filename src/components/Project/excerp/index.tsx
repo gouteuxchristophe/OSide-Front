@@ -24,7 +24,7 @@ function ProjectItem({
               <div>Aucune techno</div>
             )
               : techno_projet.map((techno) => (
-                <div key={techno.id} style={{ backgroundColor: `${techno.color}` }} className="text-sm px-3 rounded-full pt-[0.1em] pb-[0.1em]">{techno.label}</div>
+                <div key={techno.id} style={{ borderColor: `${techno.color}` }} className="bg-[white] border-2 border-solid text-sm px-3 rounded-full pt-[0.1em] pb-[0.1em]">{techno.label}</div>
               ))}
 
           </div>

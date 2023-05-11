@@ -53,7 +53,7 @@ function ProjectDetail() {
             <div className="flex space-x-2 justify-center border-2 border-solid border-primary1 flex-wrap gap-5 pb-5 rounded">
               <div className="p-5 mb-0 bg-primary1 w-[100%] font-bold">Techno</div>
               {project.techno_projet.map((techno) => (
-                <div key={techno.id} style={{ backgroundColor: `${techno.color}` }} className="text-sm px-3 rounded-full pt-[0.1em] pb-[0.1em]">{techno.label}</div>
+                <div key={techno.id} style={{ borderColor: `${techno.color}` }} className="bg-[white] border-2 border-solid text-sm px-3 rounded-full pt-[0.1em] pb-[0.1em]">{techno.label}</div>
               ))}
             </div>
           </div>
