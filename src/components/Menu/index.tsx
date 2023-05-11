@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Menu as Burger, XCircle, User, Home,
+  Menu as Burger, XCircle, User,
 } from 'react-feather';
 
 function Menu() {
@@ -25,21 +25,21 @@ function Menu() {
           <Link
             to="/"
             onClick={handleToogleMenu}
-            className="block mt-4 sm:inline-block sm:mt-0 text-white-200 mr-4 border border-solid border-[white] rounded-full p-1 bg-secondary20 sm:bg-primary0"
+            className="block mt-4 sm:inline-block sm:mt-0 text-white-200 mr-4 border border-solid border-[white] rounded-full p-2 bg-secondary20 sm:bg-primary0 tracking-wider"
           >
             Accueil
           </Link>
           <Link
             to="/projects"
             onClick={handleToogleMenu}
-            className="block mt-4 sm:inline-block sm:mt-0 text-white-200 mr-4 border border-solid border-[white] rounded-full p-1 bg-secondary20 sm:bg-primary0"
+            className="block mt-4 sm:inline-block sm:mt-0 text-white-200 mr-4 border border-solid border-[white] rounded-full p-2 bg-secondary20 sm:bg-primary0 tracking-wider"
           >
             Projets
           </Link>
           <Link
             to="/search"
             onClick={handleToogleMenu}
-            className="block mt-4 sm:inline-block sm:mt-0 text-white-200 mr-4 border border-solid border-[white] rounded-full p-1 bg-secondary20 sm:bg-primary0"
+            className="block mt-4 sm:inline-block sm:mt-0 text-white-200 mr-4 border border-solid border-[white] rounded-full p-2 bg-secondary20 sm:bg-primary0 tracking-wider"
           >
             Rechercher
           </Link>
