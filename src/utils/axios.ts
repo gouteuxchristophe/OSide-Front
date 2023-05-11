@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getUserDataFromLocalStorage } from './user';
+import { getUserDataFromLocalStorage } from './login';
 
 // Je créer une instance d'axios me permettant d'enregistrer
 // une configuration de base

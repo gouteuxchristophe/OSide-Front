@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import projectsReducer from './reducers/projects';
 import contactFormReducer from './reducers/contactForm';
 import searchReducer from './reducers/search';
+import loginReducer from './reducers/login';
 
 // Configuration du store avec le reducer
 const store = configureStore({
@@ -9,6 +10,7 @@ const store = configureStore({
     projects: projectsReducer,
     contactForm: contactFormReducer,
     search: searchReducer,
+    login: loginReducer,
   },
 });
 

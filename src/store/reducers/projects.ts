@@ -10,17 +10,12 @@ interface ProjectsState {
 
 // Gestion du state initial des projets
 export const initialState: ProjectsState = {
-  lists: data,
+  lists: [],
   isLoading: false,
 };
 
 export const getAllProjects = createAsyncThunk('projects/GET_ALL_PROJECTS', async () => {
-  const { data: projects } = await axiosInstance.get('/projet', {
-    headers: {
-      'Access-Control-Allow-Origin': 'privatekey',
-      'Content-Type': 'application/json',
-    },
-  });
+  const { data: projects } = await axiosInstance.get('/projet');
   return projects as Project[];
 });
 
@@ -30,6 +25,7 @@ const projectsReducer = createReducer(initialState, (builder) => {
     .addCase(getAllProjects.fulfilled, (state, action) => {
       state.isLoading = false;
       state.lists = action.payload;
+      console.log(state.lists);
     });
 });
 

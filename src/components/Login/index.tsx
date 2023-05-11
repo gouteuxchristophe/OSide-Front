@@ -1,6 +1,14 @@
 import { Link } from 'react-router-dom';
+import { useAppSelector } from '../../hooks/redux';
+import { changeCredentialsField } from '../../store/reducers/login';
 
 function Login() {
+  const email = useAppSelector((state) => state.login.credentials.email);
+  const password = useAppSelector((state) => state.login.credentials.password);
+
+  const handleChangeField = (name: 'email' | 'password') => (value: string) => {
+    changeCredentialsField(name, value);
+  };
   return (
     <section className="bg-primary0">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -12,11 +20,11 @@ function Login() {
             <form className="space-y-4 md:space-y-6" action="#">
               <div>
                 <label htmlFor="email" className="block mb-2 text-sm font-medium">Your email</label>
-                <input type="email" name="email" id="email" className="border border-secondary20 sm:text-sm rounded-lg  block w-full p-2.5" placeholder="name@company.com" required />
+                <input value={email} onChange={handleChangeField('email')} type="email" name="email" id="email" className="border border-secondary20 sm:text-sm rounded-lg  block w-full p-2.5" placeholder="name@company.com" required />
               </div>
               <div>
                 <label htmlFor="password" className="block mb-2 text-sm font-medium">Password</label>
-                <input type="password" name="password" id="password" placeholder="••••••••" className="border border-secondary20 sm:text-sm rounded-lg  block w-full p-2.5" required />
+                <input value={password}  onChange={handleChangeField('password')} type="password" name="password" id="password" placeholder="••••••••" className="border border-secondary20 sm:text-sm rounded-lg  block w-full p-2.5" required />
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-start">

@@ -1,4 +1,4 @@
-import { LoginResponse } from '../@types/user';
+import { LoginResponse } from '../@types/login';
 
 export const getUserDataFromLocalStorage = () => {
   const userDataStr = localStorage.getItem('user');

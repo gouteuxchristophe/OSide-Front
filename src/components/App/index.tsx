@@ -20,10 +20,10 @@ function App() {
   }, [location]);
 
   // Permet de lancer la requête API
-  // const dispatch = useAppDispatch();
-  // useEffect(() => {
-  //   dispatch(getAllProjects());
-  // }, [dispatch]);
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(getAllProjects());
+  }, [dispatch]);
 
   return (
     <div className="flex flex-col justify-between max-w-screen-xl min-h-screen my-0 mx-auto border border-solid border-secondary20">

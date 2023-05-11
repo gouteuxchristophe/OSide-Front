@@ -1,13 +1,13 @@
 export interface Project {
   id: number
   title: string
-  author: IAuthor
   content: string
+  status: string
+  owner_id: IAuthor
   member_projet: IMemberProjet[]
-  techno_projet: ITechnoProjet[]
+  technoProjet: ITechnoProjet[]
   created_at: string
   updated_at?: string
-  status: string
 }
 
 export interface IAuthor {
