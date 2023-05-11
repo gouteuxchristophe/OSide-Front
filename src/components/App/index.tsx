@@ -15,7 +15,7 @@ function App() {
   }, [location]);
 
   return (
-    <div className="flex flex-col justify-between max-w-screen-xl min-h-screen my-0 mx-auto">
+    <div className="flex flex-col justify-between max-w-screen-xl min-h-screen my-0 mx-auto border border-solid border-secondary20">
       <Header />
       <Routes>
         <Route
