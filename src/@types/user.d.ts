@@ -1,10 +1,3 @@
-export interface LoginResponse {
-  logged: boolean
-  pseudo: string
-  token: string
-  user: IUser
-}
-
 export interface IUser {
   id: number,
   email: string,
@@ -17,15 +10,15 @@ export interface IUser {
   delete_at?: string,
   last_visited?: string,
   avatar: string,
-  owner: IOWner[]
+  owner?: IOWner[]
 }
 
 export interface IRole {
   id: number,
   label: string,
-  color: string,
-  created_at: string,
-  updated_at: string
+  color?: string,
+  created_at?: string,
+  updated_at?: string
 }
 
 export interface IOWner {
