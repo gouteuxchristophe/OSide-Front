@@ -68,7 +68,6 @@ function SearchProject() {
 
   return (
     <div className="flex flex-col gap-2 items-center">
-      <h1>Liste des projets</h1>
       <div className="flex justify-center rounded-xl w-[70%]">
         <InputSearch
           defaultValue={searchValue}
