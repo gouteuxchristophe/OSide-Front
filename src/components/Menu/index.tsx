@@ -1,15 +1,20 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Menu as Burger, XCircle, User,
+  Menu as Burger, XCircle, User, LogOut,
 } from 'react-feather';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { logout } from '../../store/reducers/login';
 
 function Menu() {
   const [displayMenu, setDisplayMenu] = useState<boolean>(false);
+  const isLogged = useAppSelector((state) => state.login.logged);
 
   const handleToogleMenu = () => {
     setDisplayMenu(!displayMenu);
   };
+
+  const dispatch = useAppDispatch();
 
   return (
     <nav className="flex items-center justify-between flex-wrap p-2">
@@ -50,16 +55,31 @@ function Menu() {
           >
             Rechercher
           </Link>
+          {isLogged && (
+            <Link
+              to="/dashboard"
+              onClick={handleToogleMenu}
+              className="block mt-4 sm:inline-block sm:mt-0 text-white-200 mr-4 border border-solid border-[white] rounded-full p-2 bg-secondary20 sm:bg-primary0 tracking-wider"
+            >
+              Dashboard
+            </Link>
+          )}
           <div className="sm:hidden absolute top-2 right-2">
             <XCircle onClick={handleToogleMenu} />
           </div>
         </div>
-        <Link
-          to="/login"
-          className="border border-solid border-[white] rounded-full p-1 bg-[white]"
-        >
-          <User />
-        </Link>
+        {isLogged ? (
+          <button onClick={() => dispatch(logout())} type="button" className="border border-solid border-[white] rounded-full p-1 bg-[white]"><LogOut /></button>
+        ) : (
+          <Link
+            to="/login"
+            className="border border-solid border-[white] rounded-full p-1 bg-[white]"
+          >
+
+            <User />
+          </Link>
+        )}
+
       </div>
     </nav>
   );

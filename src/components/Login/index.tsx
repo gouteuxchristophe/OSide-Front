@@ -1,14 +1,28 @@
 import { Link } from 'react-router-dom';
-import { useAppSelector } from '../../hooks/redux';
-import { changeCredentialsField } from '../../store/reducers/login';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { KeysOfCredentials, changeCredentialsField, login } from '../../store/reducers/login';
 
 function Login() {
   const email = useAppSelector((state) => state.login.credentials.email);
   const password = useAppSelector((state) => state.login.credentials.password);
+  const dispatch = useAppDispatch();
 
-  const handleChangeField = (name: 'email' | 'password') => (value: string) => {
-    changeCredentialsField(name, value);
-  };
+  function handleChangeField(event: React.ChangeEvent<HTMLInputElement>): void {
+    const newValue = event.target.value;
+    // Je dis avec le `as` TKT, je te dis moi que le type de
+    // event.target.name c'est un KeysOfCredentials
+    const fieldName = event.target.name as KeysOfCredentials;
+    dispatch(changeCredentialsField({
+      propertyKey: fieldName,
+      value: newValue,
+    }));
+  }
+
+  function handleSubmitLogin(event: React.FormEvent<HTMLFormElement>): void {
+    event.preventDefault();
+    // J'emet mon intention / action asynchrone
+    dispatch(login());
+  }
   return (
     <section className="bg-primary0">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -17,14 +31,14 @@ function Login() {
             <h1 className="text-xl font-bold leading-tight tracking-tight md:text-2xl">
               Sign in to your account
             </h1>
-            <form className="space-y-4 md:space-y-6" action="#">
+            <form onSubmit={handleSubmitLogin} className="space-y-4 md:space-y-6" action="#">
               <div>
                 <label htmlFor="email" className="block mb-2 text-sm font-medium">Your email</label>
-                <input value={email} onChange={handleChangeField('email')} type="email" name="email" id="email" className="border border-secondary20 sm:text-sm rounded-lg  block w-full p-2.5" placeholder="name@company.com" required />
+                <input value={email} onChange={handleChangeField} type="email" name="email" id="email" className="border border-secondary20 sm:text-sm rounded-lg  block w-full p-2.5" placeholder="name@company.com" required />
               </div>
               <div>
                 <label htmlFor="password" className="block mb-2 text-sm font-medium">Password</label>
-                <input value={password}  onChange={handleChangeField('password')} type="password" name="password" id="password" placeholder="••••••••" className="border border-secondary20 sm:text-sm rounded-lg  block w-full p-2.5" required />
+                <input value={password} onChange={handleChangeField} type="password" name="password" id="password" placeholder="••••••••" className="border border-secondary20 sm:text-sm rounded-lg  block w-full p-2.5" required />
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-start">

@@ -25,7 +25,6 @@ const projectsReducer = createReducer(initialState, (builder) => {
     .addCase(getAllProjects.fulfilled, (state, action) => {
       state.isLoading = false;
       state.lists = action.payload;
-      console.log(state.lists);
     });
 });
 
