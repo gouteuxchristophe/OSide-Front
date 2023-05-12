@@ -17,16 +17,40 @@
     "sourceType": "module",
     "project": "./tsconfig.json"
   },
-  "overrides": [{
-    "files": ["src/**/store/**/*.ts"],
-    "rules": { "no-param-reassign": ["error", { "props": false }] }
-  }],
-  "plugins": ["react", "@typescript-eslint"],
+  "overrides": [
+    {
+      "files": [
+        "src/**/store/**/*.ts"
+      ],
+      "rules": {
+        "no-param-reassign": [
+          "error",
+          {
+            "props": false
+          }
+        ]
+      }
+    }
+  ],
+  "plugins": [
+    "react",
+    "@typescript-eslint"
+  ],
   "rules": {
     "react/prop-types": "off",
     "react/jsx-props-no-spreading": "off",
     "react/react-in-jsx-scope": "off",
-    "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
+    "react/jsx-filename-extension": [
+      2,
+      {
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx"
+        ]
+      }
+    ],
     "import/extensions": [
       "error",
       "ignorePackages",
@@ -38,14 +62,28 @@
       }
     ],
     "linebreak-style": 0,
-    "jsx-a11y/label-has-associated-control": ["error", { "assert": "either" } ],
+    "jsx-a11y/label-has-associated-control": [
+      "error",
+      {
+        "assert": "either"
+      }
+    ],
     "no-restricted-imports": "off",
     "@typescript-eslint/no-restricted-imports": [
       "warn",
       {
         "name": "react-redux",
-        "importNames": ["useSelector", "useDispatch"],
+        "importNames": [
+          "useSelector",
+          "useDispatch"
+        ],
         "message": "Use typed hooks `useAppDispatch` and `useAppSelector` instead."
+      }
+    ],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "projectDependencies": false
       }
     ]
   }

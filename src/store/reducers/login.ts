@@ -12,7 +12,7 @@ interface LoginState {
     password: string;
   };
   token: string;
-  error: string | null;
+  errorLogin: boolean
 }
 
 export type KeysOfCredentials = keyof LoginState['credentials'];
@@ -24,7 +24,7 @@ export const initialState: LoginState = {
     email: '',
     password: '',
   },
-  error: null,
+  errorLogin: false,
   ...userData,
 };
 
@@ -59,11 +59,11 @@ const loginReducer = createReducer(initialState, (builder) => {
     })
     // Dans le cas où ma requête est en cours
     .addCase(login.pending, (state) => {
-      state.error = null;
+      state.errorLogin = false;
     })
     // Dans le cas où ma requête a échoué
     .addCase(login.rejected, (state) => {
-      state.error = 'Mauvais identifiants';
+      state.errorLogin = true;
     })
     .addCase(login.fulfilled, (state, action) => {
       state.logged = action.payload.logged;
