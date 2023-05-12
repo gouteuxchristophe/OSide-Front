@@ -14,7 +14,7 @@ function Login() {
   const dispatch = useAppDispatch();
 
   const displayLoginNotification = () => {
-    toast.warn('🦄 Login Error !', {
+    toast.error('🦄 Login Error !', {
       position: "bottom-left",
       autoClose: 3000,
       hideProgressBar: false,

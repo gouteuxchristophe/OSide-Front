@@ -4,6 +4,8 @@ import {
 import { Link } from 'react-router-dom';
 import { logout } from '../../store/reducers/login';
 import { useAppDispatch } from '../../hooks/redux';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 interface ModalUserProps {
   handleCloseModal: () => void;
@@ -11,10 +13,25 @@ interface ModalUserProps {
 
 function ModalUser({ handleCloseModal }: ModalUserProps) {
   const dispatch = useAppDispatch();
-  const handleLogout = (event: React.MouseEvent<HTMLButtonElement>): void => {
-    event.preventDefault();
+
+  const handleLogout = () => {
     dispatch(logout());
     handleCloseModal();
+  };
+
+  const displayLoginNotification = () => {
+    handleLogout()
+    handleCloseModal();
+    toast.success('🦄 Logout success !', {
+      position: "bottom-left",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
   };
 
   return (
@@ -35,7 +52,7 @@ function ModalUser({ handleCloseModal }: ModalUserProps) {
           Ajout de projet
         </Link>
         <button
-          onClick={handleLogout}
+          onClick={displayLoginNotification}
           type="button"
           className="bg-primary0 p-2 border border-solid border-[white] rounded text-sm"
         >
