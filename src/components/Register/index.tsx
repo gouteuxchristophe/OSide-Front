@@ -1,34 +1,64 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
-import axios from 'axios';
+import axiosInstance from 'axios';
+import { Eye, EyeOff } from 'react-feather';
+
+interface InputProps {
+  user_name: string,
+  last_name: string,
+  first_name: string,
+  user_email: string,
+  user_password: string,
+  user_password_confirmation: string
+}
 
 function Register() {
-  const [inputs, setInputs] = useState({});
+  const [inputs, setInputs] = useState<InputProps>({});
   const [passwordVerification, setPasswordVerification] = useState(false);
+  const [clickEye, setClickEye] = useState(false);
+  const [clickEyeVerif, setClickEyeVerif] = useState(false);
+  const [emailVerification, setEmailVerification] = useState(false);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name } = e.target;
     const { value } = e.target;
     setInputs((values) => ({ ...values, [name]: value }));
   };
+  const isValidEmail = (email: string) => /\S+@\S+\.\S+/.test(email);
 
   const handleSubmitForm = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setPasswordVerification(false);
-    if (inputs.user_password === inputs.user_password_confirmation) {
-      axios.post('https://oside.mimouss.fr/api/user', { inputs })
+    setEmailVerification(false);
+    if (inputs.user_password as string === inputs.user_password_confirmation
+      && isValidEmail(inputs.user_email)) {
+      console.log(inputs);
+      axiosInstance.post('/user', { inputs })
         .then((response) => {
           console.log(response);
         })
         .catch((error) => {
           console.log(error);
         });
-    } else {
+    } else if (inputs.user_password as string !== inputs.user_password_confirmation) {
       setPasswordVerification(true);
+    } else {
+      setEmailVerification(true);
     }
   };
 
+  const handleEyeClickPwd = () => {
+    if (clickEye === false) {
+      setClickEye(true);
+    } else if (clickEye === true) { setClickEye(false); }
+  };
+  const handleEyeClickPwdVerif = () => {
+    if (clickEyeVerif === false) {
+      setClickEyeVerif(true);
+    } else if (clickEyeVerif === true) { setClickEyeVerif(false); }
+  };
+
   return (
-    <div className="w-full lg:w-3/5 rounded-lg lg:rounded-l-lg lg:rounded-r-rg shadow-xl bg-white opacity-75 mx-auto border-2 border-solid border-secondary10">
+    <div className="w-full lg:w-3/5 rounded-lg lg:rounded-l-lg lg:rounded-r-rg shadow-xl bg-white opacity-75 mx-auto border-2 border-solid border-secondary10 my-4">
       <div className="p-4 md:p-12 text-center lg:text-left flex flex-col gap-7 relative">
         <div className="flex flex-col items-center justify-between mb-3">
           <h1 className="text-2xl font-bold lg:pt-0 text-center my-4">S&apos;inscrire</h1>
@@ -66,25 +96,34 @@ function Register() {
                 <label className="block uppercase tracking-wide text-[gray-700] text-xs font-bold mb-2" htmlFor="email">
                   E-mail
                 </label>
+                {emailVerification && (
+                <p className="text-[red] mx-2">l&apos;email n&apos;est pas valide</p>
+                )}
                 <input onChange={handleChange} required name="user_email" className="appearance-none block w-full bg-[gray-200] text-[gray-700] border border-[gray-200] rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-[white] focus:border-[gray-500]" id="email" type="email" placeholder="votremail@mail.com" />
               </div>
             </div>
             {/* Password */}
             <div className="flex flex-wrap -mx-3 mb-6">
-              <div className="w-full px-3">
+              <div className="w-full px-3 relative">
                 <label className="block uppercase tracking-wide text-[gray-700] text-xs font-bold mb-2" htmlFor="email">
                   Password
                 </label>
-                <input onChange={handleChange} required name="user_password" className="appearance-none block w-full bg-[gray-200] text-[gray-700] border border-[gray-200] rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-[white] focus:border-[gray-500]" id="password" type="password" placeholder="Mot de passe" minlength="8"/>
+                <input onChange={handleChange} required name="user_password" className="appearance-none block w-full bg-[gray-200] text-[gray-700] border border-[gray-200] rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-[white] focus:border-[gray-500]" id="password" type={clickEye ? 'text' : 'password'} placeholder="Mot de passe" />
+                <button type="button" className="absolute top-9 right-6 bg-[white]" onClick={handleEyeClickPwd}>
+                  {clickEye ? <EyeOff /> : <Eye />}
+                </button>
               </div>
             </div>
             {/* Confirmation password */}
             <div className="flex flex-wrap -mx-3 mb-6">
-              <div className="w-full px-3">
+              <div className="w-full px-3 relative">
                 <label className="block uppercase tracking-wide text-[gray-700] text-xs font-bold mb-2" htmlFor="email">
                   Confirmation password
                 </label>
-                <input onChange={handleChange} required name="user_password_confirmation" className="appearance-none block w-full bg-[gray-200] text-[gray-700] border border-[gray-200] rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-[white] focus:border-[gray-500]" id="password_confirmation" type="password" placeholder="Confirmation mot de passe" />
+                <input onChange={handleChange} required name="user_password_confirmation" className="appearance-none block w-full bg-[gray-200] text-[gray-700] border border-[gray-200] rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-[white] focus:border-[gray-500]" id="password_confirmation" type={clickEyeVerif ? 'text' : 'password'} placeholder="Confirmation mot de passe" />
+                <button type="button" className="absolute top-9 right-6 bg-[white]" onClick={handleEyeClickPwdVerif}>
+                  {clickEyeVerif ? <EyeOff /> : <Eye />}
+                </button>
               </div>
             </div>
             {/* Register button */}
