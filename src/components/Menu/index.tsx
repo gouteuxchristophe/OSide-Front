@@ -1,85 +1,91 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Menu as Burger, XCircle, User,
+  Menu as Burger, XCircle, User, Home,
 } from 'react-feather';
 import { useAppSelector } from '../../hooks/redux';
+import ModalUser from './ModalUser';
 
 function Menu() {
   const [displayMenu, setDisplayMenu] = useState<boolean>(false);
   const isLogged = useAppSelector((state) => state.login.logged);
   const avatar = useAppSelector((state) => state.user.avatar);
+  const userName = useAppSelector((state) => state.user.github_login);
+  const [showModal, setShowModal] = useState(false);
 
   const handleToogleMenu = () => {
     setDisplayMenu(!displayMenu);
   };
 
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
   return (
-    <nav className="flex items-center justify-between flex-wrap p-2">
-      <div className="block sm:hidden">
-        <div className={`${displayMenu ? 'hidden' : 'block'}`}>
-          <Burger onClick={handleToogleMenu} />
-        </div>
+    <>
+      <div>
+        {showModal && (
+          <ModalUser handleCloseModal={closeModal} />
+        )}
       </div>
-      <div
-        className={`w-full block flex-grow sm:flex sm:items-center sm:w-auto ${displayMenu ? 'block' : 'hidden'}`}
-      >
-        <div className="text-sm pb-4 flex flex-col items-center justify-around absolute left-0 top-0 w-full sm:pb-0 sm:relative sm:flex-row bg-primary0 sm:bg-secondary20">
-          <Link
-            to="/"
-            onClick={handleToogleMenu}
-            className="block mt-4 sm:inline-block sm:mt-0 text-white-200 mr-4 border border-solid border-[white] rounded-full p-2 bg-secondary20 sm:bg-primary0 tracking-wider"
-          >
-            Accueil
-          </Link>
-          <Link
-            to="/projects"
-            onClick={handleToogleMenu}
-            className="block mt-4 sm:inline-block sm:mt-0 text-white-200 mr-4 border border-solid border-[white] rounded-full p-2 bg-secondary20 sm:bg-primary0 tracking-wider"
-          >
-            Projets
-          </Link>
-          <Link
-            to="/about"
-            onClick={handleToogleMenu}
-            className="block mt-4 sm:inline-block sm:mt-0 text-white-200 mr-4 border border-solid border-[white] rounded-full p-2 bg-secondary20 sm:bg-primary0 tracking-wider"
-          >
-            About
-          </Link>
-          <Link
-            to="/search"
-            onClick={handleToogleMenu}
-            className="block mt-4 sm:inline-block sm:mt-0 text-white-200 mr-4 border border-solid border-[white] rounded-full p-2 bg-secondary20 sm:bg-primary0 tracking-wider"
-          >
-            Rechercher
-          </Link>
-          {isLogged && (
+      <nav className="flex items-center justify-between p-2 gap-2">
+        <div className="block sm:hidden">
+          <div className={`${displayMenu ? 'hidden' : 'block'}`}>
+            <Burger onClick={handleToogleMenu} />
+          </div>
+        </div>
+        <div
+          className={`w-full block flex-grow sm:flex sm:items-center sm:w-auto ${displayMenu ? 'block' : 'hidden'}`}
+        >
+          <div className="h-full text-sm flex flex-wrap gap-3 items-center justify-center absolute left-0 top-0 w-full sm:pb-0 sm:relative sm:flex-row bg-primary0 sm:bg-secondary20 sm:flex-wrap">
             <Link
-              to="/dashboard"
+              to="/"
               onClick={handleToogleMenu}
-              className="block mt-4 sm:inline-block sm:mt-0 text-white-200 mr-4 border border-solid border-[white] rounded-full p-2 bg-secondary20 sm:bg-primary0 tracking-wider"
+              className="block sm:inline-block sm:mt-0 text-white-200 border border-solid border-[white] rounded p-2 bg-secondary20 sm:bg-primary0 tracking-wider"
             >
-              Dashboard
+              <Home />
             </Link>
-          )}
-          <div className="sm:hidden absolute top-2 right-2">
-            <XCircle onClick={handleToogleMenu} />
+            <Link
+              to="/projects"
+              onClick={handleToogleMenu}
+              className="block sm:inline-block sm:mt-0 text-white-200 border border-solid border-[white] rounded p-2 bg-secondary20 sm:bg-primary0 tracking-wider"
+            >
+              Projets
+            </Link>
+            <Link
+              to="/about"
+              onClick={handleToogleMenu}
+              className="block sm:inline-block sm:mt-0 text-white-200 border border-solid border-[white] rounded p-2 bg-secondary20 sm:bg-primary0 tracking-wider"
+            >
+              About
+            </Link>
+            <Link
+              to="/search"
+              onClick={handleToogleMenu}
+              className="block sm:inline-block sm:mt-0 text-white-200 border border-solid border-[white] rounded p-2 bg-secondary20 sm:bg-primary0 tracking-wider"
+            >
+              Rechercher
+            </Link>
+            <div className="sm:hidden">
+              <XCircle onClick={handleToogleMenu} />
+            </div>
           </div>
         </div>
         {isLogged ? (
-          <div className="block rounded-full shadow-xl mx-auto -mt-16 md:-mt-24 h-24 w-24 bg-cover bg-center border-b-4 border-solid border-secondary10" style={{ backgroundImage: `url(${avatar})` }} />
+          <button type="button" onClick={() => setShowModal(true)}>
+            <img src={avatar} className="rounded-full mx-auto h-12 w-12 bg-cover bg-center" alt={userName} />
+            {' '}
+          </button>
         ) : (
           <Link
             to="/login"
             className="border border-solid border-[white] rounded-full p-1 bg-[white]"
           >
-
             <User />
           </Link>
         )}
-
-      </div>
-    </nav>
+      </nav>
+    </>
   );
 }
 

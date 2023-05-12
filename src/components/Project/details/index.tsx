@@ -44,7 +44,8 @@ function ProjectDetail() {
               )
                 : project.member_projet.map((member) => (
                   <div className="relative w-12 h-12" key={member.id}>
-                    <img className="rounded-full shadow-sm" src={member.avatar} alt={member.pseudo} />
+                    <img
+                    className="rounded-full shadow-sm" src={member.avatar} alt={member.pseudo} />
                   </div>
                 ))} */}
             </div>

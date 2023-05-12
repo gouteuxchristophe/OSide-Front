@@ -6,13 +6,11 @@ import axiosInstance from '../../utils/axios';
 const userData = getUserDataFromLocalStorage();
 
 interface LoginState {
-  id: number;
   logged: boolean;
   credentials: {
     email: string;
     password: string;
   };
-  github_login: string;
   token: string;
   error: string | null;
 }
@@ -20,9 +18,7 @@ interface LoginState {
 export type KeysOfCredentials = keyof LoginState['credentials'];
 
 export const initialState: LoginState = {
-  id: 0,
   logged: false,
-  github_login: 'Christophe',
   token: '',
   credentials: {
     email: '',
@@ -47,6 +43,7 @@ export const login = createAppAsyncThunk(
       email,
       password,
     });
+    // Je stocke les données de l'utilisateur dans le localStorage
     localStorage.setItem('user', JSON.stringify(userLogin));
     return userLogin as LoginState;
   },
@@ -69,16 +66,13 @@ const loginReducer = createReducer(initialState, (builder) => {
       state.error = 'Mauvais identifiants';
     })
     .addCase(login.fulfilled, (state, action) => {
-      state.id = action.payload.id;
       state.logged = action.payload.logged;
-      state.github_login = action.payload.github_login;
       state.token = action.payload.token;
       state.credentials.email = '';
       state.credentials.password = '';
     })
     .addCase(logout, (state) => {
       state.logged = false;
-      state.github_login = '';
       state.token = '';
       // Quand je me déconnecte je supprime les données du localStorage
       removeUserDataFromLocalStorage();

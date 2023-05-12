@@ -1,4 +1,5 @@
-import { Link, Navigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { KeysOfCredentials, changeCredentialsField, login } from '../../store/reducers/login';
 import { getUserById } from '../../store/reducers/user';
@@ -23,10 +24,14 @@ function Login() {
     dispatch(login());
   };
 
-  if (isLogged) {
-    dispatch(getUserById());
-    return <Navigate replace to="/" />;
-  }
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isLogged) {
+      navigate('/');
+      dispatch(getUserById());
+    }
+  }, [isLogged, dispatch, navigate]);
 
   return (
     <section className="">
@@ -60,7 +65,7 @@ function Login() {
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Don’t have an account yet?
                 {' '}
-                <Link to="/" className="font-medium">Sign up</Link>
+                <Link to="/register" className="font-medium">Sign up</Link>
               </p>
             </form>
           </div>

@@ -10,12 +10,12 @@ export const initialState: User = {
   email: '',
   first_name: '',
   last_name: '',
-  github_login: '',
+  github_login: 'Sir Arthur',
   role_id: {
     id: 1,
     label: '',
   },
-  avatar: '',
+  avatar: 'https://randomuser.me/api/portraits/men/84.jpg',
   owner: [],
 };
 
@@ -24,7 +24,7 @@ const userData = getUserDataFromLocalStorage() as LoginResponse;
 export const getUserById = createAppAsyncThunk(
   'user/GET_USER_BY_ID',
   async () => {
-    const { data } = await axiosInstance.get(`/${userData.id as number}`);
+    const { data } = await axiosInstance.get(`/${userData.id}`);
     return data as User;
   },
 );

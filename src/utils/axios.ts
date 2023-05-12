@@ -4,7 +4,7 @@ import { getUserDataFromLocalStorage } from './login';
 // Je créer une instance d'axios me permettant d'enregistrer
 // une configuration de base
 const axiosInstance = axios.create({
-  baseURL: 'https://oside.mimouss.fr/api',
+  baseURL: 'http://localhost:3001',
 });
 
 axiosInstance.interceptors.request.use((config) => {

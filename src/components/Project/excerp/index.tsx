@@ -9,7 +9,7 @@ function ProjectItem({
     <div
       className="flex flex-col justify-center items-center mt-10 w-[90%] md:w-[40%]"
     >
-      <div className="rounded-xl bg-primary0 opacity-75 m-1 w-[100%]">
+      <div className="rounded-xl bg-primary0 opacity-75 m-1 w-[90%]">
         <div className="flex flex-col p-8 rounded-xl shadow-xl translate-x-4 translate-y-4 md:w-auto gap-5 bg-secondary20 bg-opacity-[50%]">
           <div className="flex flex-wrap items-center gap-2">
             <img src={owner_id.avatar} className="w-8 rounded-full" alt={owner_id.pseudo} />
