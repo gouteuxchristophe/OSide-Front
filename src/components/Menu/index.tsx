@@ -1,20 +1,18 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Menu as Burger, XCircle, User, LogOut,
+  Menu as Burger, XCircle, User,
 } from 'react-feather';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { logout } from '../../store/reducers/login';
+import { useAppSelector } from '../../hooks/redux';
 
 function Menu() {
   const [displayMenu, setDisplayMenu] = useState<boolean>(false);
   const isLogged = useAppSelector((state) => state.login.logged);
+  const avatar = useAppSelector((state) => state.user.avatar);
 
   const handleToogleMenu = () => {
     setDisplayMenu(!displayMenu);
   };
-
-  const dispatch = useAppDispatch();
 
   return (
     <nav className="flex items-center justify-between flex-wrap p-2">
@@ -69,7 +67,7 @@ function Menu() {
           </div>
         </div>
         {isLogged ? (
-          <button onClick={() => dispatch(logout())} type="button" className="border border-solid border-[white] rounded-full p-1 bg-[white]"><LogOut /></button>
+          <div className="block rounded-full shadow-xl mx-auto -mt-16 md:-mt-24 h-24 w-24 bg-cover bg-center border-b-4 border-solid border-secondary10" style={{ backgroundImage: `url(${avatar})` }} />
         ) : (
           <Link
             to="/login"

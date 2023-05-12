@@ -1,16 +1,16 @@
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { KeysOfCredentials, changeCredentialsField, login } from '../../store/reducers/login';
+import { getUserById } from '../../store/reducers/user';
 
 function Login() {
   const email = useAppSelector((state) => state.login.credentials.email);
   const password = useAppSelector((state) => state.login.credentials.password);
+  const isLogged = useAppSelector((state) => state.login.logged);
   const dispatch = useAppDispatch();
 
   function handleChangeField(event: React.ChangeEvent<HTMLInputElement>): void {
     const newValue = event.target.value;
-    // Je dis avec le `as` TKT, je te dis moi que le type de
-    // event.target.name c'est un KeysOfCredentials
     const fieldName = event.target.name as KeysOfCredentials;
     dispatch(changeCredentialsField({
       propertyKey: fieldName,
@@ -18,13 +18,18 @@ function Login() {
     }));
   }
 
-  function handleSubmitLogin(event: React.FormEvent<HTMLFormElement>): void {
+  const handleSubmitLogin = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    // J'emet mon intention / action asynchrone
     dispatch(login());
+  };
+
+  if (isLogged) {
+    dispatch(getUserById());
+    return <Navigate replace to="/" />;
   }
+
   return (
-    <section className="bg-primary0">
+    <section className="">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <div className="w-full bg-[white] rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">

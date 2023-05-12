@@ -2,14 +2,14 @@ const data = [
   {
     id: 1,
     title: 'Un super projet',
-    author: {
+    owner_id: {
       id: 1,
       pseudo: 'SuperCodeur',
       avatar: 'https://randomuser.me/api/portraits/men/19.jpg',
     },
     content: 'Moi je passe pas mal de temps à la taverne. J’ai jamais entendu parlé de celui-là! Ouais… Ouais je me suis gouré… Vous binez pas… Même nous on a pas tout compris.',
     member_projet: [],
-    techno_projet: [
+    technoProjet: [
       {
         id: 7,
         label: 'JavaScript',
@@ -32,7 +32,7 @@ const data = [
   {
     id: 2,
     title: 'Projet qui tue',
-    author: {
+    owner_id: {
       id: 2,
       pseudo: 'PHPMan',
       avatar: 'https://randomuser.me/api/portraits/men/3.jpg',
@@ -50,7 +50,7 @@ const data = [
         avatar: 'https://randomuser.me/api/portraits/men/19.jpg',
       },
     ],
-    techno_projet: [
+    technoProjet: [
       {
         id: 1,
         label: 'Laravel',
@@ -73,7 +73,7 @@ const data = [
   {
     id: 3,
     title: 'Le projet dans un projet',
-    author: {
+    owner_id: {
       id: 3,
       pseudo: 'Sir Arthur',
       avatar: 'https://randomuser.me/api/portraits/men/84.jpg',
@@ -86,7 +86,7 @@ const data = [
         avatar: 'https://randomuser.me/api/portraits/men/19.jpg',
       },
     ],
-    techno_projet: [
+    technoProjet: [
       {
         id: 5,
         label: 'HTML',
@@ -109,7 +109,7 @@ const data = [
   {
     id: 4,
     title: 'Projet génial',
-    author: {
+    owner_id: {
       id: 1,
       pseudo: 'CodeMaster',
       avatar: 'https://randomuser.me/api/portraits/men/1.jpg',
@@ -127,7 +127,7 @@ const data = [
         avatar: 'https://randomuser.me/api/portraits/women/3.jpg',
       },
     ],
-    techno_projet: [
+    technoProjet: [
       {
         id: 1,
         label: 'React',
@@ -150,7 +150,7 @@ const data = [
   {
     id: 5,
     title: 'Projet fantastique',
-    author: {
+    owner_id: {
       id: 2,
       pseudo: 'GeekMaster',
       avatar: 'https://randomuser.me/api/portraits/men/4.jpg',
@@ -168,7 +168,7 @@ const data = [
         avatar: 'https://randomuser.me/api/portraits/women/6.jpg',
       },
     ],
-    techno_projet: [
+    technoProjet: [
       {
         id: 2,
         label: 'Vue.js',
@@ -186,7 +186,7 @@ const data = [
   {
     id: 6,
     title: 'Projet de développement web',
-    author: {
+    owner_id: {
       id: 1,
       pseudo: 'WebMaster',
       avatar: 'https://randomuser.me/api/portraits/men/4.jpg',
@@ -204,7 +204,7 @@ const data = [
         avatar: 'https://randomuser.me/api/portraits/women/6.jpg',
       },
     ],
-    techno_projet: [
+    technoProjet: [
       {
         id: 1,
         label: 'React',
@@ -222,7 +222,7 @@ const data = [
   {
     id: 7,
     title: 'Application mobile de fitness',
-    author: {
+    owner_id: {
       id: 2,
       pseudo: 'FitnessAddict',
       avatar: 'https://randomuser.me/api/portraits/men/7.jpg',
@@ -245,7 +245,7 @@ const data = [
         avatar: 'https://randomuser.me/api/portraits/men/10.jpg',
       },
     ],
-    techno_projet: [
+    technoProjet: [
       {
         id: 3,
         label: 'React Native',

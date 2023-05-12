@@ -3,6 +3,7 @@ import projectsReducer from './reducers/projects';
 import contactFormReducer from './reducers/contactForm';
 import searchReducer from './reducers/search';
 import loginReducer from './reducers/login';
+import userReducer from './reducers/user';
 
 // Configuration du store avec le reducer
 const store = configureStore({
@@ -11,6 +12,7 @@ const store = configureStore({
     contactForm: contactFormReducer,
     search: searchReducer,
     login: loginReducer,
+    user: userReducer,
   },
 });
 
