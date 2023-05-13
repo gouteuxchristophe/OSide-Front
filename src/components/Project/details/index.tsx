@@ -89,7 +89,6 @@ function ProjectDetail() {
           </div>
         </div>
       </div>
-      ) : (
       <div>
         <ToastContainer
           position="top-right"

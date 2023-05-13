@@ -1,11 +1,10 @@
 import {
-  FolderPlus, LogOut, UserCheck, XCircle,
+  XCircle,
 } from 'react-feather';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { logout } from '../../store/reducers/login';
 import { useAppDispatch } from '../../hooks/redux';
-import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 interface ModalUserProps {
   handleCloseModal: () => void;
@@ -13,10 +12,12 @@ interface ModalUserProps {
 
 function ModalUser({ handleCloseModal }: ModalUserProps) {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     dispatch(logout());
     handleCloseModal();
+    navigate("/")
   };
 
   const displayLoginNotification = () => {
