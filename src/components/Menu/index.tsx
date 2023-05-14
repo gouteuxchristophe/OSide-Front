@@ -24,6 +24,7 @@ function Menu() {
   return (
     <>
       <div>
+        {/* Permet d'afficher le menu utilisateur */}
         {showModal && (
           <ModalUser handleCloseModal={closeModal} />
         )}
@@ -71,6 +72,7 @@ function Menu() {
             </div>
           </div>
         </div>
+        {/* Affichage de cette partie si utilisateur connecté */}
         {isLogged ? (
           <button type="button" onClick={() => setShowModal(true)}>
             <img src={avatar} className="rounded-full mx-auto h-12 w-12 bg-cover bg-center" alt={userName} />

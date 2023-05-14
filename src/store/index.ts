@@ -5,7 +5,7 @@ import searchReducer from './reducers/search';
 import loginReducer from './reducers/login';
 import userReducer from './reducers/user';
 
-// Configuration du store avec le reducer
+// ConfigureStore me permet de créer mon store
 const store = configureStore({
   reducer: {
     projects: projectsReducer,
@@ -18,7 +18,7 @@ const store = configureStore({
 
 export default store;
 
-// Je déduis le type `RootState` et `AppDispatch` depuis le store lui même
+// Je créer mes types pour le store
 export type RootState = ReturnType<typeof store.getState>;
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+// Je créer mon type pour le dispatch
 export type AppDispatch = typeof store.dispatch;

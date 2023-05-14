@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function ProjectDetail() {
   const isLogged = useAppSelector((state) => state.login.logged);
-
+  // Permet d'afficher une notification si l'utilisateur n'a pas accès à la page
   const displayLoginNotification = () => {
     toast.error('🦄 Fordidden Access!', {
       position: "bottom-left",
@@ -21,7 +21,7 @@ function ProjectDetail() {
       });
   };
 
-
+  // Redirige l'utilisateur vers la page d'accueil si il n'est pas connecté
   if(!isLogged) {
     displayLoginNotification();
     return <Navigate to="/" replace />

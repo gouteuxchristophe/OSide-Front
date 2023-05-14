@@ -13,13 +13,13 @@ interface ModalUserProps {
 function ModalUser({ handleCloseModal }: ModalUserProps) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
+  // Permet de se déconnecter
   const handleLogout = () => {
     dispatch(logout());
     handleCloseModal();
     navigate("/")
   };
-
+  // Permet d'afficher une notification lors de la déconnexion
   const displayLoginNotification = () => {
     handleLogout()
     handleCloseModal();

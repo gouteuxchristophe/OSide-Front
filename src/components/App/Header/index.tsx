@@ -6,10 +6,11 @@ import { ToastContainer, toast } from 'react-toastify';
 import { useEffect } from 'react';
 
 function Header() {
+  // Utilisation du selector pour récupérer les données de l'utilisateur
   const isLogged = useAppSelector((state) => state.login.logged);
   const userName = useAppSelector((state) => state.user.github_login);
 
-
+// Permet d'afficher une notification lors de la connexion
   const displayLoginNotification = () => {
     toast.success('🦄 Login Success !', {
       position: "bottom-left",
@@ -22,7 +23,7 @@ function Header() {
       theme: "dark",
       });
   };
-
+  // Affiche la notification si l'utilisateur est connecté
   useEffect(() => {
     if (isLogged) {
       displayLoginNotification();

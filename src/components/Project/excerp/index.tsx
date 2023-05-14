@@ -1,7 +1,5 @@
 import { Link } from 'react-router-dom';
 import { Project } from '../../../@types/project';
-import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer, toast } from 'react-toastify';
 
 function ProjectItem({
   id, title, status, owner_id, content, technoProjet,

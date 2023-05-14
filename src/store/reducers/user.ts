@@ -5,6 +5,7 @@ import { User } from '../../@types/user';
 import { getUserDataFromLocalStorage } from '../../utils/login';
 import { LoginResponse } from '../../@types/login';
 
+// Je créer mon interface pour le state de mon reducer
 export const initialState: User = {
   id: 1,
   email: '',
@@ -18,9 +19,9 @@ export const initialState: User = {
   avatar: 'https://randomuser.me/api/portraits/men/84.jpg',
   owner: [],
 };
-
+// Je récupère les données de l'utilisateur dans le localStorage
 const userData = getUserDataFromLocalStorage() as LoginResponse;
-
+// Action creator qui me récupère les données de l'utilisateur
 export const getUserById = createAppAsyncThunk(
   'user/GET_USER_BY_ID',
   async () => {
@@ -28,7 +29,7 @@ export const getUserById = createAppAsyncThunk(
     return data as User;
   },
 );
-
+// Je créer mon reducer
 const userReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(getUserById.fulfilled, (state, action) => {

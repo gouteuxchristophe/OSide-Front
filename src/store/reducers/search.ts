@@ -2,6 +2,7 @@ import { createAction, createReducer } from '@reduxjs/toolkit';
 import data from '../techno';
 import { ITechnoProjet, Project } from '../../@types/project';
 
+// Je créer mon interface pour le state de mon reducer
 interface SearchState {
   technoLists: ITechnoProjet[];
   resultsSearch: Project[]
@@ -10,7 +11,7 @@ interface SearchState {
   activeSearched: boolean
 }
 
-// Gestion du state initial des projets
+// Je créer mon state initial
 export const initialState: SearchState = {
   technoLists: data,
   resultsSearch: [],
@@ -19,14 +20,18 @@ export const initialState: SearchState = {
   activeSearched: false,
 };
 
-// Action qui déclenche la modification de l'input du state
+// Action creator qui me permet de changer la valeur d'un champ de mon formulaire
 export const changeInputSearchField = createAction<string>('settings/CHANGE_INPUT_SEARCH_FIELD');
+// Action creator qui me permet de récupérer les résultats de la recherche
 export const updatedResultsProjects = createAction<Project[]>('settings/UPDATED_RESULTS_PROJECTS');
+// Action creator qui me permet de récupérer les résultats de la recherche par techno
 export const updatedResultsTechno = createAction<Project[]>('settings/UPDATED_RESULTS_TECHNO');
+// Action creator qui me permet de récupérer la techno sélectionnée
 export const onlyTechnoList = createAction<ITechnoProjet>('settings/ONLY_TECHNO_LIST');
+// Action creator qui me permet de récupérer toutes les techno
 export const allTechnoList = createAction<ITechnoProjet[]>('settings/ALL_TECHNO_LIST');
 
-// Gestion des actions du reducer
+// Je créer mon reducer
 const searchReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(changeInputSearchField, (state, action) => {

@@ -7,12 +7,14 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 
 function Login() {
+  // Utilisation du selector pour récupérer les données de l'utilisateur
   const email = useAppSelector((state) => state.login.credentials.email);
   const password = useAppSelector((state) => state.login.credentials.password);
   const isLogged = useAppSelector((state) => state.login.logged);
   const errorLogin = useAppSelector((state) => state.login.errorLogin);
   const dispatch = useAppDispatch();
 
+  // Permet d'afficher une notification d'erreur lors de la connexion
   const displayLoginNotification = () => {
     toast.error('🦄 Login Error !', {
       position: "bottom-left",
@@ -25,13 +27,14 @@ function Login() {
       theme: "dark",
       });
   };
-
+  // Affiche la notification si la connexion échoue
   useEffect(() => {
     if (errorLogin) {
       displayLoginNotification();
     }
   }, [errorLogin]);
 
+  // Permet de changer la valeur des champs du formulaire
   function handleChangeField(event: React.ChangeEvent<HTMLInputElement>): void {
     const newValue = event.target.value;
     const fieldName = event.target.name as KeysOfCredentials;
@@ -40,14 +43,14 @@ function Login() {
       value: newValue,
     }));
   }
-
+  // Permet de soumettre le formulaire
   const handleSubmitLogin = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     dispatch(login());
   };
 
   const navigate = useNavigate();
-
+  // Redirige l'utilisateur vers la page d'accueil si il est connecté
   useEffect(() => {
     if (isLogged) {
       navigate('/');

@@ -7,7 +7,7 @@ import { Carousel } from 'react-responsive-carousel';
 function Projects() {
   const projectsList = useAppSelector((state) => state.projects.lists);
   const location = useLocation();
-
+  // Permet de récupérer les 3 derniers projets
   const lastProject = projectsList.slice(0, 3);
 
   return (
@@ -29,7 +29,7 @@ function Projects() {
           </div>
         </div>
       )}
-
+    {/* Affiche du component project en fonction de la page demandée */}
       {(location.pathname === '/')
         ?
           <Carousel showIndicators={true} showStatus={false} useKeyboardArrows>

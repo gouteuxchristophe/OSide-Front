@@ -3,8 +3,9 @@ import { getUserDataFromLocalStorage, removeUserDataFromLocalStorage } from '../
 import createAppAsyncThunk from '../../utils/redux';
 import axiosInstance from '../../utils/axios';
 
+// Je récupère les données de l'utilisateur dans le localStorage
 const userData = getUserDataFromLocalStorage();
-
+// Je créer mon interface pour le state de mon reducer
 interface LoginState {
   logged: boolean;
   credentials: {
@@ -14,9 +15,9 @@ interface LoginState {
   token: string;
   errorLogin: boolean
 }
-
+// Je créer un type qui me permet de récupérer les clés de mon interface
 export type KeysOfCredentials = keyof LoginState['credentials'];
-
+// Je créer mon state initial
 export const initialState: LoginState = {
   logged: false,
   token: '',
@@ -28,12 +29,12 @@ export const initialState: LoginState = {
   ...userData,
 };
 
-// Action qui permet de changer la valeur d'un champ du formulaire de connexion
+// Action creator qui me permet de changer la valeur d'un champ de mon formulaire
 export const changeCredentialsField = createAction<{
   value: string;
   propertyKey: KeysOfCredentials
 }>('login/changeCredentials');
-
+// Action creator qui me permet de me connecter
 export const login = createAppAsyncThunk(
   'user/LOGIN',
   async (_, thunkAPI) => {
@@ -48,9 +49,9 @@ export const login = createAppAsyncThunk(
     return userLogin as LoginState;
   },
 );
-
+// Action creator qui me permet de me déconnecter
 export const logout = createAction('user/LOGOUT');
-
+// Je créer mon reducer
 const loginReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(changeCredentialsField, (state, action) => {
