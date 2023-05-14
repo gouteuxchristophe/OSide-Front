@@ -32,7 +32,7 @@ function Projects() {
     {/* Affiche du component project en fonction de la page demandée */}
       {(location.pathname === '/')
         ?
-          <Carousel showIndicators={true} showStatus={false} useKeyboardArrows>
+          <Carousel showIndicators={true} showStatus={false} useKeyboardArrows showThumbs={false}>
           {lastProject.map((item) => (
             <ProjectItem
               key={item.id}
