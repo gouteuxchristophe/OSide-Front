@@ -24,12 +24,28 @@ function Register() {
   const [clickEye, setClickEye] = useState(false);
   const [clickEyeVerif, setClickEyeVerif] = useState(false);
 
+  const isMajInPwd = (password: string) => /[A-Z]/.test(password);
+  const isMinInPwd = (password: string) => /[a-z]/.test(password);
+  const isNumbInPwd = (password: string) => /[0-9]/.test(password);
+  const isSpeCaracInPwd = (password: string) => /[\W_]/.test(password);
+  const isLengthValid = (password: string) => {
+    const pwdArray = password.split('')
+    console.log(pwdArray)
+    let pwdArrayLength = pwdArray.length
+    console.log(pwdArrayLength)
+  }
   // handleChange permet de récupérer les contenus des inputs (onChange)
   //  et de l'ajouter au state 'inputs' au fur et à mesure de la saisie
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name } = e.target;
     const { value } = e.target;
     setInputs((values) => ({ ...values, [name]: value }));
+  isMajInPwd(inputs.password) 
+  isMinInPwd(inputs.password)
+  isNumbInPwd(inputs.password) 
+  isSpeCaracInPwd(inputs.password)
+  if (e.target.name === 'password'){
+  isLengthValid(e.target.value)}
   };
   // permet de vérifier le format de l'email
   const isValidEmail = (email: string) => /\S+@\S+\.\S+/.test(email);
@@ -171,6 +187,14 @@ function Register() {
                 <button type="button" className="absolute top-9 right-6 bg-[white]" onClick={handleEyeClickPwd}>
                   {clickEye ? <EyeOff /> : <Eye />}
                 </button>
+                <p className="font-bold">Le mot de passe doit contenir au moins :</p>
+                <ul className="text-sm">
+                <li>une lettre minuscule</li>
+                <li>une lettre majuscule</li>
+                <li>un chiffre</li>
+                <li>un caractère spécial</li>
+                <li>8 caractères</li>
+                </ul>
               </div>
             </div>
             {/* Confirmation password */}
