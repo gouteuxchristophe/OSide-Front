@@ -48,6 +48,16 @@ function Register() {
       axiosInstance.post('/user/register', inputs)
         .then((response) => {
           if (response.status === 200) {
+            toast.success("🦄 Votre profil est créé !", {
+              position: 'bottom-left',
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: 'dark',
+            });
             navigate('/login');
             console.log(response);
           }
@@ -57,7 +67,7 @@ function Register() {
         });
     // Si le format de l'email n'est pas correct une notification est envoyée
     } else if (isValidEmail(inputs.email) === false) {
-      toast.error('🦄 L&apos;email n&apos;est pas valide', {
+      toast.error("🦄 L'email n'est pas valide", {
         position: 'bottom-left',
         autoClose: 3000,
         hideProgressBar: false,
@@ -93,7 +103,7 @@ function Register() {
         progress: undefined,
         theme: 'dark',
       });
-      console.log('Password différents !');
+      console.log('Passwords différents !');
     }
   };
   // écouteur sur l'icone oeil du password pour l'afficher
