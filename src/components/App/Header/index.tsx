@@ -11,7 +11,7 @@ function Header() {
   const isLogged = useAppSelector((state) => state.login.logged);
   const userName = useAppSelector((state) => state.user.username);
   const githubLogin = useAppSelector((state) => state.user.github_login);
-  const successLogin = useAppSelector((state) => state.login.successLogin);
+  const successLogin = useAppSelector((state) => state.login.successNotif);
 
   const dispatch = useAppDispatch();
   useEffect(() => {

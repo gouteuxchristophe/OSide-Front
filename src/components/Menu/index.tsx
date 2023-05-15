@@ -5,6 +5,7 @@ import {
 } from 'react-feather';
 import { useAppSelector } from '../../hooks/redux';
 import ModalUser from './ModalUser';
+import userWithoutAvatar from '../../assets/user-without-avatar.png';
 
 function Menu() {
   const [displayMenu, setDisplayMenu] = useState<boolean>(false);
@@ -75,7 +76,9 @@ function Menu() {
         {/* Affichage de cette partie si utilisateur connecté */}
         {isLogged ? (
           <button type="button" onClick={() => setShowModal(true)}>
-            <img src={avatar} className="rounded-full mx-auto h-12 w-12 bg-cover bg-center" alt={userName} />
+            <img src={
+              !avatar ? userWithoutAvatar : avatar
+              } className="rounded-full mx-auto h-12 w-12 bg-cover bg-center" alt={userName} />
             {' '}
           </button>
         ) : (

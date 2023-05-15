@@ -2,7 +2,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { KeysOfCredentials, changeCredentialsField, login, loginOAuth, updateCode } from '../../store/reducers/login';
-import { getUserById } from '../../store/reducers/user';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 import { GitHub } from 'react-feather';
@@ -12,7 +11,7 @@ function Login() {
   const email = useAppSelector((state) => state.login.credentials.email);
   const password = useAppSelector((state) => state.login.credentials.password);
   const isLogged = useAppSelector((state) => state.login.logged);
-  const errorLogin = useAppSelector((state) => state.login.message);
+  const errorLogin = useAppSelector((state) => state.login.errorNotif);
   const dispatch = useAppDispatch();
 
   const handleGitHubAuth = () => {

@@ -16,8 +16,8 @@ interface LoginState {
     passwordConfirm: string;
   };
   token: string;
-  message: string;
-  successLogin: boolean;
+  errorNotif: string;
+  successNotif: boolean;
 }
 // Je créer un type qui me permet de récupérer les clés de mon interface
 export type KeysOfCredentials = keyof LoginState['credentials'];
@@ -31,8 +31,8 @@ export const initialState: LoginState = {
     password: '',
     passwordConfirm: '',
   },
-  message: '',
-  successLogin: false,
+  errorNotif: '',
+  successNotif: false,
   ...userData,
 };
 
@@ -86,12 +86,10 @@ export const login = createAppAsyncThunk(
       return userLogin as LoginState;
     } catch (err: any) {
       if (err.response?.data) {
-        console.log(err.response.data);
-        
         thunkAPI.dispatch(setLoginErrorMessage(err.response.data));
       } else {
         console.log(err);
-        state.login.message = 'Une erreur s\'est produite lors de la connexion.';
+        state.login.errorNotif = 'Une erreur s\'est produite lors de la connexion.';
       }
       throw err;
     }
@@ -106,7 +104,7 @@ const loginReducer = createReducer(initialState, (builder) => {
   builder
   //  Je gère les messages d'erreur
     .addCase(setLoginErrorMessage, (state, action) => {
-      state.message = action.payload;
+      state.errorNotif = action.payload;
     })
     // Je met à jour la valeur d'un champ de mon formulaire
     .addCase(changeCredentialsField, (state, action) => {
@@ -118,7 +116,7 @@ const loginReducer = createReducer(initialState, (builder) => {
       // Je met à jour le state logged et token
       state.logged = action.payload.logged;
       state.token = action.payload.token;
-      state.successLogin = true
+      state.successNotif = true
       // Je vide les champs de mon formulaire
       state.credentials.email = '';
     })
