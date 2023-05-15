@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Menu as Burger, XCircle, User, Home,
+  Menu as Burger, XCircle, User, Home, UserPlus,
 } from 'react-feather';
 import { useAppSelector } from '../../hooks/redux';
 import ModalUser from './ModalUser';
@@ -82,12 +82,20 @@ function Menu() {
             {' '}
           </button>
         ) : (
+          <>
           <Link
             to="/login"
             className="border border-solid border-[white] rounded-full p-1 bg-[white]"
           >
             <User />
           </Link>
+          <Link
+          to="/register"
+          className="border border-solid border-[white] rounded-full p-1 bg-[white]"
+        >
+          <UserPlus />
+        </Link>
+        </>
         )}
       </nav>
     </>
