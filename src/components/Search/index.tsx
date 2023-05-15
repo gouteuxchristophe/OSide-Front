@@ -47,8 +47,11 @@ function SearchProject() {
   const submitChangeTechno = (event: React.MouseEvent<HTMLButtonElement>) => {
     // On récupère la valeur du bouton et on cherche la correspondance dans la liste des technos
     const technoSearched = event.currentTarget.textContent as string;
+    console.log(technoSearched);
+    
     const technoItem = technosList.find((item) => item.label === technoSearched);
-
+    console.log(technoItem);
+    
     if (technosList.length === 1) {
       // Si une seule techno déja sélectionné, on remet l'ensemble des technos dans le state technosList
       dispatch(allTechnoList(technosList));

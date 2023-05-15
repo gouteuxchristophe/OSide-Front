@@ -4,7 +4,6 @@ import contactFormReducer from './reducers/contactForm';
 import searchReducer from './reducers/search';
 import loginReducer from './reducers/login';
 import userReducer from './reducers/user';
-import loginWithGitHubReducer from './reducers/githubAuthReducer';
 
 // ConfigureStore me permet de créer mon store
 const store = configureStore({
@@ -14,7 +13,6 @@ const store = configureStore({
     search: searchReducer,
     login: loginReducer,
     user: userReducer,
-    gitHubAuth: loginWithGitHubReducer,
   },
 });
 

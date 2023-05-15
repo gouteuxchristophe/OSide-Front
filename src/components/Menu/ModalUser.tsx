@@ -17,10 +17,10 @@ function ModalUser({ handleCloseModal }: ModalUserProps) {
   const handleLogout = () => {
     dispatch(logout());
     handleCloseModal();
-    navigate("/")
+    navigate("/");
   };
   // Permet d'afficher une notification lors de la déconnexion
-  const displayLoginNotification = () => {
+  const displayLogoutNotification = () => {
     handleLogout()
     handleCloseModal();
     toast.success('🦄 Logout success !', {
@@ -53,7 +53,7 @@ function ModalUser({ handleCloseModal }: ModalUserProps) {
           Ajout de projet
         </Link>
         <button
-          onClick={displayLoginNotification}
+          onClick={displayLogoutNotification}
           type="button"
           className="bg-primary0 p-2 border border-solid border-[white] rounded text-sm"
         >

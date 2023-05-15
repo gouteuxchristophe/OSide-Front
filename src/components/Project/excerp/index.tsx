@@ -2,10 +2,9 @@ import { Link } from 'react-router-dom';
 import { Project } from '../../../@types/project';
 
 function ProjectItem({
-  id, title, status, owner_id, content, technoProjet,
+  id, title, status, author, content, technoProjet,
 }: Project) {
   const excerpContent = content.substring(0, 100);
-  
 
   return (
     <div
@@ -14,8 +13,8 @@ function ProjectItem({
       <div className="rounded-xl bg-primary0 opacity-75 m-1 w-[90%]">
         <div className="flex flex-col p-8 rounded-xl shadow-xl translate-x-4 translate-y-4 md:w-auto gap-5 bg-secondary20 bg-opacity-[50%]">
           <div className="flex flex-wrap items-center gap-2 w-[20%]">
-            <img src={owner_id.avatar} className="w-[20%] rounded-full" alt={owner_id.pseudo} />
-            <p className="text-[white] font-bold">{owner_id.pseudo}</p>
+            <img src={author.avatar} className="w-[40%] rounded-full" alt={author.github_login} />
+            <p className="text-[white] font-bold">{author.github_login}</p>
           </div>
           <div className="flex flex-col items-center justify-center gap-2">
             <div className="font-semibold text-lg flex items-center">{title}</div>

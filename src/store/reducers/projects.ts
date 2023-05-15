@@ -11,7 +11,7 @@ interface ProjectsState {
 
 // Je créer mon state initial
 export const initialState: ProjectsState = {
-  lists: data,
+  lists: [],
   isLoading: false,
 };
 // Action creator qui me permet de récupérer tous les projets

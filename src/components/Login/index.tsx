@@ -1,20 +1,18 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { KeysOfCredentials, changeCredentialsField, login } from '../../store/reducers/login';
+import { KeysOfCredentials, changeCredentialsField, login, loginOAuth, updateCode } from '../../store/reducers/login';
 import { getUserById } from '../../store/reducers/user';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
-import axios from 'axios';
-import { loginOAuth, updateCode } from '../../store/reducers/githubAuthReducer';
-
+import { GitHub } from 'react-feather';
 
 function Login() {
   // Utilisation du selector pour récupérer les données de l'utilisateur
   const email = useAppSelector((state) => state.login.credentials.email);
   const password = useAppSelector((state) => state.login.credentials.password);
   const isLogged = useAppSelector((state) => state.login.logged);
-  const errorLogin = useAppSelector((state) => state.login.errorLogin);
+  const errorLogin = useAppSelector((state) => state.login.message);
   const dispatch = useAppDispatch();
 
   const handleGitHubAuth = () => {
@@ -33,11 +31,9 @@ function Login() {
     }
   }, []);
 
-  
-
     // Permet d'afficher une notification d'erreur lors de la connexion
-    const displayLoginNotification = () => {
-      toast.error('🦄 Login Error !', {
+    const displayErrorNotification = () => {
+      toast.error(`🦄 ${errorLogin}`, {
         position: "bottom-left",
         autoClose: 3000,
         hideProgressBar: false,
@@ -51,7 +47,7 @@ function Login() {
     // Affiche la notification si la connexion échoue
     useEffect(() => {
       if (errorLogin) {
-        displayLoginNotification();
+        displayErrorNotification();
       }
     }, [errorLogin]);
 
@@ -75,7 +71,6 @@ function Login() {
     useEffect(() => {
       if (isLogged) {
         navigate('/');
-        dispatch(getUserById());
       }
     }, [isLogged, dispatch, navigate]);
 
@@ -91,7 +86,7 @@ function Login() {
                 Sign in to your account
               </h1>
               <div>
-                <button onClick={handleGitHubAuth} >Login with Github</button>
+                <button onClick={handleGitHubAuth} className='flex gap-2 text-[white] bg-primary0 font-medium rounded-lg text-sm px-5 py-2.5 text-center' > <GitHub className='text-[black]' />Login with Github</button>
               </div>
               <form onSubmit={handleSubmitLogin} className="space-y-4 md:space-y-6" action="#">
                 <div>

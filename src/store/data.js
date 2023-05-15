@@ -2,7 +2,7 @@ const data = [
   {
     id: 1,
     title: 'Un super projet',
-    owner_id: {
+    author: {
       id: 1,
       pseudo: 'SuperCodeur',
       avatar: 'https://randomuser.me/api/portraits/men/19.jpg',
@@ -32,7 +32,7 @@ const data = [
   {
     id: 2,
     title: 'Projet qui tue',
-    owner_id: {
+    author: {
       id: 2,
       pseudo: 'PHPMan',
       avatar: 'https://randomuser.me/api/portraits/men/3.jpg',
@@ -73,7 +73,7 @@ const data = [
   {
     id: 3,
     title: 'Le projet dans un projet',
-    owner_id: {
+    author: {
       id: 3,
       pseudo: 'Sir Arthur',
       avatar: 'https://randomuser.me/api/portraits/men/84.jpg',
@@ -109,7 +109,7 @@ const data = [
   {
     id: 4,
     title: 'Projet génial',
-    owner_id: {
+    author: {
       id: 1,
       pseudo: 'CodeMaster',
       avatar: 'https://randomuser.me/api/portraits/men/1.jpg',
@@ -150,7 +150,7 @@ const data = [
   {
     id: 5,
     title: 'Projet fantastique',
-    owner_id: {
+    author: {
       id: 2,
       pseudo: 'GeekMaster',
       avatar: 'https://randomuser.me/api/portraits/men/4.jpg',
@@ -186,7 +186,7 @@ const data = [
   {
     id: 6,
     title: 'Projet de développement web',
-    owner_id: {
+    author: {
       id: 1,
       pseudo: 'WebMaster',
       avatar: 'https://randomuser.me/api/portraits/men/4.jpg',
@@ -222,7 +222,7 @@ const data = [
   {
     id: 7,
     title: 'Application mobile de fitness',
-    owner_id: {
+    author: {
       id: 2,
       pseudo: 'FitnessAddict',
       avatar: 'https://randomuser.me/api/portraits/men/7.jpg',
