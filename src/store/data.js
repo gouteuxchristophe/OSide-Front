@@ -9,7 +9,7 @@ const data = [
     },
     content: 'Moi je passe pas mal de temps à la taverne. J’ai jamais entendu parlé de celui-là! Ouais… Ouais je me suis gouré… Vous binez pas… Même nous on a pas tout compris.',
     member_projet: [],
-    techno_projet: [
+    technoProjet: [
       {
         id: 7,
         label: 'JavaScript',
@@ -50,7 +50,7 @@ const data = [
         avatar: 'https://randomuser.me/api/portraits/men/19.jpg',
       },
     ],
-    techno_projet: [
+    technoProjet: [
       {
         id: 1,
         label: 'Laravel',
@@ -86,7 +86,7 @@ const data = [
         avatar: 'https://randomuser.me/api/portraits/men/19.jpg',
       },
     ],
-    techno_projet: [
+    technoProjet: [
       {
         id: 5,
         label: 'HTML',
@@ -127,7 +127,7 @@ const data = [
         avatar: 'https://randomuser.me/api/portraits/women/3.jpg',
       },
     ],
-    techno_projet: [
+    technoProjet: [
       {
         id: 1,
         label: 'React',
@@ -168,7 +168,7 @@ const data = [
         avatar: 'https://randomuser.me/api/portraits/women/6.jpg',
       },
     ],
-    techno_projet: [
+    technoProjet: [
       {
         id: 2,
         label: 'Vue.js',
@@ -204,7 +204,7 @@ const data = [
         avatar: 'https://randomuser.me/api/portraits/women/6.jpg',
       },
     ],
-    techno_projet: [
+    technoProjet: [
       {
         id: 1,
         label: 'React',
@@ -245,7 +245,7 @@ const data = [
         avatar: 'https://randomuser.me/api/portraits/men/10.jpg',
       },
     ],
-    techno_projet: [
+    technoProjet: [
       {
         id: 3,
         label: 'React Native',

@@ -20,6 +20,6 @@ export function searchProjectByTitle(project: Project, value: string) {
  * @returns un tableau d'objet de projets
  */
 export function searchProjectByTechno(project: Project, value: string) {
-  const projectResult = project.techno_projet.find((techno) => techno.label === value);
+  const projectResult = project.technoProjet.find((techno) => techno.label === value);
   return projectResult;
 }
