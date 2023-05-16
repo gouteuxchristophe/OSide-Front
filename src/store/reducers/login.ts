@@ -3,6 +3,7 @@ import { getUserDataFromLocalStorage, removeUserDataFromLocalStorage } from '../
 import createAppAsyncThunk from '../../utils/redux';
 import axiosInstance from '../../utils/axios';
 import { getUserById } from './user';
+import axios from 'axios';
 
 // Je récupère les données de l'utilisateur dans le localStorage
 const userData = getUserDataFromLocalStorage();
@@ -69,7 +70,7 @@ export const login = createAppAsyncThunk(
     const state = thunkAPI.getState();
     const { email, password } = state.login.credentials;
     try {
-      const { data: userLogin } = await axiosInstance.post('/login', {
+      const { data: userLogin } = await axiosInstance.post('/user/login', {
         email,
         password,
       });
@@ -112,7 +113,7 @@ const loginReducer = createReducer(initialState, (builder) => {
     // Dans le cas où ma requête est en réussie
     .addCase(login.fulfilled, (state, action) => {
       // Je met à jour le state logged et token
-      state.logged = action.payload.logged;
+      state.logged = true;
       state.token = action.payload.token;
       state.successNotif = true
       // Je vide les champs de mon formulaire

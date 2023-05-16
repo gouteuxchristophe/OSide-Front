@@ -11,6 +11,7 @@ import { getAllProjects } from '../../store/reducers/projects';
 import { useAppDispatch } from '../../hooks/redux';
 import Login from '../Login';
 import Register from '../Register';
+import Dashboard from '../Dashboard';
 
 function App() {
   //  Permet de scroller en haut de la page à chaque nouvel affiche url
@@ -75,6 +76,12 @@ function App() {
           path="/register"
           element={(
             <Register />
+          )}
+        />
+        <Route
+          path="/dashboard"
+          element={(
+            <Dashboard />
           )}
         />
         <Route

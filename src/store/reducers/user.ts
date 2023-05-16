@@ -15,11 +15,12 @@ export const initialState: User = {
   username: '',
   github_login: '',
   avatar: '',
-  role_id: {
+  role: {
     id: 1,
     label: '',
   },
   ability: [],
+  created_at: '',
 };
 // Je récupère les données de l'utilisateur dans le localStorage
 const userData = getUserDataFromLocalStorage() as LoginResponse;
@@ -39,6 +40,8 @@ export const getUserById = createAppAsyncThunk(
         throw err;
     }
     const { data } = await axiosInstance.get(`/user/${userData.id}`);
+    console.log(data);
+    
     return data as User;
   },
 );
@@ -53,9 +56,9 @@ const userReducer = createReducer(initialState, (builder) => {
       state.username = action.payload.username;
       state.github_login = action.payload.github_login;
       state.avatar = action.payload.avatar;
-      state.role_id = action.payload.role_id;
-      state.role_id = action.payload.role_id;
+      state.role = action.payload.role;
       state.ability = action.payload.ability;
+      state.created_at = action.payload.created_at;
     });
 });
 

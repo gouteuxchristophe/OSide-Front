@@ -12,7 +12,7 @@ export interface User {
   delete_at?: string
   last_visited?: string
   avatar?: string
-  role_id: RoleId
+  role: RoleId
   ability: IAbility[]
 }
 
