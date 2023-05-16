@@ -23,14 +23,24 @@ function Register() {
   // (voir dans handleEyeClickPwd et handleEyeClickPwdVerif)
   const [clickEye, setClickEye] = useState(false);
   const [clickEyeVerif, setClickEyeVerif] = useState(false);
-
+// ------Variables de test pour chaque condition du password (min, maj, num, carac spé, nb carac)----------
+  const isMajInPwd = (password: string) => /[A-Z]/.test(password);
+  const isMinInPwd = (password: string) => /[a-z]/.test(password);
+  const isNumbInPwd = (password: string) => /[0-9]/.test(password);
+  const isSpeCaracInPwd = (password: string) => /[\W_]/.test(password);
+  const isLengthValid = (password: string) => {
+    if(password) {
+      return password.length >= 8
+    }
+  }
+  // ------------------------------------------------------------------------------------------------------
   // handleChange permet de récupérer les contenus des inputs (onChange)
-  //  et de l'ajouter au state 'inputs' au fur et à mesure de la saisie
+  // et de l'ajouter au state 'inputs' au fur et à mesure de la saisie
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name } = e.target;
     const { value } = e.target;
     setInputs((values) => ({ ...values, [name]: value }));
-  };
+  }
   // permet de vérifier le format de l'email
   const isValidEmail = (email: string) => /\S+@\S+\.\S+/.test(email);
   // permet de vérifier le format du password
@@ -40,7 +50,7 @@ function Register() {
   // et la correspondance des deux passwords
   const handleSubmitForm = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // si les deux passords et le format de l'email sont bon
+    // si les deux passwords et le format de l'email sont bons
     // on envoie un post vers l'API
     if (inputs.password as string === inputs.passwordConfirm
       && isValidEmail(inputs.email) && isValidPassword(inputs.password)) {
@@ -106,18 +116,6 @@ function Register() {
       console.log('Passwords différents !');
     }
   };
-  // écouteur sur l'icone oeil du password pour l'afficher
-  const handleEyeClickPwd = () => {
-    if (clickEye === false) {
-      setClickEye(true);
-    } else if (clickEye === true) { setClickEye(false); }
-  };
-  // écouteur sur l'icone oeil du password vérification pour l'afficher
-  const handleEyeClickPwdVerif = () => {
-    if (clickEyeVerif === false) {
-      setClickEyeVerif(true);
-    } else if (clickEyeVerif === true) { setClickEyeVerif(false); }
-  };
 
   return (
     <div className="w-full lg:w-3/5 rounded-lg lg:rounded-l-lg lg:rounded-r-rg shadow-xl bg-white opacity-75 mx-auto border-2 border-solid border-secondary10 my-4">
@@ -168,9 +166,19 @@ function Register() {
                   Password
                 </label>
                 <input onChange={handleChange} required name="password" className="appearance-none block w-full bg-[gray-200] text-[gray-700] border border-[gray-200] rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-[white] focus:border-[gray-500]" id="password" type={clickEye ? 'text' : 'password'} placeholder="Mot de passe" />
-                <button type="button" className="absolute top-9 right-6 bg-[white]" onClick={handleEyeClickPwd}>
+                <button type="button" className="absolute top-9 right-6"onClick={() => setClickEye(!clickEye)}>
                   {clickEye ? <EyeOff /> : <Eye />}
                 </button>
+                <p className="font-bold">Le mot de passe doit contenir au moins :</p>
+                <ul className="text-sm">
+                {/*  on passe le password en cours (à chaque caractère ajouté à l'input) dans les variables de test */}
+                {/* si la variable est vérifiée la ligne de la liste devient verte */}
+                {isMinInPwd(inputs.password) ? <li className="text-secondary10">une lettre minuscule</li> : <li className="text-[grey]">une lettre minuscule</li>}
+                {isMajInPwd(inputs.password) ? <li className="text-secondary10">une lettre majuscule</li> : <li className="text-[grey]">une lettre majuscule</li>}
+                {isNumbInPwd(inputs.password) ? <li className="text-secondary10">un chiffre</li> : <li className="text-[grey]">un chiffre</li>}
+                {isSpeCaracInPwd(inputs.password) ? <li className="text-secondary10">un caractère spécial</li> : <li className="text-[grey]">un caractère spécial</li>}
+                {isLengthValid(inputs.password) ? <li className="text-secondary10">au moins 8 caractères</li> : <li className="text-[grey]">au moins 8 caractères</li>}
+                </ul>
               </div>
             </div>
             {/* Confirmation password */}
@@ -180,7 +188,7 @@ function Register() {
                   Confirmation password
                 </label>
                 <input onChange={handleChange} required name="passwordConfirm" className="appearance-none block w-full bg-[gray-200] text-[gray-700] border border-[gray-200] rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-[white] focus:border-[gray-500]" id="password_confirmation" type={clickEyeVerif ? 'text' : 'password'} placeholder="Confirmation mot de passe" />
-                <button type="button" className="absolute top-9 right-6 bg-[white]" onClick={handleEyeClickPwdVerif}>
+                <button type="button" className="absolute top-9 right-6" onClick={() => setClickEyeVerif(!clickEyeVerif)}>
                   {clickEyeVerif ? <EyeOff /> : <Eye />}
                 </button>
               </div>
