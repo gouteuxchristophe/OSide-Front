@@ -33,12 +33,11 @@ export const getUserById = createAppAsyncThunk(
         if (err.response?.data) {
           thunkAPI.dispatch(setLoginErrorMessage(err.response.data));
         } else {
-          console.log(err);
+          console.error(err);
           thunkAPI.dispatch(setLoginErrorMessage('Une erreur s\'est produite lors de la connexion.'));
         }
         throw err;
     }
-    console.log('ici');
     const { data } = await axiosInstance.get(`/user/${userData.id}`);
     return data as User;
   },

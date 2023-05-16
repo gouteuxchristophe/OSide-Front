@@ -69,11 +69,10 @@ function Register() {
               theme: 'dark',
             });
             navigate('/login');
-            console.log(response);
           }
         })
         .catch((error) => {
-          console.log(error.response.data);
+          console.error(error.response.data);
         });
     // Si le format de l'email n'est pas correct une notification est envoyée
     } else if (isValidEmail(inputs.email) === false) {
@@ -87,7 +86,6 @@ function Register() {
         progress: undefined,
         theme: 'dark',
       });
-      console.log("🦄 L'email n'est pas valide");
       // Si le format du mot de passe n'est pas correct une notification est envoyée
     } else if (isValidPassword(inputs.password) === false) {
       toast.error("🦄 Le mot de passe n'est pas au bon format", {
@@ -100,7 +98,6 @@ function Register() {
         progress: undefined,
         theme: 'dark',
       });
-      console.log('pas le bon format de mdp');
       // Si les mots de passe ne correspondent pas une notification est envoyée
     } else if (inputs.password as string !== inputs.passwordConfirm) {
       toast.error('🦄 Les mots de passe sont différents', {
@@ -113,7 +110,6 @@ function Register() {
         progress: undefined,
         theme: 'dark',
       });
-      console.log('Passwords différents !');
     }
   };
 

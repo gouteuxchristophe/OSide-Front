@@ -16,9 +16,9 @@ function Login() {
   const dispatch = useAppDispatch();
 
   const handleGitHubAuth = () => {
-    const scope = 'user:email';
-    const clientId = '68016fb353cfb675fa69';
-    const redirectUri = 'http://localhost:5173/login';
+    const scope = import.meta.env.VITE_SCOPE;
+    const clientId = import.meta.env.VITE_CLIENT_ID;
+    const redirectUri = import.meta.env.VITE_REDIRECT_URI;
     const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
     window.location.href = authUrl;
   }

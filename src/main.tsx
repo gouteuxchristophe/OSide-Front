@@ -1,6 +1,7 @@
 import { Provider } from 'react-redux';
 // On importe ReactDom qui nous permettra d'injecter notre application dans le DOM
 import ReactDOM from 'react-dom/client';
+
 // On importe notre composant principal
 import { BrowserRouter } from 'react-router-dom';
 import App from './components/App';
