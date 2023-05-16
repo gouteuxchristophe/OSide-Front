@@ -42,7 +42,7 @@ function Header() {
   }, [successLogin]);
 
   return (
-    <div className="flex items-center justify-between py-4 sticky top-0 z-10 bg-secondary20">
+    <div className="flex items-center justify-between py-4 sticky top-0 z-10 bg-secondary20 h-[20vh]">
       <div>
         <ToastContainer />
       </div>
