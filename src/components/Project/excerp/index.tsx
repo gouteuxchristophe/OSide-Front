@@ -1,9 +1,11 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Project } from '../../../@types/project';
+import { useAppSelector } from '../../../hooks/redux';
 
 function ProjectItem({
   id, title, status, author, content, technoProjet,
 }: Project) {
+  const fakeAvatar = useAppSelector((state) => state.user.fakeAvatar);
   const location = useLocation();
   const excerpContent = content.substring(0, 100);
 
@@ -14,8 +16,8 @@ function ProjectItem({
       <div className="rounded-xl bg-primary0 opacity-75 m-1 w-[90%]">
         <div className="flex flex-col p-8 rounded-xl shadow-xl translate-x-4 translate-y-4 md:w-auto gap-5 bg-secondary20 bg-opacity-[50%]">
           <div className="flex flex-wrap items-center gap-2 w-[20%]">
-            <img src={author.avatar} className="w-[40%] rounded-full" alt={author.github_login} />
-            <p className="text-[white] font-bold">{author.github_login}</p>
+            <img src={!author.github.avatar_url ? fakeAvatar : author.github.avatar_url} className="w-[40%] rounded-full" alt={!author.github.login ? author.username : author.github.login} />
+            <p className="text-[white] font-bold">{!author.github.login ? author.username : author.github.login}</p>
           </div>
           <div className="flex flex-col items-center justify-center gap-2">
             <div className="font-semibold text-lg flex items-center">{title}</div>

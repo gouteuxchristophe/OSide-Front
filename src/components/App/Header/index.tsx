@@ -10,7 +10,7 @@ function Header() {
   // Utilisation du selector pour récupérer les données de l'utilisateur
   const isLogged = useAppSelector((state) => state.login.logged);
   const userName = useAppSelector((state) => state.user.username);
-  const githubLogin = useAppSelector((state) => state.user.github_login);
+  const githubLogin = useAppSelector((state) => state.user.github.login);
   const successLogin = useAppSelector((state) => state.login.successNotif);
 
   const dispatch = useAppDispatch();
@@ -19,9 +19,9 @@ function Header() {
       dispatch(getUserById());
     }
   }, [isLogged, dispatch]);
-  
 
-// Permet d'afficher une notification lors de la connexion
+
+  // Permet d'afficher une notification lors de la connexion
   const displayLoginNotification = () => {
     toast.success('🦄 Login Success !', {
       position: "bottom-left",
@@ -32,7 +32,7 @@ function Header() {
       draggable: true,
       progress: undefined,
       theme: "dark",
-      });
+    });
   };
   // Affiche la notification si l'utilisateur est connecté
   useEffect(() => {
@@ -53,7 +53,7 @@ function Header() {
         <h1 className="text-2xl font-bold">O&apos;Side</h1>
         {isLogged && (
           <h2 className="text-sm">
-            {!githubLogin ? userName : githubLogin}
+            {githubLogin === undefined ? userName : githubLogin}
           </h2>
         )}
       </div>

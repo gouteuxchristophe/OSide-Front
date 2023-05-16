@@ -5,13 +5,15 @@ import {
 } from 'react-feather';
 import { useAppSelector } from '../../hooks/redux';
 import ModalUser from './ModalUser';
-import userWithoutAvatar from '../../assets/user-without-avatar.png';
+
 
 function Menu() {
   const [displayMenu, setDisplayMenu] = useState<boolean>(false);
   const isLogged = useAppSelector((state) => state.login.logged);
-  const avatar = useAppSelector((state) => state.user.avatar);
-  const userName = useAppSelector((state) => state.user.github_login);
+  const avatarGitHub = useAppSelector((state) => state.user.github.avatar_url);
+  const userName = useAppSelector((state) => state.user.username);
+  const githubLogin = useAppSelector((state) => state.user.github.login); 
+  const fakeAvatar = useAppSelector((state) => state.user.fakeAvatar);
   const [showModal, setShowModal] = useState(false);
 
   const handleToogleMenu = () => {
@@ -77,8 +79,8 @@ function Menu() {
         {isLogged ? (
           <button type="button" onClick={() => setShowModal(true)}>
             <img src={
-              !avatar ? userWithoutAvatar : avatar
-              } className="rounded-full mx-auto h-12 w-12 bg-cover bg-center" alt={userName} />
+              !avatarGitHub ? fakeAvatar : avatarGitHub
+              } className="rounded-full mx-auto h-12 w-12 bg-cover bg-center" alt={!githubLogin ? userName : githubLogin} />
             {' '}
           </button>
         ) : (

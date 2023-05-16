@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function ProjectDetail() {
   const isLogged = useAppSelector((state) => state.login.logged);
+  const fakeAvatar = useAppSelector((state) => state.user.fakeAvatar);
   // Permet d'afficher une notification si l'utilisateur n'a pas accès à la page
   const displayLoginNotification = () => {
     toast.error('🦄 Veuillez vous connecter !', {
@@ -40,7 +41,7 @@ function ProjectDetail() {
     <div className="max-w-4xl flex items-center h-auto lg:h-screen flex-wrap mx-auto my-32 lg:my-0 relative justify-center">
       <div className="w-full lg:w-3/5 rounded-lg lg:rounded-l-lg lg:rounded-r-none shadow-xl bg-white opacity-75 mx-6 lg:mx-0 border-2 border-solid border-secondary10">
         <div className="p-4 md:p-12 text-center lg:text-left flex flex-col gap-7 relative">
-          <div className="block rounded-full shadow-xl mx-auto -mt-16 md:-mt-24 h-24 w-24 bg-cover bg-center border-b-4 border-solid border-secondary10" style={{ backgroundImage: `url(${project.author.avatar})` }} />
+          <div className="block rounded-full shadow-xl mx-auto -mt-16 md:-mt-24 h-24 w-24 bg-cover bg-center border-b-4 border-solid border-secondary10" style={{ backgroundImage: `url(${!project.author.github.avatar_url ? fakeAvatar : project.author.github.avatar_url})` }} />
           <div className="pb-5 border-b-2 border-solid border-secondary23 rounded">
             <div className="flex items-center justify-between mb-3">
               <h1 className="text-2xl font-bold lg:pt-0 text-left">{project.title}</h1>
@@ -67,7 +68,7 @@ function ProjectDetail() {
               : project.memberProjet.map((member) => (
                 <div className="relative w-12 h-12" key={member.id}>
                   <img
-                  className="rounded-full shadow-sm" src={member.avatar} alt={member.github_login} />
+                  className="rounded-full shadow-sm" src={!member.github.avatar_url ? fakeAvatar : member.github.avatar_url } alt={!member.github.login ? member.username : member.github.login } />
                 </div>
               ))} 
             </div>
