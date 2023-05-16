@@ -45,9 +45,7 @@ export const loginOAuth = createAppAsyncThunk(
   async (_, thunkAPI) => {
     const state = thunkAPI.getState();
     const code = state.login.code_GitHub;
-    const { data } = await axiosInstance.post('/callback', {
-      code
-    });
+    const { data } = await axiosInstance.post(`/user/login/?code=${code}`);
     // Je créer un objet avec les données de l'utilisateur
     const userData = {
       token: data.token,
@@ -71,7 +69,7 @@ export const login = createAppAsyncThunk(
     const state = thunkAPI.getState();
     const { email, password } = state.login.credentials;
     try {
-      const { data: userLogin } = await axiosInstance.post('/user/login', {
+      const { data: userLogin } = await axiosInstance.post('/login', {
         email,
         password,
       });
