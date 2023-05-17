@@ -25,8 +25,9 @@ function ProjectDetail() {
   // Redirige l'utilisateur vers la page d'accueil si il n'est pas connecté
   if(!isLogged) {
     displayLoginNotification();
-    return <Navigate to="/" replace />
+    return <Navigate to="/login" replace />
   }
+  
   // On récupère l'id du projet recherché
   const { id } = useParams();
   // On utilise la fonction findProject qui permet de trouver un projet correspondant à l'id passé

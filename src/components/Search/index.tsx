@@ -14,21 +14,19 @@ import { useLocation } from 'react-router-dom';
 
 function SearchProject() {
 
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(getAllTechnos());
+  }, [dispatch]);
+
   // Récupération des states
   const technosList = useAppSelector((state) => state.search.technoLists);
   const searchValue = useAppSelector((state) => state.search.inputValue);
   const resultsSearch = useAppSelector((state) => state.search.resultsSearch);
   const resultsSearchByTechno = useAppSelector((state) => state.search.resultsSearchByTechno);
   const projectsList = useAppSelector((state) => state.projects.lists);
-  const dispatch = useAppDispatch();
-  const location = useLocation();
   
-  useEffect(() => {
-    if (location.pathname === '/search') {
-      dispatch(getAllTechnos());
-    }
-  }, [dispatch, location]);
-
+  
   const activeSearched = useAppSelector((state) => state.search.activeSearched);
   // Récupération du dispatch pour les actions du reducer
   // Recherche du projet par input et techno

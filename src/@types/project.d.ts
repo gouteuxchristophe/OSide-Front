@@ -14,7 +14,7 @@ export interface Project {
 
 
 export interface ITechnoProjet {
-  id: number
+  id?: number
   label: string
   color?: string
 }
