@@ -2,25 +2,35 @@
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import ProjectItem from '../Project/excerp';
 import {
-  changeInputSearchField, updatedResultsProjects, onlyTechnoList, allTechnoList, updatedResultsTechno,
+  changeInputSearchField, updatedResultsProjects, onlyTechnoList, allTechnoList, updatedResultsTechno, getAllTechnos,
 } from '../../store/reducers/search';
 import { ITechnoProjet, Project } from '../../@types/project';
 import ResultsCount from './ResultsCount';
 import TechnosButtons from './TechnosButtons';
 import InputSearch from './InputSearch';
 import { searchProjectByTitle, searchProjectByTechno } from '../../store/selectors/search';
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 function SearchProject() {
+
   // Récupération des states
   const technosList = useAppSelector((state) => state.search.technoLists);
   const searchValue = useAppSelector((state) => state.search.inputValue);
   const resultsSearch = useAppSelector((state) => state.search.resultsSearch);
   const resultsSearchByTechno = useAppSelector((state) => state.search.resultsSearchByTechno);
   const projectsList = useAppSelector((state) => state.projects.lists);
+  const dispatch = useAppDispatch();
+  const location = useLocation();
+  
+  useEffect(() => {
+    if (location.pathname === '/search') {
+      dispatch(getAllTechnos());
+    }
+  }, [dispatch, location]);
+
   const activeSearched = useAppSelector((state) => state.search.activeSearched);
   // Récupération du dispatch pour les actions du reducer
-  const dispatch = useAppDispatch();
-
   // Recherche du projet par input et techno
   const submitChangeValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     // On récupère la valeur de l'input et modification du state inputValue
@@ -47,7 +57,10 @@ function SearchProject() {
   const submitChangeTechno = (event: React.MouseEvent<HTMLButtonElement>) => {
     // On récupère la valeur du bouton et on cherche la correspondance dans la liste des technos
     const technoSearched = event.currentTarget.textContent as string;
+
     const technoItem = technosList.find((item) => item.label === technoSearched);
+
+
     if (technosList.length === 1) {
       // Si une seule techno déja sélectionné, on remet l'ensemble des technos dans le state technosList
       dispatch(allTechnoList(technosList));

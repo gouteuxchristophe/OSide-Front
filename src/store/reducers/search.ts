@@ -1,6 +1,7 @@
-import { createAction, createReducer } from '@reduxjs/toolkit';
-import data from '../techno';
+import { createAction, createAsyncThunk, createReducer } from '@reduxjs/toolkit';
 import { ITechnoProjet, Project } from '../../@types/project';
+import axiosInstance from '../../utils/axios';
+import createAppAsyncThunk from '../../utils/redux';
 
 // Je créer mon interface pour le state de mon reducer
 interface SearchState {
@@ -9,16 +10,36 @@ interface SearchState {
   resultsSearchByTechno: Project[]
   inputValue: string
   activeSearched: boolean
+  initDatas: ITechnoProjet[]
 }
 
 // Je créer mon state initial
 export const initialState: SearchState = {
-  technoLists: data,
+  technoLists: [],
   resultsSearch: [],
   resultsSearchByTechno: [],
   inputValue: '',
   activeSearched: false,
+  initDatas: []
 };
+
+export const getAllTechnos = createAppAsyncThunk(
+  'technos/GET_All_TECHNO',
+  async (_, thunkAPI) => {
+    try {
+      const { data } = await axiosInstance.get(`/techno`);
+      return data as ITechnoProjet[];
+    } catch (err: any) {
+      if (err.response?.data) {
+        
+      } else {
+        console.error(err);
+        
+      }
+      throw err;
+    }
+  },
+);
 
 // Action creator qui me permet de changer la valeur d'un champ de mon formulaire
 export const changeInputSearchField = createAction<string>('settings/CHANGE_INPUT_SEARCH_FIELD');
@@ -34,6 +55,10 @@ export const allTechnoList = createAction<ITechnoProjet[]>('settings/ALL_TECHNO_
 // Je créer mon reducer
 const searchReducer = createReducer(initialState, (builder) => {
   builder
+    .addCase(getAllTechnos.fulfilled, (state, action) => {
+      state.initDatas = action.payload;
+      state.technoLists = state.initDatas;
+    })
     .addCase(changeInputSearchField, (state, action) => {
       state.inputValue = action.payload;
     })
@@ -50,9 +75,9 @@ const searchReducer = createReducer(initialState, (builder) => {
       state.activeSearched = true;
     })
     .addCase(allTechnoList, (state) => {
-      state.technoLists = data;
+      state.technoLists = state.initDatas;
       state.resultsSearchByTechno = [];
-    });
+    })
 });
 
 export default searchReducer;

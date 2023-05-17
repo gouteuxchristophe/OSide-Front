@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 import { useEffect } from 'react';
 import { getUserById } from '../../../store/reducers/user';
+import { Link } from 'react-router-dom';
 
 function Header() {
   // Utilisation du selector pour récupérer les données de l'utilisateur
@@ -47,7 +48,10 @@ function Header() {
         <ToastContainer />
       </div>
       <div className="pl-5">
+        <Link 
+        to={'/'}>
         <img className="w-10 sm:w-20 rounded-full" src={logo} alt="Logo O'Side" />
+        </Link>
       </div>
       <div className="flex flex-col items-center justify-center">
         <h1 className="text-2xl font-bold">O&apos;Side</h1>

@@ -42,7 +42,8 @@ export const getUserById = createAppAsyncThunk(
   'user/GET_USER_BY_ID',
   async (_, thunkAPI) => {
     try {
-
+      const { data } = await axiosInstance.get(`/user/${userData.id}`);
+      return data as User;
     } catch (err: any) {
       if (err.response?.data) {
         thunkAPI.dispatch(setLoginErrorMessage(err.response.data));
@@ -52,10 +53,6 @@ export const getUserById = createAppAsyncThunk(
       }
       throw err;
     }
-    const { data } = await axiosInstance.get(`/user/${userData.id}`);
-    console.log(data);
-
-    return data as User;
   },
 );
 
@@ -77,6 +74,8 @@ export const updateUser = createAppAsyncThunk(
     }
   },
 );
+
+
 
 // Je créer mon reducer
 const userReducer = createReducer(initialState, (builder) => {
