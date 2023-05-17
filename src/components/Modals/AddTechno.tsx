@@ -4,7 +4,6 @@ import { ITechnoProjet } from "../../@types/project";
 import { addTechno, updatedSelectedTechnos } from "../../store/reducers/techno";
 import { getAllTechnos } from "../../store/reducers/search";
 import { PlusSquare } from "react-feather";
-import { all } from "axios";
 
 export interface newTechno {
   id?: number;

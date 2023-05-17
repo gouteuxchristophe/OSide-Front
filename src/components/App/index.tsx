@@ -13,6 +13,7 @@ import Login from '../Login';
 import Register from '../Register';
 import Dashboard from '../Dashboard';
 import { getAllTechnos } from '../../store/reducers/search';
+import AdminPage from '../Admin';
 
 function App() {
   //  Permet de scroller en haut de la page à chaque nouvel affiche url
@@ -83,6 +84,12 @@ function App() {
           path="/dashboard"
           element={(
             <Dashboard />
+          )}
+        />
+        <Route
+          path="dashboard/admin"
+          element={(
+            <AdminPage />
           )}
         />
         <Route

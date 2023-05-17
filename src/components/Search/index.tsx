@@ -10,7 +10,7 @@ import TechnosButtons from './TechnosButtons';
 import InputSearch from './InputSearch';
 import { searchProjectByTitle, searchProjectByTechno } from '../../store/selectors/search';
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+
 
 function SearchProject() {
 

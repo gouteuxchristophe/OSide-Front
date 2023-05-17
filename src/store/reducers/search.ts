@@ -1,7 +1,7 @@
 import { createAction, createAsyncThunk, createReducer } from '@reduxjs/toolkit';
 import { ITechnoProjet, Project } from '../../@types/project';
 import axiosInstance from '../../utils/axios';
-import createAppAsyncThunk from '../../utils/redux';
+
 
 // Je créer mon interface pour le state de mon reducer
 interface SearchState {
@@ -23,18 +23,17 @@ export const initialState: SearchState = {
   initDatas: []
 };
 
-export const getAllTechnos = createAppAsyncThunk(
+export const getAllTechnos = createAsyncThunk(
   'technos/GET_All_TECHNO',
-  async (_, thunkAPI) => {
+  async () => {
     try {
-      const { data } = await axiosInstance.get(`/techno`);
+      const { data } = await axiosInstance.get('/techno');
       return data as ITechnoProjet[];
     } catch (err: any) {
       if (err.response?.data) {
-        
+        console.log(err.response.data);
       } else {
         console.error(err);
-        
       }
       throw err;
     }
