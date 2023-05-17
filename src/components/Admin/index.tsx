@@ -3,7 +3,8 @@ import { getAllTechnos } from "../../store/reducers/search";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { Edit3, Trash2 } from "react-feather";
 import ModalUpdateTechno from "./ModalUpdateTechno";
-import { deleteTechno } from "../../store/reducers/techno";
+import { deleteMessage, deleteMessageUpdate, deleteTechno } from "../../store/reducers/techno";
+import { toast } from "react-toastify";
 
 
 
@@ -15,16 +16,60 @@ function AdminPage() {
   const [selectedTechnoId, setSelectedTechnoId] = useState<number>();
   const [selectedTechnoLabel, setSelectedTechnoLabel] = useState<string>('');
   const [selectedTechnoColor, setSelectedTechnoColor] = useState<string | undefined>('');
-
+  const successDelete = useAppSelector((state) => state.techno.successDelete);
+  const successUpdate = useAppSelector((state) => state.techno.successUpdate);
   // Récupérer la liste des technos
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getAllTechnos());
-  }, [dispatch, showModalUpdateTechno]);
+  }, [dispatch]);
 
   function handleDeleteTechno(id: number) {
     dispatch(deleteTechno(id))
   }
+
+  useEffect(() => {
+    if (successDelete) {  
+      displaySuccessDeleteNotification();
+      dispatch(deleteMessage())
+      dispatch(getAllTechnos());
+    }
+  }, [successDelete]);
+
+  useEffect(() => {
+    if (successUpdate) {  
+      displaySuccessUpdateNotification();
+      dispatch(deleteMessageUpdate())
+      dispatch(getAllTechnos());
+    }
+  }, [successUpdate]);
+
+  // Permet d'afficher une notification d'erreur lors de la connexion
+  const displaySuccessUpdateNotification = () => {
+    toast.success(`🦄 ${successUpdate}`, {
+      position: "bottom-left",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
+  };
+  // Permet d'afficher une notification d'erreur lors de la connexion
+  const displaySuccessDeleteNotification = () => {
+    toast.error(`🦄 ${successDelete}`, {
+      position: "bottom-left",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
+  };
 
   return (
 

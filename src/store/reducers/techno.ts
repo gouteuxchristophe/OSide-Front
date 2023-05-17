@@ -6,12 +6,16 @@ import { newTechno } from '../../components/Modals/AddTechno';
 
 interface technoState {
   message: string;
+  successDelete: string;
+  successUpdate: string;
   selectedTechnos: ITechnoProjet[];
 }
 
 // Je créer mon state initial
 export const initialState: technoState = {
   message: '',
+  successDelete: '',
+  successUpdate: '',
   selectedTechnos: [],
 };
 
@@ -75,16 +79,32 @@ export const deleteTechno = createAsyncThunk(
   },
 );
 
+export const deleteMessage = createAction('technos/DELETE_MESSAGE');
+export const deleteMessageUpdate = createAction('technos/DELETE_SUCCESS');
+
 // Je créer mon reducer
 const technoReducer = createReducer(initialState, (builder) => {
   builder.addCase(addTechno.fulfilled, (state, action) => {
     state.message = action.payload.message;
   })
   builder.addCase(updateTechno.rejected, (state, action) => {
-    
   })
   .addCase(updatedSelectedTechnos, (state, action) => {
     state.selectedTechnos = action.payload;
+  })
+  .addCase(deleteTechno.fulfilled, (state, action) => {
+    state.successDelete = action.payload.message;
+    console.log(action.payload.message);
+  })
+  .addCase(updateTechno.fulfilled, (state, action) => {
+    state.successUpdate = action.payload.message;
+    console.log(action.payload.message);
+  })
+  .addCase(deleteMessage, (state) => {
+    state.successDelete = '';
+  })
+  .addCase(deleteMessageUpdate, (state) => {
+    state.successUpdate = '';
   })
 });
 

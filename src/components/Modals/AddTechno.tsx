@@ -62,7 +62,6 @@ function AddTechno({ closeModal }: { closeModal: () => void }) {
   }
 
   function handleRemoveTechno(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
-    console.log('remove');
     // Si le label de la techno est dans le tableau technoExist, on supprime la techno du tableau technoExist
     const techno = technoExist.find((techno) => techno.label === event.currentTarget.previousSibling?.textContent)
     if (techno) { 
@@ -90,9 +89,9 @@ function AddTechno({ closeModal }: { closeModal: () => void }) {
       </form>
       <div>
         <div className="flex flex-wrap gap-2 justify-center">
-          {allTechno.map((techno, index) => (
-            <div className="relative">
-            <span className={`p-2 bg-[white] rounded border border-solid border-${techno.color}`} key={index}>{techno.label}</span>
+          {allTechno.map((techno) => (
+            <div className="relative" key={techno.id}>
+            <span className={`p-2 bg-[white] rounded border border-solid border-${techno.color}`}>{techno.label}</span>
             <button onClick={handleRemoveTechno} className="absolute top-[-50%] right-[-10%] w-6 h-6 rounded-full border border-solid border-[red] bg-[red] text-[white]">X</button>
             </div>
           ))}
