@@ -16,7 +16,7 @@ function ModalUpdateRole({ closeModal, id, label, color }: ModalUpdateRoleProps)
   const [inputColor, setInputColor] = useState<string>(color);
 
 
-  function handleUpdateRoleSubmit(event: React.FormEvent<HTMLFormElement>): void {
+  const handleUpdateRoleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     const data = {
       id: id,

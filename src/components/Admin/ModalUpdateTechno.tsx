@@ -17,7 +17,7 @@ function ModalUpdateTechno({ closeModal, id, label, color }: ModalUpdateTechnoPr
   const [inputColor, setInputColor] = useState<string>(color);
 
 
-  function handleUpdateTechnoSubmit(event: React.FormEvent<HTMLFormElement>): void {
+  const handleUpdateTechnoSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     const data = {
       id: id,

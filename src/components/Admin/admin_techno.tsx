@@ -1,28 +1,30 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { Edit3, Trash2 } from "react-feather";
+import { Delete, Edit3, Trash2 } from "react-feather";
 import ModalUpdateTechno from "./ModalUpdateTechno";
 import { deleteMessage, deleteMessageUpdate, deleteTechno, getAllTechnos } from "../../store/reducers/techno";
 import { toast } from "react-toastify";
+import DeleteConfirmation from "./deleteConfirmation";
 
-function Admin_Techno({ closeSection}: { closeSection: (value: string) => void }) {
+function Admin_Techno({ closeSection }: { closeSection: (value: string) => void }) {
 
   const technoList = useAppSelector((state) => state.search.technoLists);
   const successDelete = useAppSelector((state) => state.techno.successDelete);
   const successUpdate = useAppSelector((state) => state.techno.successUpdate);
+  const [deleteConfirmation, setDeleteConfirmation] = useState<boolean>(false);
   const [showModalUpdateTechno, setShowModalUpdateTechno] = useState(false);
   const [selectedTechnoId, setSelectedTechnoId] = useState<number>();
   const [selectedTechnoLabel, setSelectedTechnoLabel] = useState<string>('');
   const [selectedTechnoColor, setSelectedTechnoColor] = useState<string | undefined>('');
   const dispatch = useAppDispatch();
 
-    // Récupérer la liste des technos
-    useEffect(() => {
-      dispatch(getAllTechnos());
-    }, [dispatch]);
+  // Récupérer la liste des technos
+  useEffect(() => {
+    dispatch(getAllTechnos());
+  }, [dispatch]);
   // Permet de supprimer une techno
-  const handleDeleteTechno = (id: number) => {
-    dispatch(deleteTechno(id))
+  const handleDeleteTechno = () => {
+    setDeleteConfirmation(true);
   }
 
   // Permet d'afficher une notification si la techno a bien été supprimée ou modifiée
@@ -78,7 +80,12 @@ function Admin_Techno({ closeSection}: { closeSection: (value: string) => void }
                   }}>
                     <Edit3 className="w-4" />
                   </button>
-                  <button onClick={() => handleDeleteTechno(techno.id!)}>
+                  <button onClick={() => {
+                    setSelectedTechnoId(techno.id);
+                    handleDeleteTechno()
+                  }
+
+                  }>
                     <Trash2 color="red" className="w-4" />
                   </button>
                 </td>
@@ -96,10 +103,17 @@ function Admin_Techno({ closeSection}: { closeSection: (value: string) => void }
             closeModal={() => setShowModalUpdateTechno(false)}
           />
         )}
+        {deleteConfirmation && (
+          <DeleteConfirmation
+            id={selectedTechnoId!}
+            closeModal={() => setDeleteConfirmation(false)}
+          />
+        )}
       </div>
       <div className="flex justify-center mt-4">
-      <button onClick={() => closeSection('technos')} className="py-2 px-4 rounded-full bg-secondary20 border-2 border-solid">Retour</button>
+        <button onClick={() => closeSection('technos')} className="py-2 px-4 rounded-full bg-secondary20 border-2 border-solid">Retour</button>
       </div>
+
     </div>
   );
 }

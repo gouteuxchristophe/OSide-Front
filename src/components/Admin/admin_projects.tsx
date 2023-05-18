@@ -13,7 +13,7 @@ function Admin_Projects({ closeSection }: { closeSection: (value: string) => voi
     dispatch(getAllProjects())
   }, [dispatch])
 
-  function handleDeleteProject(id: number): void {
+  const handleDeleteProject = (id: number): void => {
     throw new Error("Function not implemented.");
   }
 

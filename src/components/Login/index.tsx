@@ -43,7 +43,7 @@ function Login() {
 }, [isLogged, errorLogin]);
 
   // Permet de changer la valeur des champs du formulaire
-  function handleChangeField(event: React.ChangeEvent<HTMLInputElement>): void {
+  const handleChangeField = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const newValue = event.target.value;
     const fieldName = event.target.name as KeysOfCredentials;
     dispatch(changeCredentialsField({

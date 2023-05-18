@@ -11,10 +11,9 @@ function Admin_Users({ closeSection }: { closeSection: (value: string) => void }
 
   const dispatch = useAppDispatch();
   useEffect(() => {
-    
   }, [dispatch])
 
-  function handleDeleteUser(id: number): void {
+  const handleDeleteUser = (id: number): void => {
     throw new Error("Function not implemented.");
   }
 

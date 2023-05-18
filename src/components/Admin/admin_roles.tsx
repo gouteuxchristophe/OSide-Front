@@ -45,7 +45,7 @@ function Admin_Roles({ closeSection }: { closeSection: () => void }) {
   }, [successDelete, successUpdate]);
 
 
-  function handleDeleteRole(id: number) {
+  const handleDeleteRole = (id: number) => {
     dispatch(deleteRole(id))
   }
 

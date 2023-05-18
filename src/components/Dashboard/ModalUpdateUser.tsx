@@ -1,14 +1,8 @@
-import { XCircle } from "react-feather"
 import { useAppDispatch, useAppSelector } from "../../hooks/redux"
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import { updateUser } from "../../store/reducers/user";
 import AddTechno from "../Modals/AddTechno";
 
-interface CheckboxData {
-  id: number;
-  label: string;
-}
 
 export default function ModalUpdateContent({ closeModal }: { closeModal: () => void }) {
   const user = useAppSelector(state => state.user.data)

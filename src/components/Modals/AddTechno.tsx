@@ -34,7 +34,6 @@ function AddTechno({ closeModal }: { closeModal: () => void }) {
     }
   }, [successAdd]);
 
-
   // Ajouter l'ensemble des technos dans le tableau allTechno
   useEffect(() => {
     const technoSelected = [...technoExist, ...technoNotExist]
@@ -71,7 +70,7 @@ function AddTechno({ closeModal }: { closeModal: () => void }) {
     closeModal()
   }
 
-  function handleRemoveTechno(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
+  const handleRemoveTechno = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
     // Si le label de la techno est dans le tableau technoExist, on supprime la techno du tableau technoExist
     const techno = technoExist.find((techno) => techno.label === event.currentTarget.previousSibling?.textContent)
     if (techno) { 
