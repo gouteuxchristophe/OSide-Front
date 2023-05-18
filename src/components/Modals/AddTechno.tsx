@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { ITechnoProjet } from "../../@types/project";
-import { addTechno, updatedSelectedTechnos } from "../../store/reducers/techno";
+import { addTechno, deleteMessage, updatedSelectedTechnos } from "../../store/reducers/techno";
 import { getAllTechnos } from "../../store/reducers/techno";
 import { PlusSquare } from "react-feather";
+import { toast } from "react-toastify";
 
 export interface newTechno {
   id?: number;
@@ -19,11 +20,20 @@ function AddTechno({ closeModal }: { closeModal: () => void }) {
   const [technoNotExist, setTechnoNotExist] = useState<newTechno[]>([]);
   const [allTechno, setAllTechno] = useState<newTechno[]>([]);
   const dispatch = useAppDispatch();
+  const successAdd = useAppSelector((state) => state.techno.successAdd);
 
   // Récupérer la liste des technos
   useEffect(() => {
     dispatch(getAllTechnos());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (successAdd) {
+      toast.success(`🦄 ${successAdd}`);
+      dispatch(deleteMessage());
+    }
+  }, [successAdd]);
+
 
   // Ajouter l'ensemble des technos dans le tableau allTechno
   useEffect(() => {

@@ -37,7 +37,7 @@ export const initialState: UserState = {
     },
     role: {
       id: 1,
-      label: '',
+      label: 'admin',
     },
     ability: [],
     created_at: '',

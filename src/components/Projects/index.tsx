@@ -50,7 +50,7 @@ function Projects() {
           ))}
         </Carousel>
         :
-        projectsList!.map((item) => (
+        projectsList.map((item) => (
           <ProjectItem
             key={item.id}
             {...item}

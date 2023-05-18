@@ -8,12 +8,14 @@ import createAppAsyncThunk from '../../utils/redux';
 interface ProjectsState {
   lists: Project[];
   errorApiProjects: string | null;
+  projectByID: Project;
 }
 
 // Je créer mon state initial
 export const initialState: ProjectsState = {
   lists: []	,
   errorApiProjects: null,
+  projectByID: {} as Project
 };
 // Action creator qui me permet de récupérer tous les projets
 export const getAllProjects = createAppAsyncThunk('projects/GET_ALL_PROJECTS',
@@ -21,6 +23,25 @@ export const getAllProjects = createAppAsyncThunk('projects/GET_ALL_PROJECTS',
   try {
     const { data: projects } = await axiosInstance.get('/projet');
     return projects as Project[];
+  } catch (err: any) {
+    if (err) {
+      thunkAPI.dispatch(setProjectErrorMessage(err.response.data));
+    } else {
+      console.error(err);
+      thunkAPI.dispatch(setProjectErrorMessage('Une erreur s\'est produite'));
+    }
+  }
+});
+
+// Action creator qui me permet de récupérer tous les projets
+export const getProjectByID = createAppAsyncThunk('projects/GET_PROJECT_BY_ID',
+ async (idProject: number, thunkAPI) => {
+  console.log(idProject);
+  
+  try {
+    const { data } = await axiosInstance.get(`/projet/${idProject}`);
+    console.log(data);
+    return data as Project;
   } catch (err: any) {
     if (err) {
       thunkAPI.dispatch(setProjectErrorMessage(err.response.data));
@@ -46,7 +67,15 @@ const projectsReducer = createReducer(initialState, (builder) => {
     .addCase(getAllProjects.fulfilled, (state, action) => {
       state.errorApiProjects = null;
       state.lists = action.payload!;
-    });
+    })
+    .addCase(getProjectByID.rejected, (state) => {
+      state.errorApiProjects = null;
+    })
+    .addCase(getProjectByID.fulfilled, (state, action) => {
+      state.errorApiProjects = null;
+      console.log(action.payload);
+
+    })
 });
 
 export default projectsReducer;

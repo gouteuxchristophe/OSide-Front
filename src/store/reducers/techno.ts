@@ -8,6 +8,7 @@ import { getTechnosAPI } from './search';
 interface technoState {
   technoLists: ITechnoProjet[];
   message: string;
+  successAdd: string;
   successDelete: string;
   successUpdate: string;
   selectedTechnos: ITechnoProjet[];
@@ -18,6 +19,7 @@ interface technoState {
 export const initialState: technoState = {
   technoLists: [],
   message: '',
+  successAdd: '',
   successDelete: '',
   successUpdate: '',
   selectedTechnos: [],
@@ -132,7 +134,7 @@ const technoReducer = createReducer(initialState, (builder) => {
     state.errorApiTechno = null;
   })
   .addCase(addTechno.fulfilled, (state, action) => {
-    state.message = action.payload.message;
+    state.successAdd = action.payload.message;
   })
   .addCase(updatedSelectedTechnos, (state, action) => {
     state.selectedTechnos = action.payload;
