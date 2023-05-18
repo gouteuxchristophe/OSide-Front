@@ -11,6 +11,7 @@ interface technoState {
   successDelete: string;
   successUpdate: string;
   selectedTechnos: ITechnoProjet[];
+  errorApiTechno: string | null;
 }
 
 // Je créer mon state initial
@@ -20,9 +21,13 @@ export const initialState: technoState = {
   successDelete: '',
   successUpdate: '',
   selectedTechnos: [],
+  errorApiTechno: null,
 };
 
 export const updatedSelectedTechnos = createAction<newTechno[]>('technos/UPDATED_SELECTED_TECHNO');
+// Gestions des messages d'erreur
+export const setTechnoErrorMessage = createAction<string>('techno/SET_Techno_ERROR_MESSAGE');
+
 
 // Requete API pour récupérer toutes les technos
 export const getAllTechnos = createAppAsyncThunk(
@@ -30,13 +35,14 @@ export const getAllTechnos = createAppAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const { data } = await axiosInstance.get('/techno');
+      // Je dispatch l'action getTechnosAPI pour mettre à jour mon state search
       thunkAPI.dispatch(getTechnosAPI(data));
       return data as ITechnoProjet[];
     } catch (err: any) {
-      if (err.response?.data) {
-        console.log(err.response.data);
+      if (err) {
+        thunkAPI.dispatch(setTechnoErrorMessage(err.response.data));
       } else {
-        console.error(err);
+        thunkAPI.dispatch(setTechnoErrorMessage('Une erreur s\'est produite'));
       }
       throw err;
     }
@@ -44,16 +50,18 @@ export const getAllTechnos = createAppAsyncThunk(
 );
 
 // Requete API pour ajouter une techno
-export const addTechno = createAsyncThunk(
+export const addTechno = createAppAsyncThunk(
   'technos/ADD_TECHNO',
-  async (techno: newTechno[]) => {
+  async (techno: newTechno[], thunkAPI) => {
     try {
       const { data } = await axiosInstance.post(`/techno`, techno);
       return data as technoState;
     } catch (err: any) {
-      if (err.response?.data) {
+      if (err) {
+        thunkAPI.dispatch(setTechnoErrorMessage(err.response.data));
       } else {
         console.error(err);
+        thunkAPI.dispatch(setTechnoErrorMessage('Une erreur s\'est produite'));
       }
       throw err;
     }
@@ -61,9 +69,9 @@ export const addTechno = createAsyncThunk(
 );
 
 // Requete API pour modifier une techno
-export const updateTechno = createAsyncThunk(
+export const updateTechno = createAppAsyncThunk(
   'technos/PUT_TECHNO',
-  async (techno: ITechnoProjet) => {
+  async (techno: ITechnoProjet, thunkAPI) => {
       try {
         const { data } = await axiosInstance.put(`/techno/${techno.id as number}`, {
           label: techno.label,
@@ -73,9 +81,10 @@ export const updateTechno = createAsyncThunk(
         return data;
       } catch (err: any) {
         if (err) {
-          console.log(err.response.data);
+          thunkAPI.dispatch(setTechnoErrorMessage(err.response.data));
         } else {
           console.error(err);
+          thunkAPI.dispatch(setTechnoErrorMessage('Une erreur s\'est produite'));
         }
         throw err;
       }
@@ -84,17 +93,18 @@ export const updateTechno = createAsyncThunk(
 
 
 // Requete API pour supprimer une techno
-export const deleteTechno = createAsyncThunk(
+export const deleteTechno = createAppAsyncThunk(
   'technos/DELETE_TECHNO',
-  async (idTechno: number) => {
+  async (idTechno: number, thunkAPI) => {
       try {
         const { data } = await axiosInstance.delete(`/techno/${idTechno}`, idTechno as any);
         return data;
       } catch (err: any) {
         if (err) {
-          console.log(err.response.data);
+          thunkAPI.dispatch(setTechnoErrorMessage(err.response.data));
         } else {
           console.error(err);
+          thunkAPI.dispatch(setTechnoErrorMessage('Une erreur s\'est produite'));
         }
         throw err;
       }
@@ -109,8 +119,17 @@ export const deleteMessageUpdate = createAction('technos/DELETE_SUCCESS');
 // Je créer mon reducer
 const technoReducer = createReducer(initialState, (builder) => {
   builder
+  .addCase(setTechnoErrorMessage, (state, action) => {
+    state.errorApiTechno = action.payload;
+  })
+  .addCase(getAllTechnos.rejected, (state) => {
+    state.errorApiTechno = null;
+  })
   .addCase(getAllTechnos.fulfilled, (state, action) => {
     state.technoLists = action.payload;
+  })
+  .addCase(addTechno.rejected, (state) => {
+    state.errorApiTechno = null;
   })
   .addCase(addTechno.fulfilled, (state, action) => {
     state.message = action.payload.message;
@@ -118,8 +137,14 @@ const technoReducer = createReducer(initialState, (builder) => {
   .addCase(updatedSelectedTechnos, (state, action) => {
     state.selectedTechnos = action.payload;
   })
+  .addCase(deleteTechno.rejected, (state) => {
+    state.errorApiTechno = null;
+  })
   .addCase(deleteTechno.fulfilled, (state, action) => {
     state.successDelete = action.payload.message;
+  })
+  .addCase(updateTechno.rejected, (state) => {
+    state.errorApiTechno = null;
   })
   .addCase(updateTechno.fulfilled, (state, action) => {
     state.successUpdate = action.payload.message;

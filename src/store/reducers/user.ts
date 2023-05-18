@@ -20,6 +20,7 @@ interface UserState {
   data: User,
   errorAPIUser: string | null,
   dataReception: boolean
+  allUsers: User[]
 }
 // Je créer mon interface pour le state de mon reducer
 export const initialState: UserState = {
@@ -44,9 +45,29 @@ export const initialState: UserState = {
   },
   errorAPIUser: null,
   dataReception: false,
+  allUsers: [],
 };
 // Je récupère les données de l'utilisateur dans le localStorage
 const userData = getUserDataFromLocalStorage() as LoginResponse;
+
+export const getAllUsers = createAppAsyncThunk(
+  'user/GET_ALL_USERS',
+  async (_, thunkAPI) => {
+    try {
+      const { data } = await axiosInstance.get('/user');
+      return data as User[];
+    } catch (err: any) {
+      if (err) {
+        thunkAPI.dispatch(setUserErrorMessage(err.response.data));
+      } else {
+        console.error(err);
+        thunkAPI.dispatch(setUserErrorMessage('Les données de l\'utilisateur n\'ont pas pu être récupérées.'));
+      }
+      throw err;
+    }
+  },
+);
+
 // Action creator qui me récupère les données de l'utilisateur
 export const getUserById = createAppAsyncThunk(
   'user/GET_USER_BY_ID',
@@ -55,7 +76,7 @@ export const getUserById = createAppAsyncThunk(
       const { data } = await axiosInstance.get(`/user/${userData.id}`);
       return data as User;
     } catch (err: any) {
-      if (err.response?.data) {
+      if (err) {
         thunkAPI.dispatch(setUserErrorMessage(err.response.data));
       } else {
         console.error(err);
@@ -74,7 +95,7 @@ export const updateUser = createAppAsyncThunk(
       const { data } = await axiosInstance.put(`/user/${user.id}`, user);
       return data as User;
     } catch (err: any) {
-      if (err.response?.data) {
+      if (err) {
         thunkAPI.dispatch(setUserErrorMessage(err.response.data));
       } else {
         console.error(err);
@@ -92,12 +113,19 @@ const userReducer = createReducer(initialState, (builder) => {
     .addCase(setUserErrorMessage, (state, action) => {
       state.errorAPIUser = action.payload;
     })
-    .addCase(getUserById.rejected, (state) => {
+    .addCase(getAllUsers.rejected, (state, action) => {
+      state.errorAPIUser = null;
+    })
+    .addCase(getAllUsers.fulfilled, (state, action) => {
+      state.allUsers = action.payload;
+      state.errorAPIUser = null;
+    })
+    .addCase(getUserById.rejected, (state, action) => {
       state.errorAPIUser = null;
     })
     .addCase(getUserById.fulfilled, (state, action) => {
       state.data = action.payload;
-      state.errorAPIUser = '';
+      state.errorAPIUser = null;
       state.dataReception = true;
     });
 });

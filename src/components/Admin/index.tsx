@@ -1,142 +1,52 @@
-import { useEffect, useState } from "react";
-import { getAllTechnos } from "../../store/reducers/techno";
-import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { Edit3, Trash2 } from "react-feather";
-import ModalUpdateTechno from "./ModalUpdateTechno";
-import { deleteMessage, deleteMessageUpdate, deleteTechno } from "../../store/reducers/techno";
-import { toast } from "react-toastify";
-
-
+import { useState } from "react";
+import Admin_Techno from "./admin_techno";
+import Admin_Users from "./admin_user";
+import Admin_Projects from "./admin_projects";
 
 function AdminPage() {
-
-  const technoList = useAppSelector((state) => state.search.technoLists);
-  const [showModalUpdateTechno, setShowModalUpdateTechno] = useState(false);
-
-  const [selectedTechnoId, setSelectedTechnoId] = useState<number>();
-  const [selectedTechnoLabel, setSelectedTechnoLabel] = useState<string>('');
-  const [selectedTechnoColor, setSelectedTechnoColor] = useState<string | undefined>('');
-  const successDelete = useAppSelector((state) => state.techno.successDelete);
-  const successUpdate = useAppSelector((state) => state.techno.successUpdate);
-  // Récupérer la liste des technos
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(getAllTechnos());
-  }, [dispatch]);
-
-  function handleDeleteTechno(id: number) {
-    dispatch(deleteTechno(id))
-  }
-
-  useEffect(() => {
-    if (successDelete) {  
-      displaySuccessDeleteNotification();
-      dispatch(deleteMessage())
-      dispatch(getAllTechnos());
-    }
-  }, [successDelete]);
-
-  useEffect(() => {
-    if (successUpdate) {  
-      displaySuccessUpdateNotification();
-      dispatch(deleteMessageUpdate())
-      dispatch(getAllTechnos());
-    }
-  }, [successUpdate]);
-
-  // Permet d'afficher une notification d'erreur lors de la connexion
-  const displaySuccessUpdateNotification = () => {
-    toast.success(`🦄 ${successUpdate}`, {
-      position: "bottom-left",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
+  const [showMenuAdmin, setShowMenuAdmin] = useState(true);
+  const [showAdminTechno, setShowAdminTechno] = useState(false);
+  const [showAdminUser, setShowAdminUser] = useState(false);
+  const [showAdminProject, setShowAdminProject] = useState(false);
+  
+  // Permet de gérer l'affichage des sections
+  const handleAdminSection = (value: string) => {
+    setShowAdminTechno(value === 'technos');
+    setShowAdminUser(value === 'users');
+    setShowAdminProject(value === 'projects');
+    setShowMenuAdmin(false);
   };
-  // Permet d'afficher une notification d'erreur lors de la connexion
-  const displaySuccessDeleteNotification = () => {
-    toast.error(`🦄 ${successDelete}`, {
-      position: "bottom-left",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
+  // Permet de fermer les sections
+  const handleCloseSection = (value: string) => {
+    setShowAdminTechno(false);
+    setShowAdminUser(false);
+    setShowAdminProject(false);
+    setShowMenuAdmin(true);
   };
 
   return (
-
-    <div className="relative overflow-x-auto w-[90%] mx-auto">
-      <table className="w-full text-sm text-left">
-        <thead className="text-xs uppercase bg-secondary20">
-          <tr>
-            <th scope="col" className="px-6 py-3">
-              Technologie
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Couleur
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Modification
-            </th>
-            <th scope="col" className="px-3 py-3">
-              Delete
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {technoList.map((techno) => (
-            <tr key={techno.id} className="bg-[white] border-b">
-              <>
-                <th scope="row" className="px-4 py-4 font-medium whitespace-nowrap relative">
-                  <div className="flex items-center justify-around">
-                    {techno.label}
-                  </div>
-                </th>
-                <td className="px-4 py-4 whitespace-nowrap">
-                  <div className="flex items-center justify-around">
-                    {techno.color}
-                  </div>
-                </td>
-                <td className="px-4 py-4">
-                  <button onClick={() => {
-                    setSelectedTechnoId(techno.id);
-                    setSelectedTechnoLabel(techno.label);
-                    setSelectedTechnoColor(techno.color);
-                    setShowModalUpdateTechno(true);
-                  }}>
-                    <Edit3 className="w-5" />
-                  </button>
-                  <>
-                    {showModalUpdateTechno && (
-                      <ModalUpdateTechno
-                        id={selectedTechnoId!}
-                        label={selectedTechnoLabel}
-                        color={selectedTechnoColor!}
-                        closeModal={() => setShowModalUpdateTechno(false)}
-                      />
-                    )}
-                  </>
-                </td>
-                <td className="px-4 py-4">
-                <button onClick={() => handleDeleteTechno(techno.id!)}>
-                    <Trash2 className="color-[red]" />
-                  </button>
-                </td>
-              </>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="">
+    <>
+    {showMenuAdmin && (
+      <div className="flex flex-col gap-5 w-[60%] mx-auto">
+        <button onClick={() => handleAdminSection('technos')} className="py-2 px-4 rounded bg-secondary20 border-2 border-solid">Gestion des technos</button>
+        <button onClick={() => handleAdminSection('users')} className="py-2 px-4 rounded bg-secondary20 border-2 border-solid">Gestion des Utilisateurs</button>
+        <button onClick={() => handleAdminSection('projects')} className="py-2 px-4 rounded bg-secondary20 border-2 border-solid">Gestion des Projets</button>
+      </div>
+    )}
+    </>
+    <>
+    {showAdminTechno && (
+      <Admin_Techno closeSection={() => handleCloseSection('technos')} />
+    )}
+    {showAdminUser && (
+      <Admin_Users closeSection={() => handleCloseSection('users')} />
+    )}
+    {showAdminProject && (
+      <Admin_Projects closeSection={() => handleCloseSection('projects')}  />
+    )}
+    </>
     </div>
-
   );
 }
 

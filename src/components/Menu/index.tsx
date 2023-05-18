@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Menu as Burger, XCircle, User, Home, UserPlus,
+  Menu as Burger, User, Home, UserPlus,
 } from 'react-feather';
 import { useAppSelector } from '../../hooks/redux';
 import ModalUser from './ModalUser';
@@ -15,11 +15,7 @@ function Menu() {
   const githubLogin = useAppSelector((state) => state.user.data.github.login); 
   const fakeAvatar = useAppSelector((state) => state.user.data.fakeAvatar);
   const [showModal, setShowModal] = useState(false);
-  const data = useAppSelector((state) => state.user.data);
-  console.log(data);
-  console.log(fakeAvatar);
   
-
   // Permet d'afficher le menu utilisateur
   const handleToogleMenu = () => {
     setDisplayMenu(!displayMenu);
@@ -75,8 +71,10 @@ function Menu() {
             >
               Rechercher
             </Link>
-            <div className="sm:hidden">
-              <XCircle onClick={handleToogleMenu} />
+            <div className="sm:hidden ">
+              <button onClick={handleToogleMenu} className="absolute top-1 right-1 w-7 h-7 rounded-full border border-solid border-[red] bg-[red] text-[white]">
+                X
+              </button>
             </div>
           </div>
         </div>

@@ -6,7 +6,7 @@ import createAppAsyncThunk from '../../utils/redux';
 
 // Je créer mon interface pour le state de mon reducer
 interface ProjectsState {
-  lists: Project[] | undefined;
+  lists: Project[];
   errorApiProjects: string | null;
 }
 
@@ -22,7 +22,7 @@ export const getAllProjects = createAppAsyncThunk('projects/GET_ALL_PROJECTS',
     const { data: projects } = await axiosInstance.get('/projet');
     return projects as Project[];
   } catch (err: any) {
-    if (err.response?.data) {
+    if (err) {
       thunkAPI.dispatch(setProjectErrorMessage(err.response.data));
     } else {
       console.error(err);
@@ -45,7 +45,7 @@ const projectsReducer = createReducer(initialState, (builder) => {
     })
     .addCase(getAllProjects.fulfilled, (state, action) => {
       state.errorApiProjects = null;
-      state.lists = action.payload;
+      state.lists = action.payload!;
     });
 });
 

@@ -27,7 +27,7 @@ function Dashboard() {
             <div className="px-6 py-8">
               <div className="w-[90%] mx-auto rounded-lg shadow relative bg-secondary20">
                 {!userData ? (
-                  <div className="flex flex-col justify-center items-center  py-10">
+                  <div className=" w-[80%] mx-auto flex flex-col justify-center items-center py-10 text-center gap-2">
                     <h2 className="text-[white]">🚧 Une erreur est survenue 🚧</h2>
                     <span className="text-[white]">Nous ne sommes pas en mesure de récupérér vos données</span>
                   </div>
@@ -60,7 +60,8 @@ function Dashboard() {
                         <button onClick={() => setShowDeleteModal(true)} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-[red] rounded-lg focus:ring-4 focus:outline-none">Delete</button>
                       </div>
                     </div>
-                    <div className="flex flex-col mb-10 items-center md:flex-row md:flex-wrap md:justify-center md:gap-10 overflow-hidden">
+                    <div className="flex flex-col pb-10 items-center md:flex-row md:flex-wrap md:justify-center md:gap-10 overflow-hidden">
+                      <h2 className="text-[white] font-bold text-lg">Mes projets</h2>
                       {projectOwner.map((item) => (
                         <ProjectItem
                           key={item.id}

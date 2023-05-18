@@ -1,9 +1,6 @@
-import {
-  XCircle,
-} from 'react-feather';
 import { Link, useNavigate } from 'react-router-dom';
 import { logout } from '../../store/reducers/login';
-import { useAppDispatch } from '../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { toast } from 'react-toastify';
 
 interface ModalUserProps {
@@ -11,6 +8,7 @@ interface ModalUserProps {
 }
 
 function ModalUser({ handleCloseModal }: ModalUserProps) {
+  const role = useAppSelector((state) => state.user.data.role);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   // Permet de se déconnecter
@@ -23,16 +21,7 @@ function ModalUser({ handleCloseModal }: ModalUserProps) {
   const displayLogoutNotification = () => {
     handleLogout()
     handleCloseModal();
-    toast.success('🦄 Logout success !', {
-      position: "bottom-left",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
+    toast.success('🦄 Logout success !');
   };
 
   return (
@@ -45,6 +34,15 @@ function ModalUser({ handleCloseModal }: ModalUserProps) {
         >
           Dashboard
         </Link>
+        {(role.label === 'admin') && (
+          <Link
+          to="/admin"
+          onClick={handleCloseModal}
+          className="border border-solid border-[white] rounded p-2 bg-primary0 text-sm"
+        >
+          Admin
+        </Link>
+        )}
         <Link
           to="/addProject"
           onClick={handleCloseModal}
@@ -62,9 +60,9 @@ function ModalUser({ handleCloseModal }: ModalUserProps) {
         <button
           onClick={handleCloseModal}
           type="button"
-          className="rounded-full color-[white]"
+          className="absolute top-1 right-1 w-7 h-7 rounded-full border border-solid border-[red] bg-[red] text-[white]"
         >
-          <XCircle />
+          X
         </button>
       </nav>
     </div>

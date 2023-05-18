@@ -96,7 +96,7 @@ function App() {
           )}
         />
         <Route
-          path="dashboard/admin"
+          path="/admin"
           element={(
             <AdminPage />
           )}

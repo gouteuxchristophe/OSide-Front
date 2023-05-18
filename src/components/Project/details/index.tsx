@@ -1,25 +1,16 @@
 import { Navigate, useParams, Link } from 'react-router-dom';
 import { Settings, MessageCircle } from 'react-feather';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { useAppSelector } from '../../../hooks/redux';
 import findProject from '../../../store/selectors/project';
 import 'react-toastify/dist/ReactToastify.css';
 
 function ProjectDetail() {
   const isLogged = useAppSelector((state) => state.login.logged);
-  const fakeAvatar = useAppSelector((state) => state.user.fakeAvatar);
+  const fakeAvatar = useAppSelector((state) => state.user.data.fakeAvatar);
   // Permet d'afficher une notification si l'utilisateur n'a pas accès à la page
   const displayLoginNotification = () => {
-    toast.error('🦄 Veuillez vous connecter !', {
-      position: "bottom-left",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-      });
+    toast.error('🦄 Veuillez vous connecter !');
   };
 
   // Redirige l'utilisateur vers la page d'accueil si il n'est pas connecté
@@ -32,7 +23,7 @@ function ProjectDetail() {
   const { id } = useParams();
   // On utilise la fonction findProject qui permet de trouver un projet correspondant à l'id passé
   // en paramètre et on lui envoi avec le state pour recherche
-  const project = useAppSelector((state) => findProject(state.projects.lists, Number(id)));
+  const project = useAppSelector((state) => findProject(state.projects.lists!, Number(id)));
   // Si on ne trouve pas de projet, on dirige vers la page erreur
   if (!project) {
     return <Navigate to="/error" replace />;
@@ -69,7 +60,7 @@ function ProjectDetail() {
               : project.memberProjet.map((member) => (
                 <div className="relative w-12 h-12" key={member.id}>
                   <img
-                  className="rounded-full shadow-sm" src={!member.github.avatar_url ? fakeAvatar : member.github.avatar_url } alt={!member.github.login ? member.username : member.github.login } />
+                  className="rounded-full shadow-sm" src={(member.github.avatar_url.length === 0) ? fakeAvatar : member.github.avatar_url } alt={(member.github.login.length ===0) ? member.username : member.github.login } />
                 </div>
               ))} 
             </div>
@@ -91,20 +82,6 @@ function ProjectDetail() {
             </Link>
           </div>
         </div>
-      </div>
-      <div>
-        <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
       </div>
     </div>
   );

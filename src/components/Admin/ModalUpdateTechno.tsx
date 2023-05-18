@@ -30,23 +30,23 @@ function ModalUpdateTechno({ closeModal, id, label, color }: ModalUpdateTechnoPr
 
   return (
     <>
-      <div className="fixed z-10 top-1/3 left-1/2 -translate-x-1/2 bg-primary0 rounded w-[50%]">
-        <div className="w-full p-8">
+      <div className="absolute z-10 top-1 left-1/2 -translate-x-1/2 bg-primary0 rounded w-[70%] sm:w-[30%] shadow-xl">
+        <div className="w-full p-8 flex flex-col gap-3 text-[white]">
           <h2 className="text-center">Modification de la techno</h2>
-          <form onSubmit={handleUpdateTechnoSubmit}>
-            <div>
+          <form onSubmit={handleUpdateTechnoSubmit} className="flex flex-col gap-5">
+            <div className="flex justify-around">
               <label htmlFor="Label">Label</label>
-              <input onChange={(e) => setInputLabel(e.currentTarget.value)} type="text" defaultValue={label} />
+              <input className="w-[50%] text-[black]" onChange={(e) => setInputLabel(e.currentTarget.value)} type="text" defaultValue={label} />
             </div>
-            <div>
+            <div className="flex justify-around">
               <label htmlFor="Color">Color</label>
               <input onChange={(e) => setInputColor(e.currentTarget.value)} type="color" defaultValue={color} />
             </div>
-            <button>Modifier</button>
+            <button className="py-2 px-4 rounded-full bg-secondary20 border-2 border-solid">Modifier</button>
           </form>
         </div>
         <button
-          className="absolute top-1 right-1 w-7 h-7 bg-[white] rounded flex justify-center items-center"
+          className="absolute top-1 right-1 w-7 h-7 rounded-full border border-solid border-[red] bg-[red] text-[white]"
           onClick={closeModal}
         >
           X
