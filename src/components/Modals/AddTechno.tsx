@@ -90,7 +90,7 @@ function AddTechno({ closeModal }: { closeModal: () => void }) {
       <div>
         <div className="flex flex-wrap gap-2 justify-center">
           {allTechno.map((techno) => (
-            <div className="relative" key={techno.id}>
+            <div className="relative" key={`${techno.id}-${techno.label}`}>
             <span className={`p-2 bg-[white] rounded border border-solid border-${techno.color}`}>{techno.label}</span>
             <button onClick={handleRemoveTechno} className="absolute top-[-50%] right-[-10%] w-6 h-6 rounded-full border border-solid border-[red] bg-[red] text-[white]">X</button>
             </div>

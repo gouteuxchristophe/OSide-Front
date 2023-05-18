@@ -11,7 +11,7 @@ interface CheckboxData {
 }
 
 export default function ModalUpdateContent({ closeModal }: { closeModal: () => void }) {
-  const user = useAppSelector(state => state.user)
+  const user = useAppSelector(state => state.user.data)
   const [updateUsername, setUpdateUsername] = useState('')
   const [updateFirstName, setUpdateFirstName] = useState('')
   const [updateLastName, setUpdateLastName] = useState('')
@@ -41,18 +41,9 @@ export default function ModalUpdateContent({ closeModal }: { closeModal: () => v
 
   }
 
-  // Permet d'afficher une notification d'erreur lors de l'update'
+  // Permet d'afficher une notification d'erreur lors de l'update
   const displayErrorNotification = (value: string) => {
-    toast.error(`🦄 ${value}`, {
-      position: "bottom-left",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
+    toast.error(`🦄 ${value}`);
   };
 
   return (
