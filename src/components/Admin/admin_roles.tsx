@@ -6,6 +6,7 @@ import ModalUpdateRole from "./ModalUpdateRole";
 import { toast } from "react-toastify";
 import { deleteMessage, deleteMessageUpdate } from "../../store/reducers/role";
 import ModalAddRole from "./ModalAddRole";
+import DeleteConfirmation from "./deleteConfirmation";
 
 function Admin_Roles({ closeSection }: { closeSection: () => void }) {
 
@@ -18,6 +19,7 @@ function Admin_Roles({ closeSection }: { closeSection: () => void }) {
   const successDelete = useAppSelector((state) => state.role.successDelete);
   const successUpdate = useAppSelector((state) => state.role.successUpdate);
   const successAdd = useAppSelector((state) => state.role.successAdd);
+  const [deleteConfirmation, setDeleteConfirmation] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
 
@@ -45,8 +47,8 @@ function Admin_Roles({ closeSection }: { closeSection: () => void }) {
   }, [successDelete, successUpdate]);
 
 
-  const handleDeleteRole = (id: number) => {
-    dispatch(deleteRole(id))
+  const handleDeleteRole = () => {
+    setDeleteConfirmation(true);
   }
 
   return (
@@ -91,7 +93,10 @@ function Admin_Roles({ closeSection }: { closeSection: () => void }) {
                   }}>
                     <Edit3 className="w-4" />
                   </button>
-                  <button onClick={() => handleDeleteRole(role.id!)}>
+                  <button onClick={() => {
+                    setSelectedRoleId(role.id);
+                    handleDeleteRole()
+                  }}>
                     <Trash2 color="red" className="w-4" />
                   </button>
                 </td>
@@ -109,12 +114,19 @@ function Admin_Roles({ closeSection }: { closeSection: () => void }) {
             closeModal={() => setShowModalUpdateRole(false)}
           />
         )}
+        {deleteConfirmation && (
+          <DeleteConfirmation
+            id={selectedRoleId!}
+            type="role"
+            closeModal={() => setDeleteConfirmation(false)}
+          />
+        )}
       </div>
       <div className="flex justify-center mt-4">
         <button onClick={() => closeSection()} className="py-2 px-4 rounded-full bg-secondary20 border-2 border-solid">Retour</button>
       </div>
       {showModalAddRole && (
-        <ModalAddRole closeModal={() => setShowModalAddRole(false)}/>
+        <ModalAddRole closeModal={() => setShowModalAddRole(false)} />
       )}
     </div>
   );

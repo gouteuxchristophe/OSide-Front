@@ -4,13 +4,14 @@ import { deleteTechno } from "../../store/reducers/techno";
 interface ModalDeleteTechnoProps {
   closeModal: () => void;
   id: number;
+  type: string;
 }
 
-function DeleteConfirmation({ id, closeModal }: ModalDeleteTechnoProps) {
+function DeleteConfirmation({ id, type, closeModal }: ModalDeleteTechnoProps) {
 
   const dispatch = useAppDispatch();
   const handleConfirmationDeleted = () => {
-    dispatch(deleteTechno(id));
+    if (type === 'techno') dispatch(deleteTechno(id));
     closeModal();
   }
 

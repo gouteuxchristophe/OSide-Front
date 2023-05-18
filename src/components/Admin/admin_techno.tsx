@@ -105,6 +105,7 @@ function Admin_Techno({ closeSection }: { closeSection: (value: string) => void 
         )}
         {deleteConfirmation && (
           <DeleteConfirmation
+            type="techno"
             id={selectedTechnoId!}
             closeModal={() => setDeleteConfirmation(false)}
           />
