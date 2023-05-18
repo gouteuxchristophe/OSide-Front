@@ -2,7 +2,7 @@
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import ProjectItem from '../Project/excerp';
 import {
-  changeInputSearchField, updatedResultsProjects, onlyTechnoList, allTechnoList, updatedResultsTechno, getAllTechnos,
+  changeInputSearchField, updatedResultsProjects, onlyTechnoList, allTechnoList, updatedResultsTechno,
 } from '../../store/reducers/search';
 import { ITechnoProjet, Project } from '../../@types/project';
 import ResultsCount from './ResultsCount';
@@ -10,6 +10,7 @@ import TechnosButtons from './TechnosButtons';
 import InputSearch from './InputSearch';
 import { searchProjectByTitle, searchProjectByTechno } from '../../store/selectors/search';
 import { useEffect } from 'react';
+import { getAllTechnos } from '../../store/reducers/techno';
 
 
 function SearchProject() {

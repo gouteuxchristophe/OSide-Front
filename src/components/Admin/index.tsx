@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAllTechnos } from "../../store/reducers/search";
+import { getAllTechnos } from "../../store/reducers/techno";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { Edit3, Trash2 } from "react-feather";
 import ModalUpdateTechno from "./ModalUpdateTechno";

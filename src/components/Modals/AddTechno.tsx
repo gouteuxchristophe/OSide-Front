@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { ITechnoProjet } from "../../@types/project";
 import { addTechno, updatedSelectedTechnos } from "../../store/reducers/techno";
-import { getAllTechnos } from "../../store/reducers/search";
+import { getAllTechnos } from "../../store/reducers/techno";
 import { PlusSquare } from "react-feather";
 
 export interface newTechno {
@@ -13,7 +13,7 @@ export interface newTechno {
 
 function AddTechno({ closeModal }: { closeModal: () => void }) {
 
-  const technoList = useAppSelector((state) => state.search.technoLists);
+  const technoList = useAppSelector((state) => state.techno.technoLists);
   const [inputValue, setInputValue] = useState('');
   const [technoExist, setTechnoExist] = useState<ITechnoProjet[]>([]);
   const [technoNotExist, setTechnoNotExist] = useState<newTechno[]>([]);

@@ -23,23 +23,7 @@ export const initialState: SearchState = {
   initDatas: []
 };
 
-export const getAllTechnos = createAsyncThunk(
-  'technos/GET_All_TECHNO',
-  async () => {
-    try {
-      const { data } = await axiosInstance.get('/techno');
-      return data as ITechnoProjet[];
-    } catch (err: any) {
-      if (err.response?.data) {
-        console.log(err.response.data);
-      } else {
-        console.error(err);
-      }
-      throw err;
-    }
-  },
-);
-
+export const getTechnosAPI = createAction<ITechnoProjet[]>('technos/GET_TECHNOS')
 // Action creator qui me permet de changer la valeur d'un champ de mon formulaire
 export const changeInputSearchField = createAction<string>('settings/CHANGE_INPUT_SEARCH_FIELD');
 // Action creator qui me permet de récupérer les résultats de la recherche
@@ -54,7 +38,9 @@ export const allTechnoList = createAction<ITechnoProjet[]>('settings/ALL_TECHNO_
 // Je créer mon reducer
 const searchReducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(getAllTechnos.fulfilled, (state, action) => {
+    .addCase(getTechnosAPI, (state, action) => {
+      console.log(action.payload);
+      
       state.initDatas = action.payload;
       state.technoLists = state.initDatas;
     })
