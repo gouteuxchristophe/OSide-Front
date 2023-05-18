@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { KeysOfCredentials, changeCredentialsField, login, loginOAuth, updateCode } from '../../store/reducers/login';
 import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { GitHub, EyeOff, Eye } from 'react-feather';
 
 function Login() {
@@ -11,7 +11,7 @@ function Login() {
   const email = useAppSelector((state) => state.login.credentials.email);
   const password = useAppSelector((state) => state.login.credentials.password);
   const isLogged = useAppSelector((state) => state.login.logged);
-  const errorLogin = useAppSelector((state) => state.login.errorNotif);
+  const errorLogin = useAppSelector((state) => state.login.errorAPILogin);
   const [clickEye, setClickEye] = useState(false);
   const dispatch = useAppDispatch();
   
@@ -22,7 +22,7 @@ function Login() {
     const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
     window.location.href = authUrl;
   }
-
+  // Permet de récupérer le code de l'utilisateur dans l'url
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
@@ -32,25 +32,15 @@ function Login() {
     }
   }, []);
 
-  // Permet d'afficher une notification d'erreur lors de la connexion
-  const displayErrorNotification = () => {
-    toast.error(`🦄 ${errorLogin}`, {
-      position: "bottom-left",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
-  };
-  // Affiche la notification si la connexion échoue
-  useEffect(() => {
-    if (errorLogin) {
-      displayErrorNotification();
-    }
-  }, [errorLogin]);
+  // Affiche la notification si l'utilisateur est connecté
+ useEffect(() => {
+  if (isLogged) {
+    toast.success('Login Success !');
+  }
+  else {
+    toast.error(errorLogin);
+  }
+}, [isLogged, errorLogin]);
 
   // Permet de changer la valeur des champs du formulaire
   function handleChangeField(event: React.ChangeEvent<HTMLInputElement>): void {
@@ -77,9 +67,6 @@ function Login() {
 
   return (
     <section className="">
-      <div>
-        <ToastContainer />
-      </div>
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <div className="w-full bg-[white] rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">

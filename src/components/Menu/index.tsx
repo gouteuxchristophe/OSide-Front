@@ -10,16 +10,21 @@ import ModalUser from './ModalUser';
 function Menu() {
   const [displayMenu, setDisplayMenu] = useState<boolean>(false);
   const isLogged = useAppSelector((state) => state.login.logged);
-  const avatarGitHub = useAppSelector((state) => state.user.github.avatar_url);
-  const userName = useAppSelector((state) => state.user.username);
-  const githubLogin = useAppSelector((state) => state.user.github.login); 
-  const fakeAvatar = useAppSelector((state) => state.user.fakeAvatar);
+  const avatarGitHub = useAppSelector((state) => state.user.data.github.avatar_url);
+  const userName = useAppSelector((state) => state.user.data.username);
+  const githubLogin = useAppSelector((state) => state.user.data.github.login); 
+  const fakeAvatar = useAppSelector((state) => state.user.data.fakeAvatar);
   const [showModal, setShowModal] = useState(false);
+  const data = useAppSelector((state) => state.user.data);
+  console.log(data);
+  console.log(fakeAvatar);
+  
 
+  // Permet d'afficher le menu utilisateur
   const handleToogleMenu = () => {
     setDisplayMenu(!displayMenu);
   };
-
+  // Permet de fermer le menu utilisateur
   const closeModal = () => {
     setShowModal(false);
   };
@@ -79,8 +84,8 @@ function Menu() {
         {isLogged ? (
           <button type="button" onClick={() => setShowModal(true)}>
             <img src={
-              !avatarGitHub ? fakeAvatar : avatarGitHub
-              } className="rounded-full mx-auto h-12 w-12 bg-cover bg-center" alt={!githubLogin ? userName : githubLogin} />
+              (avatarGitHub.length === 0) ? fakeAvatar : avatarGitHub
+              } className="rounded-full mx-auto h-12 w-12 bg-cover bg-center" alt={(githubLogin.length === 0) ? userName : githubLogin} />
             {' '}
           </button>
         ) : (

@@ -4,7 +4,7 @@ import axiosInstance from '../../utils/axios';
 import { User } from '../../@types/user';
 import { getUserDataFromLocalStorage } from '../../utils/login';
 import { LoginResponse } from '../../@types/login';
-import { setLoginErrorMessage } from './login';
+import fakeAvatar from '../../assets/fakeAvatar.png';
 
 
 interface UserUpdate {
@@ -15,25 +15,35 @@ interface UserUpdate {
   email: string,
   ability: number[]
 }
+
+interface UserState {
+  data: User,
+  errorAPIUser: string | null,
+  dataReception: boolean
+}
 // Je créer mon interface pour le state de mon reducer
-export const initialState: User = {
-  id: 1,
-  email: '',
-  first_name: '',
-  last_name: '',
-  username: '',
-  github : {
+export const initialState: UserState = {
+  data: {
     id: 1,
-    login: '',
-    avatar_url: '',
+    email: '',
+    first_name: '',
+    last_name: '',
+    username: 'unknown',
+    github: {
+      id: 1,
+      login: '',
+      avatar_url: '',
+    },
+    role: {
+      id: 1,
+      label: '',
+    },
+    ability: [],
+    created_at: '',
+    fakeAvatar: fakeAvatar,
   },
-  role: {
-    id: 1,
-    label: '',
-  },
-  ability: [],
-  created_at: '',
-  fakeAvatar: '',
+  errorAPIUser: null,
+  dataReception: false,
 };
 // Je récupère les données de l'utilisateur dans le localStorage
 const userData = getUserDataFromLocalStorage() as LoginResponse;
@@ -43,22 +53,20 @@ export const getUserById = createAppAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const { data } = await axiosInstance.get(`/user/${userData.id}`);
-      console.log(data);
-      
       return data as User;
     } catch (err: any) {
       if (err.response?.data) {
-        thunkAPI.dispatch(setLoginErrorMessage(err.response.data));
+        thunkAPI.dispatch(setUserErrorMessage(err.response.data));
       } else {
         console.error(err);
-        thunkAPI.dispatch(setLoginErrorMessage('Une erreur s\'est produite lors de la connexion.'));
+        thunkAPI.dispatch(setUserErrorMessage('Les données de l\'utilisateur n\'ont pas pu être récupérées.'));
       }
       throw err;
     }
   },
 );
 
-// On créer une action pour se l'update de l'utilisateur
+// On créer une action pour l'update de l'utilisateur
 export const updateUser = createAppAsyncThunk(
   'user/UPDATE_USER',
   async (user: UserUpdate, thunkAPI) => {
@@ -67,31 +75,30 @@ export const updateUser = createAppAsyncThunk(
       return data as User;
     } catch (err: any) {
       if (err.response?.data) {
-        thunkAPI.dispatch(setLoginErrorMessage(err.response.data));
+        thunkAPI.dispatch(setUserErrorMessage(err.response.data));
       } else {
         console.error(err);
-        thunkAPI.dispatch(setLoginErrorMessage('Une erreur s\'est produite lors de la connexion.'));
+        thunkAPI.dispatch(setUserErrorMessage('Une erreur s\'est produite lors de la connexion.'));
       }
       throw err;
     }
   },
 );
-
-
-
+// Gestions des messages d'erreur
+export const setUserErrorMessage = createAction<string>('user/SET_USER_ERROR_MESSAGE');
 // Je créer mon reducer
 const userReducer = createReducer(initialState, (builder) => {
   builder
+    .addCase(setUserErrorMessage, (state, action) => {
+      state.errorAPIUser = action.payload;
+    })
+    .addCase(getUserById.rejected, (state) => {
+      state.errorAPIUser = null;
+    })
     .addCase(getUserById.fulfilled, (state, action) => {
-      state.id = action.payload.id;
-      state.email = action.payload.email;
-      state.first_name = action.payload.first_name;
-      state.last_name = action.payload.last_name;
-      state.github = action.payload.github;
-      state.role = action.payload.role;
-      state.ability = action.payload.ability;
-      state.created_at = action.payload.created_at;
-      state.fakeAvatar = 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png';
+      state.data = action.payload;
+      state.errorAPIUser = '';
+      state.dataReception = true;
     });
 });
 

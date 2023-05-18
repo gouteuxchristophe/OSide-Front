@@ -8,14 +8,15 @@ import Projects from '../Projects';
 import About from '../About';
 import SearchProject from '../Search';
 import { getAllProjects } from '../../store/reducers/projects';
-import { useAppDispatch } from '../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import Login from '../Login';
 import Register from '../Register';
 import Dashboard from '../Dashboard';
-import { getAllTechnos } from '../../store/reducers/search';
 import AdminPage from '../Admin';
+import { toast } from 'react-toastify';
 
 function App() {
+  const errorAPIUser = useAppSelector((state) => state.user.errorAPIUser);
   //  Permet de scroller en haut de la page à chaque nouvel affiche url
   const location = useLocation();
   useEffect(() => {
@@ -27,6 +28,14 @@ function App() {
   useEffect(() => {
     dispatch(getAllProjects());
   }, [dispatch]);
+
+   // Affiche la notification si la récupération des données de l'utilisateur a échoué
+ useEffect(() => {
+  if (errorAPIUser) {
+    toast.error(errorAPIUser);
+  }
+}, [errorAPIUser]);
+
 
   return (
     <div className="flex flex-col justify-between max-w-screen-xl min-h-screen my-0 mx-auto border border-solid border-secondary20">

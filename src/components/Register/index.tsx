@@ -58,16 +58,7 @@ function Register() {
       axiosInstance.post('/user/register', inputs)
         .then((response) => {
           if (response.status === 200) {
-            toast.success("🦄 Votre profil est créé !", {
-              position: 'bottom-left',
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: 'dark',
-            });
+            toast.success("🦄 Votre profil est créé !");
             navigate('/login');
           }
         })
@@ -76,40 +67,13 @@ function Register() {
         });
     // Si le format de l'email n'est pas correct une notification est envoyée
     } else if (isValidEmail(inputs.email) === false) {
-      toast.error("🦄 L'email n'est pas valide", {
-        position: 'bottom-left',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'dark',
-      });
+      toast.error("🦄 L'email n'est pas valide");
       // Si le format du mot de passe n'est pas correct une notification est envoyée
     } else if (isValidPassword(inputs.password) === false) {
-      toast.error("🦄 Le mot de passe n'est pas au bon format", {
-        position: 'bottom-left',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'dark',
-      });
+      toast.error("🦄 Le mot de passe n'est pas au bon format");
       // Si les mots de passe ne correspondent pas une notification est envoyée
     } else if (inputs.password as string !== inputs.passwordConfirm) {
-      toast.error('🦄 Les mots de passe sont différents', {
-        position: 'bottom-left',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'dark',
-      });
+      toast.error('🦄 Les mots de passe sont différents');
     }
   };
 

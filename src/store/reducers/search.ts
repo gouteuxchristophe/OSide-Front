@@ -39,8 +39,6 @@ export const allTechnoList = createAction<ITechnoProjet[]>('settings/ALL_TECHNO_
 const searchReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(getTechnosAPI, (state, action) => {
-      console.log(action.payload);
-      
       state.initDatas = action.payload;
       state.technoLists = state.initDatas;
     })
