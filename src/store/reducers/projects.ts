@@ -9,6 +9,7 @@ export interface newProject {
   content: string;
   status: string;
   owner_id: number;
+  technos: number[];
 }
 // Je créer mon interface pour le state de mon reducer
 interface ProjectsState {
@@ -143,7 +144,6 @@ const projectsReducer = createReducer(initialState, (builder) => {
       state.errorApiProjects = null;
       state.lists.push(action.payload!);
       state.successAdd = 'Projet ajouté avec succès';
-      console.log(action.payload);
       state.idNewProject = action.payload.result.id;
     })
 });
