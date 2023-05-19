@@ -3,20 +3,22 @@ import Admin_Techno from "./admin_techno";
 import Admin_Users from "./admin_user";
 import Admin_Projects from "./admin_projects";
 import Admin_Roles from "./admin_roles";
-import { useAppSelector } from "../../hooks/redux";
 import { Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { getUserDataFromLocalStorage } from "../../utils/login";
+import { LoginResponse } from "../../@types/login";
 
 function AdminPage() {
-
-
 
   const [showMenuAdmin, setShowMenuAdmin] = useState(true);
   const [showAdminTechno, setShowAdminTechno] = useState(false);
   const [showAdminUser, setShowAdminUser] = useState(false);
   const [showAdminRole, setShowAdminRole] = useState(false);
   const [showAdminProject, setShowAdminProject] = useState(false);
-  const role = useAppSelector((state) => state.user.data.role.label);
+  const userData = getUserDataFromLocalStorage() as LoginResponse;
+  const role = userData.role
+  console.log(role);
+  
 
   if (role !== 'admin') {
     toast.warn('🦄 Veuillez vous connecter !');

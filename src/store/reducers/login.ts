@@ -1,11 +1,11 @@
 import { createAction, createReducer } from '@reduxjs/toolkit';
-import { getUserDataFromLocalStorage, removeUserDataFromLocalStorage } from '../../utils/login';
+import {  getUserDataFromLocalStorage, removeUserDataFromLocalStorage } from '../../utils/login';
 import createAppAsyncThunk from '../../utils/redux';
 import axiosInstance from '../../utils/axios';
-import { getUserById } from './user';
+import { setUser } from './user';
 
 // Je récupère les données de l'utilisateur dans le localStorage
-const userData = getUserDataFromLocalStorage();
+const userStorage = getUserDataFromLocalStorage();
 // Je créer mon interface pour le state de mon reducer
 interface LoginState {
   logged: boolean;
@@ -31,7 +31,7 @@ export const initialState: LoginState = {
     passwordConfirm: '',
   },
   errorAPILogin: null ,
-  ...userData,
+  ...userStorage,
 };
 
 // Action qui me permet de mettre à jour le code github
@@ -72,15 +72,27 @@ export const login = createAppAsyncThunk(
         password,
       });
       // Je stocke les données de l'utilisateur dans le localStorage
-      const userData = {
+      const userDataLogin = {
         token: userLogin.sessionToken,
         id: userLogin.id,
         logged: true,
       }
       // Je stocke les données de l'utilisateur dans le localStorage
-      localStorage.setItem('user', JSON.stringify(userData));
-      // J'envoi une requête pour récupérer les données de l'utilisateur
-      thunkAPI.dispatch(getUserById());
+      localStorage.setItem('user', JSON.stringify(userDataLogin));
+      // Je récupère les données de l'utilisateur
+      const user = await axiosInstance.get(`/user/${userLogin.id}`);
+      // Je parse les données du localStorage
+      const userDataStr = localStorage.getItem('user');
+      const userData = userDataStr ? (JSON.parse(userDataStr)) as LoginState : null;
+      // Je créer un objet avec les données de l'utilisateur
+      const userDataUpdate = {
+        ...userData,
+        role: user.data.role.label,
+      }
+      // Je stocke les données de l'utilisateur dans le localStorage
+      localStorage.setItem('user', JSON.stringify(userDataUpdate));
+      // Je modifie le state de mon reducer user
+      thunkAPI.dispatch(setUser(user.data));
       return userLogin as LoginState;
     } catch (err: any) {
       if (err) {

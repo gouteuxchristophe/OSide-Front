@@ -1,4 +1,5 @@
 import { useAppDispatch } from "../../hooks/redux";
+import { deleteRole } from "../../store/reducers/role";
 import { deleteTechno } from "../../store/reducers/techno";
 
 interface ModalDeleteProps {
@@ -12,6 +13,7 @@ function DeleteConfirmation({ id, type, closeModal }: ModalDeleteProps) {
   const dispatch = useAppDispatch();
   const handleConfirmationDeleted = () => {
     if (type === 'techno') dispatch(deleteTechno(id));
+    if (type === 'role') dispatch(deleteRole(id));
     closeModal();
   }
 

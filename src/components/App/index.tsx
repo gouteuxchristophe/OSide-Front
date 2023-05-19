@@ -19,6 +19,7 @@ import { getUserById } from '../../store/reducers/user';
 function App() {
   const errorAPIUser = useAppSelector((state) => state.user.errorAPIUser);
   const dataReception = useAppSelector((state) => state.projects.dataReception);
+  const isLogged = useAppSelector((state) => state.login.logged);
   //  Permet de scroller en haut de la page à chaque nouvel affiche url
   const location = useLocation();
   useEffect(() => {
@@ -33,11 +34,11 @@ function App() {
     }
   }, [dispatch, dataReception]);
 
-  useEffect(() => { 
-    if (sessionStorage) {
+  useEffect(() => {
+    if (sessionStorage.length > 0 || isLogged === true) {
       dispatch(getUserById())
-      }
-      }, [dispatch, sessionStorage]);
+    }
+  }, [dispatch, sessionStorage, isLogged]);
 
   // Affiche la notification si la récupération des données de l'utilisateur a échoué
   useEffect(() => {
