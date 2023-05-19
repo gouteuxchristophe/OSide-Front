@@ -15,14 +15,10 @@ function ProjectDetail() {
   const isLoading = useAppSelector((state) => state.projects.isLoading);
   const [showUpdateModal, setShowUpdateModal] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
-  // Permet d'afficher une notification si l'utilisateur n'a pas accès à la page
-  const displayLoginNotification = () => {
-    toast.warn('🦄 Veuillez vous connecter !');
-  };
 
   // Redirige l'utilisateur vers la page d'accueil si il n'est pas connecté
   if (!isLogged) {
-    displayLoginNotification();
+    toast.warn('🦄 Veuillez vous connecter !');
     return <Navigate to="/login" replace />
   }
 
