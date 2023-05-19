@@ -9,13 +9,17 @@ interface ProjectsState {
   lists: Project[];
   errorApiProjects: string | null;
   projectByID: Project;
+  dataReception: boolean
+  isLoading: boolean;
 }
 
 // Je créer mon state initial
 export const initialState: ProjectsState = {
   lists: []	,
   errorApiProjects: null,
-  projectByID: {} as Project
+  projectByID: {} as Project,
+  dataReception: false,
+  isLoading: true
 };
 // Action creator qui me permet de récupérer tous les projets
 export const getAllProjects = createAppAsyncThunk('projects/GET_ALL_PROJECTS',
@@ -67,6 +71,7 @@ const projectsReducer = createReducer(initialState, (builder) => {
     .addCase(getAllProjects.fulfilled, (state, action) => {
       state.errorApiProjects = null;
       state.lists = action.payload!;
+      state.dataReception = true;
     })
     .addCase(getProjectByID.rejected, (state) => {
       state.errorApiProjects = null;
@@ -74,7 +79,8 @@ const projectsReducer = createReducer(initialState, (builder) => {
     .addCase(getProjectByID.fulfilled, (state, action) => {
       state.errorApiProjects = null;
       console.log(action.payload);
-
+      state.projectByID = action.payload!;
+      state.isLoading = false;
     })
 });
 

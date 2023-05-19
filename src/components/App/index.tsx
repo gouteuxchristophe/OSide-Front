@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation  } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import Header from './Header';
 import Footer from './Footer';
@@ -17,6 +17,7 @@ import { toast } from 'react-toastify';
 
 function App() {
   const errorAPIUser = useAppSelector((state) => state.user.errorAPIUser);
+  const dataReception = useAppSelector((state) => state.projects.dataReception);
   //  Permet de scroller en haut de la page à chaque nouvel affiche url
   const location = useLocation();
   useEffect(() => {
@@ -26,15 +27,17 @@ function App() {
   // Permet de lancer la requête API
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(getAllProjects());
-  }, [dispatch]);
+    if (!dataReception) {
+      dispatch(getAllProjects());
+    }
+  }, [dispatch, dataReception]);
 
-   // Affiche la notification si la récupération des données de l'utilisateur a échoué
- useEffect(() => {
-  if (errorAPIUser) {
-    toast.error(errorAPIUser);
-  }
-}, [errorAPIUser]);
+  // Affiche la notification si la récupération des données de l'utilisateur a échoué
+  useEffect(() => {
+    if (errorAPIUser) {
+      toast.error(errorAPIUser);
+    }
+  }, [errorAPIUser]);
 
 
   return (
@@ -61,7 +64,7 @@ function App() {
           path="/project/:id"
           element={(
             // Affichage d'un projet par id
-            <ProjectDetail/>
+            <ProjectDetail />
           )}
         />
         <Route
