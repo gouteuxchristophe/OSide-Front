@@ -30,7 +30,7 @@ function ProjectDetail() {
   // On récupère l'id du projet recherché
   const { id } = useParams();
   const project = useAppSelector((state) => findProject(state.projects.lists, Number(id)));
-  const idUser = useAppSelector((state) => state.login.id);
+  const idUser = useAppSelector((state) => state.user.data.id);
   // On utilise la fonction findProject qui permet de trouver un projet correspondant à l'id passé
   // en paramètre et on lui envoi avec le state pour recherche
   // const dispatch = useAppDispatch();
