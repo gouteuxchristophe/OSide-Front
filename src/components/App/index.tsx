@@ -15,6 +15,7 @@ import Dashboard from '../Dashboard';
 import AdminPage from '../Admin';
 import { toast } from 'react-toastify';
 import { getUserById } from '../../store/reducers/user';
+import AddProjects from '../Project/add';
 
 function App() {
   const errorAPIUser = useAppSelector((state) => state.user.errorAPIUser);
@@ -110,6 +111,12 @@ function App() {
           path="/admin"
           element={(
             <AdminPage />
+          )}
+        />
+        <Route
+          path="/addProject"
+          element={(
+            <AddProjects />
           )}
         />
         <Route
