@@ -13,6 +13,12 @@ interface ProjectsState {
   isLoading: boolean;
 }
 
+interface UpdateProject {
+  id: number | undefined;
+  title: string | undefined;
+  content: string | undefined;
+}
+
 // Je créer mon state initial
 export const initialState: ProjectsState = {
   lists: []	,
@@ -55,6 +61,24 @@ export const getProjectByID = createAppAsyncThunk('projects/GET_PROJECT_BY_ID',
     }
   }
 });
+
+export const updateProject = createAppAsyncThunk(
+  'projet/UPDATE_PROJET',
+  async (project: UpdateProject, thunkAPI) => {
+    try {
+      const { data } = await axiosInstance.put(`/projet/${project.id}`, project);
+      return data as Project;
+    } catch (err: any) {
+      if (err.response?.data) {
+        thunkAPI.dispatch(setProjectErrorMessage(err.response.data));
+      } else {
+        console.error(err);
+        thunkAPI.dispatch(setProjectErrorMessage('Une erreur s\'est produite lors de la connexion.'));
+      }
+      throw err;
+    }
+  },
+);
 
 // Gestions des messages d'erreur
 export const setProjectErrorMessage = createAction<string>('project/SET_PROJECT_ERROR_MESSAGE');

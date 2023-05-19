@@ -74,6 +74,8 @@ export const getUserById = createAppAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const { data } = await axiosInstance.get(`/user/${userData.id}`);
+      console.log(data);
+      
       return data as User;
     } catch (err: any) {
       if (err) {
