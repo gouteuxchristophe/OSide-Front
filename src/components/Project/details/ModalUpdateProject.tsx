@@ -11,7 +11,7 @@ interface CheckboxData {
   label: string;
 }
 
-export default function ModalUpdateProject({ closeModal }: { closeModal: () => void }) {
+export default function ModalUpdateContent({ closeModal }: { closeModal: () => void }) {
 
   // On récupère l'id du projet recherché
   const { id } = useParams();

@@ -45,12 +45,9 @@ export const getAllProjects = createAppAsyncThunk('projects/GET_ALL_PROJECTS',
 
 // Action creator qui me permet de récupérer tous les projets
 export const getProjectByID = createAppAsyncThunk('projects/GET_PROJECT_BY_ID',
- async (idProject: number, thunkAPI) => {
-  console.log(idProject);
-  
+ async (idProject: number, thunkAPI) => { 
   try {
     const { data } = await axiosInstance.get(`/projet/${idProject}`);
-    console.log(data);
     return data as Project;
   } catch (err: any) {
     if (err) {
@@ -102,7 +99,6 @@ const projectsReducer = createReducer(initialState, (builder) => {
     })
     .addCase(getProjectByID.fulfilled, (state, action) => {
       state.errorApiProjects = null;
-      console.log(action.payload);
       state.projectByID = action.payload!;
       state.isLoading = false;
     })
