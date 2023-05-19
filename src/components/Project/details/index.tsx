@@ -24,15 +24,16 @@ function ProjectDetail() {
 
   // On récupère l'id du projet recherché
   const { id } = useParams();
+  const project = useAppSelector((state) => findProject(state.projects.lists, Number(id)));
   // On utilise la fonction findProject qui permet de trouver un projet correspondant à l'id passé
   // en paramètre et on lui envoi avec le state pour recherche
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(getProjectByID(id as unknown as number));
-  }, []);
+  // const dispatch = useAppDispatch();
+  // useEffect(() => {
+  //   dispatch(getProjectByID(id as unknown as number));
+  // }, []);
 
-  const project = useAppSelector((state) => state.projects.projectByID)
-  console.log(project);
+  // const project = useAppSelector((state) => state.projects.projectByID)
+  // console.log(project);
 
   // Si on ne trouve pas de projet, on dirige vers la page erreur
   if (!project) {
