@@ -8,11 +8,16 @@ import Projects from '../Projects';
 import About from '../About';
 import SearchProject from '../Search';
 import { getAllProjects } from '../../store/reducers/projects';
-import { useAppDispatch } from '../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import Login from '../Login';
 import Register from '../Register';
+import Dashboard from '../Dashboard';
+import AdminPage from '../Admin';
+import { toast } from 'react-toastify';
 
 function App() {
+  const errorAPIUser = useAppSelector((state) => state.user.errorAPIUser);
+  const dataReception = useAppSelector((state) => state.projects.dataReception);
   //  Permet de scroller en haut de la page à chaque nouvel affiche url
   const location = useLocation();
   useEffect(() => {
@@ -22,8 +27,18 @@ function App() {
   // Permet de lancer la requête API
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(getAllProjects());
-  }, [dispatch]);
+    if (!dataReception) {
+      dispatch(getAllProjects());
+    }
+  }, [dispatch, dataReception]);
+
+  // Affiche la notification si la récupération des données de l'utilisateur a échoué
+  useEffect(() => {
+    if (errorAPIUser) {
+      toast.error(errorAPIUser);
+    }
+  }, [errorAPIUser]);
+
 
   return (
     <div className="flex flex-col justify-between max-w-screen-xl min-h-screen my-0 mx-auto border border-solid border-secondary20">
@@ -75,6 +90,18 @@ function App() {
           path="/register"
           element={(
             <Register />
+          )}
+        />
+        <Route
+          path="/dashboard"
+          element={(
+            <Dashboard />
+          )}
+        />
+        <Route
+          path="/admin"
+          element={(
+            <AdminPage />
           )}
         />
         <Route

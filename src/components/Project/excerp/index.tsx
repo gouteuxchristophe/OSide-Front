@@ -1,20 +1,23 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Project } from '../../../@types/project';
+import { useAppSelector } from '../../../hooks/redux';
 
 function ProjectItem({
   id, title, status, author, content, technoProjet,
 }: Project) {
+  const fakeAvatar = useAppSelector((state) => state.user.data.fakeAvatar);
+  const location = useLocation();
   const excerpContent = content.substring(0, 100);
 
   return (
     <div
-      className="flex flex-col justify-center items-center mt-10 w-[60%] sm:w-[80%] mx-auto"
+      className={`flex flex-col justify-center items-center mt-10 ${(location.pathname === '/') ? 'w-[60%]' : 'w-[90%]'} sm:w-[80%] mx-auto`}
     >
       <div className="rounded-xl bg-primary0 opacity-75 m-1 w-[90%]">
         <div className="flex flex-col p-8 rounded-xl shadow-xl translate-x-4 translate-y-4 md:w-auto gap-5 bg-secondary20 bg-opacity-[50%]">
           <div className="flex flex-wrap items-center gap-2 w-[20%]">
-            <img src={author.avatar} className="w-[40%] rounded-full" alt={author.github_login} />
-            <p className="text-[white] font-bold">{author.github_login}</p>
+            <img src={(author.github.avatar_url.length === 0) ? fakeAvatar : author.github.avatar_url} className="w-[40%] rounded-full" alt={(author.github.login.length === 0) ? author.username : author.github.login} />
+            <p className="text-[white] font-bold">{(author.github.login.length === 0) ? author.username : author.github.login}</p>
           </div>
           <div className="flex flex-col items-center justify-center gap-2">
             <div className="font-semibold text-lg flex items-center">{title}</div>
@@ -29,13 +32,10 @@ function ProjectItem({
               ))}
 
           </div>
-          <div className="my-4 h-12">
-            <span className="font-light text-sm">
+          <div className="my-4">
               {
                 `${excerpContent}...`
               }
-
-            </span>
           </div>
           <div className="flex justify-center text-[white]">
             <Link to={`/project/${id}`} className="px-4 py-3 rounded-full shadow-xl mt-4 bg-secondary20  text-center border-2 border-solid">

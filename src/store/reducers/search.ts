@@ -1,6 +1,7 @@
-import { createAction, createReducer } from '@reduxjs/toolkit';
-import data from '../techno';
+import { createAction, createAsyncThunk, createReducer } from '@reduxjs/toolkit';
 import { ITechnoProjet, Project } from '../../@types/project';
+import axiosInstance from '../../utils/axios';
+
 
 // Je créer mon interface pour le state de mon reducer
 interface SearchState {
@@ -9,17 +10,20 @@ interface SearchState {
   resultsSearchByTechno: Project[]
   inputValue: string
   activeSearched: boolean
+  initDatas: ITechnoProjet[]
 }
 
 // Je créer mon state initial
 export const initialState: SearchState = {
-  technoLists: data,
+  technoLists: [],
   resultsSearch: [],
   resultsSearchByTechno: [],
   inputValue: '',
   activeSearched: false,
+  initDatas: []
 };
 
+export const getTechnosAPI = createAction<ITechnoProjet[]>('technos/GET_TECHNOS')
 // Action creator qui me permet de changer la valeur d'un champ de mon formulaire
 export const changeInputSearchField = createAction<string>('settings/CHANGE_INPUT_SEARCH_FIELD');
 // Action creator qui me permet de récupérer les résultats de la recherche
@@ -34,6 +38,10 @@ export const allTechnoList = createAction<ITechnoProjet[]>('settings/ALL_TECHNO_
 // Je créer mon reducer
 const searchReducer = createReducer(initialState, (builder) => {
   builder
+    .addCase(getTechnosAPI, (state, action) => {
+      state.initDatas = action.payload;
+      state.technoLists = state.initDatas;
+    })
     .addCase(changeInputSearchField, (state, action) => {
       state.inputValue = action.payload;
     })
@@ -50,9 +58,9 @@ const searchReducer = createReducer(initialState, (builder) => {
       state.activeSearched = true;
     })
     .addCase(allTechnoList, (state) => {
-      state.technoLists = data;
+      state.technoLists = state.initDatas;
       state.resultsSearchByTechno = [];
-    });
+    })
 });
 
 export default searchReducer;

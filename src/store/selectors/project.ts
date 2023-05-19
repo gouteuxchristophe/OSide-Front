@@ -8,7 +8,10 @@ import { Project } from '../../@types/project';
  * paramètre. Si aucun projet correspondant n'est trouvé, la fonction renverra `undefined`.
  */
 function findProject(projects: Project[], searchedId: number) {
+  console.log('state', projects)
+  
   const project = projects.find((testedProject) => testedProject.id === searchedId);
+  
   return project;
 }
 

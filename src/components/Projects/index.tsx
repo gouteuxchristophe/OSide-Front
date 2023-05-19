@@ -3,15 +3,24 @@ import { useAppSelector } from '../../hooks/redux';
 import ProjectItem from '../Project/excerp';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
+import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 function Projects() {
   const projectsList = useAppSelector((state) => state.projects.lists);
+  const errorApiProjects = useAppSelector((state) => state.projects.errorApiProjects);
   const location = useLocation();
   // Permet de récupérer les 3 derniers projets
-  const lastProject = projectsList.slice(0, 3);
+  const lastProject = projectsList!.slice(0, 3);
+
+   // Affiche la notification si la requête a échoué
+ useEffect(() => {
+  if (errorApiProjects) {
+    toast.error(`🦄 ${errorApiProjects} !`);
+  }
+}, [errorApiProjects]);
 
   return (
-
     <div className="flex flex-col mb-10 items-center md:flex-row md:flex-wrap md:justify-center md:gap-10 overflow-hidden">
       {(location.pathname === '/') && (
         <div className="w-[90%] lg:w-3/5 rounded-lg lg:rounded-l-lg lg:rounded-r-none shadow-xl bg-white opacity-75 lg:mx-0 border-2 border-solid border-secondary10 mt-2">

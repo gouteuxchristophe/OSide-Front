@@ -16,8 +16,7 @@ interface LoginState {
     passwordConfirm: string;
   };
   token: string;
-  errorNotif: string;
-  successNotif: boolean;
+  errorAPILogin: string | null;
 }
 // Je créer un type qui me permet de récupérer les clés de mon interface
 export type KeysOfCredentials = keyof LoginState['credentials'];
@@ -31,8 +30,7 @@ export const initialState: LoginState = {
     password: '',
     passwordConfirm: '',
   },
-  errorNotif: '',
-  successNotif: false,
+  errorAPILogin: null ,
   ...userData,
 };
 
@@ -69,7 +67,7 @@ export const login = createAppAsyncThunk(
     const state = thunkAPI.getState();
     const { email, password } = state.login.credentials;
     try {
-      const { data: userLogin } = await axiosInstance.post('/login', {
+      const { data: userLogin } = await axiosInstance.post('/user/login', {
         email,
         password,
       });
@@ -79,42 +77,46 @@ export const login = createAppAsyncThunk(
         id: userLogin.id,
         logged: true,
       }
+      // Je stocke les données de l'utilisateur dans le localStorage
       localStorage.setItem('user', JSON.stringify(userData));
+      // J'envoi une requête pour récupérer les données de l'utilisateur
       thunkAPI.dispatch(getUserById());
       return userLogin as LoginState;
     } catch (err: any) {
-      if (err.response?.data) {
+      if (err) {
         thunkAPI.dispatch(setLoginErrorMessage(err.response.data));
       } else {
         console.error(err);
-        state.login.errorNotif = 'Une erreur s\'est produite lors de la connexion.';
+        thunkAPI.dispatch(setLoginErrorMessage('Une erreur s\'est produite.'));
       }
       throw err;
     }
   },
 );
 // Gestions des messages d'erreur
-export const setLoginErrorMessage = createAction<string>('user/SET_LOGIN_ERROR_MESSAGE');
+export const setLoginErrorMessage = createAction<string>('login/SET_LOGIN_ERROR_MESSAGE');
 // Action creator qui me permet de me déconnecter
 export const logout = createAction('user/LOGOUT');
 // Je créer mon reducer
 const loginReducer = createReducer(initialState, (builder) => {
   builder
-  //  Je gère les messages d'erreur
-    .addCase(setLoginErrorMessage, (state, action) => {
-      state.errorNotif = action.payload;
-    })
+  .addCase(setLoginErrorMessage, (state, action) => {
+    state.errorAPILogin = action.payload;
+  })
     // Je met à jour la valeur d'un champ de mon formulaire
     .addCase(changeCredentialsField, (state, action) => {
       const { propertyKey, value } = action.payload;
       state.credentials[propertyKey] = value;
     })
+    .addCase(login.rejected, (state) => {
+      state.errorAPILogin = null;
+    })
     // Dans le cas où ma requête est en réussie
     .addCase(login.fulfilled, (state, action) => {
       // Je met à jour le state logged et token
-      state.logged = action.payload.logged;
+      state.logged = true;
       state.token = action.payload.token;
-      state.successNotif = true
+      state.errorAPILogin = null
       // Je vide les champs de mon formulaire
       state.credentials.email = '';
     })

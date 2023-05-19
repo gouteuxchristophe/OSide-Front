@@ -9,18 +9,27 @@ import ResultsCount from './ResultsCount';
 import TechnosButtons from './TechnosButtons';
 import InputSearch from './InputSearch';
 import { searchProjectByTitle, searchProjectByTechno } from '../../store/selectors/search';
+import { useEffect } from 'react';
+import { getAllTechnos } from '../../store/reducers/techno';
+
 
 function SearchProject() {
+
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(getAllTechnos());
+  }, [dispatch]);
+
   // Récupération des states
   const technosList = useAppSelector((state) => state.search.technoLists);
   const searchValue = useAppSelector((state) => state.search.inputValue);
   const resultsSearch = useAppSelector((state) => state.search.resultsSearch);
   const resultsSearchByTechno = useAppSelector((state) => state.search.resultsSearchByTechno);
   const projectsList = useAppSelector((state) => state.projects.lists);
+  
+  
   const activeSearched = useAppSelector((state) => state.search.activeSearched);
   // Récupération du dispatch pour les actions du reducer
-  const dispatch = useAppDispatch();
-
   // Recherche du projet par input et techno
   const submitChangeValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     // On récupère la valeur de l'input et modification du state inputValue
@@ -31,7 +40,7 @@ function SearchProject() {
       // Si une seule techno, on filtre la recherche de l'input dans le state resultsSearchByTechno qui contient les projets recherché par techno
       ? resultsSearchByTechno.filter((project) => searchProjectByTitle(project, newValue))
       // Si une plusieurs technos, on filtre la recherche de l'input dans le state projectsList qui contient tout les projets
-      : projectsList.filter((project) => searchProjectByTitle(project, newValue));
+      : projectsList!.filter((project) => searchProjectByTitle(project, newValue));
     // Si l'input est vide, on envoi resultsSearchByTechno dans le state du resultsSearch sinon on envoi le résultat de la recherche
     const updatedResults = newValue.length === 0 ? resultsSearchByTechno : matchProject;
     dispatch(updatedResultsProjects(updatedResults as Project[]));
@@ -39,19 +48,18 @@ function SearchProject() {
 
   // Gérer la recherche par technologie utilisée
   // On créer les fonctions qui vont effectuer les recherches via le selector search
-  const filterProjectsByTitle = (value: string) => projectsList.filter((project) => searchProjectByTitle(project, value)) as Project[];
-  const filterProjectsByTechno = (technoSearched: string) => projectsList.filter((project) => searchProjectByTechno(project, technoSearched)) as Project[];
+  const filterProjectsByTitle = (value: string) => projectsList!.filter((project) => searchProjectByTitle(project, value)) as Project[];
+  const filterProjectsByTechno = (technoSearched: string) => projectsList!.filter((project) => searchProjectByTechno(project, technoSearched)) as Project[];
   const filterProjectsByTechnoInResults = (technoSearched: string) => resultsSearch.filter((project) => searchProjectByTechno(project, technoSearched)) as Project[];
 
   // On réagit au clic sur les boutons technologies
   const submitChangeTechno = (event: React.MouseEvent<HTMLButtonElement>) => {
     // On récupère la valeur du bouton et on cherche la correspondance dans la liste des technos
     const technoSearched = event.currentTarget.textContent as string;
-    console.log(technoSearched);
-    
+
     const technoItem = technosList.find((item) => item.label === technoSearched);
-    console.log(technoItem);
-    
+
+
     if (technosList.length === 1) {
       // Si une seule techno déja sélectionné, on remet l'ensemble des technos dans le state technosList
       dispatch(allTechnoList(technosList));

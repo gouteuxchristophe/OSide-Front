@@ -7,8 +7,6 @@ import { Project } from '../../@types/project';
  * @returns un tableau d'objet de projets
  */
 export function searchProjectByTitle(project: Project, value: string) {
-  console.log(value);
-
   const projectResult = project.title.toLowerCase().includes(value.toLowerCase());
   return projectResult;
 }
@@ -21,5 +19,10 @@ export function searchProjectByTitle(project: Project, value: string) {
  */
 export function searchProjectByTechno(project: Project, value: string) {
   const projectResult = project.technoProjet.find((techno) => techno.label === value);
+  return projectResult;
+}
+
+export function searchProjectByUser(project: Project, id: number) {
+  const projectResult = project.author.id === id;
   return projectResult;
 }

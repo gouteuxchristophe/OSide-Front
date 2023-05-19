@@ -1,23 +1,26 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Menu as Burger, XCircle, User, Home, UserPlus,
+  Menu as Burger, User, Home, UserPlus,
 } from 'react-feather';
 import { useAppSelector } from '../../hooks/redux';
 import ModalUser from './ModalUser';
-import userWithoutAvatar from '../../assets/user-without-avatar.png';
+
 
 function Menu() {
   const [displayMenu, setDisplayMenu] = useState<boolean>(false);
   const isLogged = useAppSelector((state) => state.login.logged);
-  const avatar = useAppSelector((state) => state.user.avatar);
-  const userName = useAppSelector((state) => state.user.github_login);
+  const avatarGitHub = useAppSelector((state) => state.user.data.github.avatar_url);
+  const userName = useAppSelector((state) => state.user.data.username);
+  const githubLogin = useAppSelector((state) => state.user.data.github.login); 
+  const fakeAvatar = useAppSelector((state) => state.user.data.fakeAvatar);
   const [showModal, setShowModal] = useState(false);
-
+  
+  // Permet d'afficher le menu utilisateur
   const handleToogleMenu = () => {
     setDisplayMenu(!displayMenu);
   };
-
+  // Permet de fermer le menu utilisateur
   const closeModal = () => {
     setShowModal(false);
   };
@@ -68,8 +71,10 @@ function Menu() {
             >
               Rechercher
             </Link>
-            <div className="sm:hidden">
-              <XCircle onClick={handleToogleMenu} />
+            <div className="sm:hidden ">
+              <button onClick={handleToogleMenu} className="absolute top-1 right-1 w-7 h-7 rounded-full border border-solid border-[red] bg-[red] text-[white]">
+                X
+              </button>
             </div>
           </div>
         </div>
@@ -77,8 +82,8 @@ function Menu() {
         {isLogged ? (
           <button type="button" onClick={() => setShowModal(true)}>
             <img src={
-              !avatar ? userWithoutAvatar : avatar
-              } className="rounded-full mx-auto h-12 w-12 bg-cover bg-center" alt={userName} />
+              (avatarGitHub.length === 0) ? fakeAvatar : avatarGitHub
+              } className="rounded-full mx-auto h-12 w-12 bg-cover bg-center" alt={(githubLogin.length === 0) ? userName : githubLogin} />
             {' '}
           </button>
         ) : (
