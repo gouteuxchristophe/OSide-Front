@@ -1,14 +1,24 @@
-import { XCircle } from "react-feather"
+import { XCircle, PlusSquare } from "react-feather"
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux"
 import { useState } from "react";
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import axiosInstance from '../../../utils/axios';
 import { ToastContainer, toast } from "react-toastify";
 import { updateProject } from "../../../store/reducers/projects";
 import findProject from '../../../store/selectors/project';
+import AddTechno from "../../Modals/AddTechno";
 
 interface CheckboxData {
   id: number;
   label: string;
+}
+
+interface UpdatedProject {
+  title: string;
+  content: string;
+  status: string;
+  technoProjet: [];
+  owner_id: number
 }
 
 export default function ModalUpdateProject({ closeModal }: { closeModal: () => void }) {
@@ -22,16 +32,24 @@ export default function ModalUpdateProject({ closeModal }: { closeModal: () => v
   const [updateTitle, setUpdateTitle] = useState('')
   const [updateContent, setUpdateContent] = useState('')
   const [updateTechno, setUpdateTechno] = useState<number[]>([])
+  const [showTechnoModal, setShowTechnoModal] = useState(false)
   const dispatch = useAppDispatch()
   
+  const currentProject = useAppSelector((state) => state.projects.projectByID)
+  console.log(currentProject)
+  const technosSelected = useAppSelector((state) => state.techno.selectedTechnos)
+  console.log(technosSelected)
+  const technosInProject = currentProject.technoProjet
+  console.log(technosInProject)
 
   const handleUpdateUserSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
   
     const data = {
-      id: project?.id,
-      title: project?.title,
-      content: project?.content,
+      id: id,
+      title: updateTitle,
+      content: updateContent,
+
     }
     // action vers le reducer avec les données du formulaire
     dispatch(updateProject(data))
@@ -69,12 +87,20 @@ export default function ModalUpdateProject({ closeModal }: { closeModal: () => v
             <label htmlFor="lastname" className="text-center block text-sm font-medium sm:w-[90%] sm:pb-0 pb-2">Content</label>
             <textarea onChange={(e) => setUpdateContent(e.currentTarget.value)} defaultValue={project?.content} className="shadow-sm text-sm rounded block p-2.5 sm:w-[40%]" placeholder="nom" />
           </div>
+          <div><ul className="flex flex-row">{technosSelected.map(techno => (
+            <li key={techno.id} className="m-2 p-1 rounded-md bg-[white] border-solid" style={{ borderColor: `${techno.color}` }}>{techno.label}</li>
+          ) ) }</ul></div>
+          <div className="flex flex-row bg-[white]">
+          <button className="flex flex-row" type="button" onClick={() => setShowTechnoModal(true)}><PlusSquare />Add technos</button>
+          </div>
           <button type="submit" className="bg-secondary20 text-[white] font-medium rounded text-sm px-5 py-2.5 text-center">Valider les modifications</button>
         </form>
         <div>
           <ToastContainer />
         </div>
       </div>
+      { showTechnoModal && (<div className="absolute bottom-8 right-12"><AddTechno closeModal={() => setShowTechnoModal(false)} /></div>)}
     </div>
+
   )
 }

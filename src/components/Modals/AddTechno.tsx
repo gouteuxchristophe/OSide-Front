@@ -67,6 +67,7 @@ function AddTechno({ closeModal }: { closeModal: () => void }) {
     dispatch(addTechno(technoNotExist))
     }
     dispatch(updatedSelectedTechnos(allTechno))
+    console.log(allTechno)
     closeModal()
   }
 

@@ -9,6 +9,7 @@ import { getProjectByID } from '../../../store/reducers/projects';
 import { createPortal } from 'react-dom';
 import ModalDeleteProject from './ModalDeleteProject';
 import ModalUpdateProject from './ModalUpdateProject';
+import AddTechno from '../../Modals/AddTechno';
 
 function ProjectDetail() {
   const isLogged = useAppSelector((state) => state.login.logged);
@@ -29,17 +30,19 @@ function ProjectDetail() {
 
   // On récupère l'id du projet recherché
   const { id } = useParams();
-  const project = useAppSelector((state) => findProject(state.projects.lists, Number(id)));
   const idUser = useAppSelector((state) => state.user.data.id);
-  // On utilise la fonction findProject qui permet de trouver un projet correspondant à l'id passé
-  // en paramètre et on lui envoi avec le state pour recherche
-  // const dispatch = useAppDispatch();
-  // useEffect(() => {
-  //   dispatch(getProjectByID(id as unknown as number));
-  // }, []);
+  console.log(idUser)
+  const dispatch = useAppDispatch();
+   useEffect(() => {
+     dispatch(getProjectByID(id as unknown as number));
+   }, []);
 
-  // const project = useAppSelector((state) => state.projects.projectByID)
-  // console.log(project);
+  const project = useAppSelector((state) => state.projects.projectByID)
+  console.log(project?.author)
+
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
 
   // Si on ne trouve pas de projet, on dirige vers la page erreur
   if (!project) {
@@ -47,12 +50,11 @@ function ProjectDetail() {
   }
 
   return (
-
     <div className="max-w-4xl flex items-center h-auto lg:h-screen flex-wrap mx-auto my-32 lg:my-0 relative justify-center">
       {!showUpdateModal && (
         <div className="w-full lg:w-3/5 rounded-lg lg:rounded-l-lg lg:rounded-r-none shadow-xl bg-white opacity-75 mx-6 lg:mx-0 border-2 border-solid border-secondary10">
           <div className="p-4 md:p-12 text-center lg:text-left flex flex-col gap-7 relative">
-            <div className="block rounded-full shadow-xl mx-auto -mt-16 md:-mt-24 h-24 w-24 bg-cover bg-center border-b-4 border-solid border-secondary10" style={{ backgroundImage: `url(${project.author.avatar})` }} />
+            <div className="block rounded-full shadow-xl mx-auto -mt-16 md:-mt-24 h-24 w-24 bg-cover bg-center border-b-4 border-solid border-secondary10" style={{ backgroundImage: `url(${!project.author.github.avatar_url ? fakeAvatar : project.author.github.avatar_url})`}} />
             <div className="pb-5 border-b-2 border-solid border-secondary23 rounded">
               <div className="flex items-center justify-between mb-3">
                 <h1 className="text-2xl font-bold lg:pt-0 text-left">{project.title}</h1>
