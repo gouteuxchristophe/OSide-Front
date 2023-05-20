@@ -13,7 +13,7 @@ function Dashboard() {
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const fakeAvatar = useAppSelector((state) => state.user.data.fakeAvatar);
   const maDate = new Date(user.created_at as string)
-  const userData = useAppSelector(state => state.user.dataReception)
+  const userData = useAppSelector(state => state.user.data)
   const isLogged = useAppSelector(state => state.login.logged)
   const projectsLists = useAppSelector(state => state.projects.lists)
   const filterProjectsById = (id: number) => projectsLists!.filter((project) => searchProjectByUser(project, user.id)) as Project[];

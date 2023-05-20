@@ -9,7 +9,7 @@ export interface newProject {
   content: string;
   status: string;
   owner_id: number;
-  technos: number[];
+  technoProjet: number[];
 }
 // Je créer mon interface pour le state de mon reducer
 interface ProjectsState {

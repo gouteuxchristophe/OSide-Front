@@ -51,7 +51,7 @@ function AddProjects() {
       content: content,
       status: 'En cours',
       owner_id: user.id,
-      technos: idTechnos
+      technoProjet: idTechnos
     }
     dispatch(createProject(newProject as newProject));
   }
@@ -61,7 +61,7 @@ function AddProjects() {
       {showModalAddTechno ? (
         <AddTechno closeModal={() => setShowModalAddTechno(false)} />
       ) : (
-        <div className="max-w-4xl flex items-center h-auto lg:h-screen flex-wrap mx-auto lg:my-0 relative justify-center">
+        <div className="px-10 pt-2 sm:mt-[2rem] rounded w-full ">
           <div className="w-full rounded-lg lg:rounded-l-lg lg:rounded-r-none shadow-xl bg-white opacity-75 mx-6 lg:mx-0 border-2 border-solid border-secondary10">
             <div className="p-4 md:p-12 text-center lg:text-left flex flex-col gap-7 relative">
               <div className="block rounded-full shadow-xl mx-auto -mt-16 md:-mt-24 h-24 w-24 bg-cover bg-center border-b-4 border-solid border-secondary10" style={{ backgroundImage: `url(${!user.github.avatar_url ? fakeAvatar : user.github.avatar_url})` }} />
@@ -72,13 +72,13 @@ function AddProjects() {
                 </div>
                 <div>
                   <form onSubmit={handleAddProject} className="flex flex-col gap-5">
-                    <div className="flex justify-around">
-                      <label htmlFor="title">Titre</label>
-                      <input onChange={(e) => setTitle(e.currentTarget.value)} type="text" name="" id="" />
+                    <div className="mb-2 sm:mb-6 flex flex-col items-center justify-center sm:gap-5 w-full">
+                      <label htmlFor="firstname" className="w-[90%] text-center block text-sm font-medium sm:w-[90%] sm:pb-0 pb-2">Title</label>
+                      <input type="text" className="shadow-sm text-sm rounded block p-2.5 sm:w-[40%]" placeholder="Titre" />
                     </div>
-                    <div className="flex justify-around items-center">
-                      <label htmlFor="content">Description</label>
-                      <textarea onChange={(e) => setContent(e.currentTarget.value)} />
+                    <div className="mb-2 sm:mb-6 flex flex-col items-center justify-center sm:gap-5 w-full">
+                      <label htmlFor="lastname" className="text-center block text-sm font-medium sm:w-[90%] sm:pb-0 pb-2">Content</label>
+                      <textarea className="shadow-sm text-sm rounded block p-2.5 w-full" placeholder="Description" />
                     </div>
                     <div className="flex flex-col items-center space-x-2 justify-center border-2 border-solid border-primary1 flex-wrap gap-5 pb-5 rounded">
                       <div className="p-5 mb-0 bg-primary1 w-[100%] font-bold">Techno</div>
