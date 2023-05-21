@@ -16,11 +16,11 @@ function AdminPage() {
   const [showAdminRole, setShowAdminRole] = useState(false);
   const [showAdminProject, setShowAdminProject] = useState(false);
   const userData = getUserDataFromLocalStorage() as LoginResponse;
-  const role = userData.role
-  console.log(role);
+  // Object { token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjg0NjYzOTcxLCJleHAiOjE2ODQ3NTAzNzF9.z3qjC8gxJG6mKAOOWfbJcXWOQ6ZAcGAgvD8hES8QI5Y", id: 1, logged: true, role: "Administrateur" }
+  const role = {id : 3}
   
 
-  if (role !== 'admin') {
+  if (role.id !== 3) {
     toast.warn('🦄 Veuillez vous connecter !');
     return <Navigate to="/login" replace />
   }

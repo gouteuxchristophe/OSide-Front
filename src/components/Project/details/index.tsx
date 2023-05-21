@@ -32,7 +32,7 @@ function ProjectDetail() {
   }, [id, dispatch]);
 
   const project = useAppSelector((state) => state.projects.projectByID)
-
+  
   if (isLoading) {
     return <div>Loading...</div>
   }

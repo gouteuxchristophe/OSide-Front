@@ -49,8 +49,10 @@ export const loginOAuth = createAppAsyncThunk(
       token: data.token,
       logged: true,
     }
+
     // Je stocke les données de l'utilisateur dans le localStorage
     localStorage.setItem('user', JSON.stringify(userData));
+    
     return userData;
   },
 );
@@ -87,7 +89,7 @@ export const login = createAppAsyncThunk(
       // Je créer un objet avec les données de l'utilisateur
       const userDataUpdate = {
         ...userData,
-        role: user.data.role.label,
+        role: user.data.role,
       }
       // Je stocke les données de l'utilisateur dans le localStorage
       localStorage.setItem('user', JSON.stringify(userDataUpdate));

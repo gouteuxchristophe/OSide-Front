@@ -1,5 +1,4 @@
 import { createAction, createReducer } from '@reduxjs/toolkit';
-import data from '../data';
 import { Project } from '../../@types/project';
 import axiosInstance from '../../utils/axios';
 import createAppAsyncThunk from '../../utils/redux';
@@ -23,9 +22,10 @@ interface ProjectsState {
 }
 
 interface UpdateProject {
-  id: number | undefined;
+  id: any;
   title: string | undefined;
   content: string | undefined;
+  status: string | undefined;
 }
 
 // Je créer mon state initial
@@ -93,9 +93,15 @@ export const createProject = createAppAsyncThunk(
 export const updateProject = createAppAsyncThunk(
   'projet/UPDATE_PROJET',
   async (project: UpdateProject, thunkAPI) => {
+
     try {
-      const { data } = await axiosInstance.put(`/projet/${project.id}`, project);
-      return data as Project;
+      const { data } = await axiosInstance.put(`/projet/${project.id}`, {
+        title: project.title,
+        content: project.content,
+        status: project.status,
+      });
+
+      return data;
     } catch (err: any) {
       if (err.response?.data) {
         thunkAPI.dispatch(setProjectErrorMessage(err.response.data));
@@ -107,6 +113,7 @@ export const updateProject = createAppAsyncThunk(
     }
   },
 );
+
 export const deleteMessageAdd = createAction('project/DELETE_SUCCESS_ADD');
 // Gestions des messages d'erreur
 // Gestions des messages d'erreur
@@ -128,6 +135,10 @@ const projectsReducer = createReducer(initialState, (builder) => {
       state.errorApiProjects = null;
       state.lists = action.payload!;
       state.dataReception = true;
+    })
+    .addCase(updateProject.fulfilled, (state, action) => {
+      const { title, content, status } = action.payload.result
+      state.projectByID = { ...state.projectByID, title, content, status };
     })
     .addCase(getProjectByID.rejected, (state) => {
       state.errorApiProjects = null;
