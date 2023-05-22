@@ -8,6 +8,7 @@ import { getProjectByID } from '../../../store/reducers/projects';
 import { createPortal } from 'react-dom';
 import ModalDeleteProject from './ModalDeleteProject';
 import ModalUpdateProject from './ModalUpdateProject';
+import AddTechno from '../../Modals/AddTechno';
 
 function ProjectDetail() {
   const isLogged = useAppSelector((state) => state.login.logged);
@@ -24,15 +25,16 @@ function ProjectDetail() {
 
   // On récupère l'id du projet recherché
   const { id } = useParams();
-  const idUser = useAppSelector((state) => state.user.data.id); 
 
+  const idUser = useAppSelector((state) => state.user.data.id);
+  console.log(idUser)
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(getProjectByID(id as unknown as number));
-  }, [id, dispatch]);
+   useEffect(() => {
+     dispatch(getProjectByID(id as unknown as number));
+   }, []);
 
   const project = useAppSelector((state) => state.projects.projectByID)
-  
+  console.log(project?.author)
   if (isLoading) {
     return <div>Loading...</div>
   }

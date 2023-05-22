@@ -11,7 +11,7 @@ function Projects() {
   const errorApiProjects = useAppSelector((state) => state.projects.errorApiProjects);
   const location = useLocation();
   // Permet de récupérer les 3 derniers projets
-  const lastProject = projectsList!.slice(0, 3);
+  const lastProject = projectsList.slice(0, 3);
 
    // Affiche la notification si la requête a échoué
  useEffect(() => {
