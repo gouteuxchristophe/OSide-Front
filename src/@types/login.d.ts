@@ -5,5 +5,5 @@ export interface LoginResponse {
   logged: boolean
   token: string
   data : User
-  role: string
+  // role: Role
 }
