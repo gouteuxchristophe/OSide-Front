@@ -2,7 +2,6 @@ import { Navigate, useParams, Link } from 'react-router-dom';
 import { Settings, MessageCircle } from 'react-feather';
 import { toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import findProject from '../../../store/selectors/project';
 import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from 'react';
 import { getProjectByID } from '../../../store/reducers/projects';
@@ -16,30 +15,27 @@ function ProjectDetail() {
   const isLoading = useAppSelector((state) => state.projects.isLoading);
   const [showUpdateModal, setShowUpdateModal] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
-  // Permet d'afficher une notification si l'utilisateur n'a pas accès à la page
-  const displayLoginNotification = () => {
-    toast.warn('🦄 Veuillez vous connecter !');
-  };
 
   // Redirige l'utilisateur vers la page d'accueil si il n'est pas connecté
   if (!isLogged) {
-    displayLoginNotification();
+    toast.warn('🦄 Veuillez vous connecter !');
     return <Navigate to="/login" replace />
   }
 
   // On récupère l'id du projet recherché
   const { id } = useParams();
-  const project = useAppSelector((state) => findProject(state.projects.lists, Number(id)));
-  const idUser = useAppSelector((state) => state.user.data.id);
-  // On utilise la fonction findProject qui permet de trouver un projet correspondant à l'id passé
-  // en paramètre et on lui envoi avec le state pour recherche
-  // const dispatch = useAppDispatch();
-  // useEffect(() => {
-  //   dispatch(getProjectByID(id as unknown as number));
-  // }, []);
+  const idUser = useAppSelector((state) => state.user.data.id); 
 
-  // const project = useAppSelector((state) => state.projects.projectByID)
-  // console.log(project);
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(getProjectByID(id as unknown as number));
+  }, [id, dispatch]);
+
+  const project = useAppSelector((state) => state.projects.projectByID)
+  
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
 
   // Si on ne trouve pas de projet, on dirige vers la page erreur
   if (!project) {
@@ -47,12 +43,14 @@ function ProjectDetail() {
   }
 
   return (
-
-    <div className="max-w-4xl flex items-center h-auto lg:h-screen flex-wrap mx-auto my-32 lg:my-0 relative justify-center">
+    <div className="flex items-center h-auto lg:h-screen flex-wrap my-2 lg:my-0 relative justify-center">
       {!showUpdateModal && (
         <div className="w-full lg:w-3/5 rounded-lg lg:rounded-l-lg lg:rounded-r-none shadow-xl bg-white opacity-75 mx-6 lg:mx-0 border-2 border-solid border-secondary10">
           <div className="p-4 md:p-12 text-center lg:text-left flex flex-col gap-7 relative">
-            <div className="block rounded-full shadow-xl mx-auto -mt-16 md:-mt-24 h-24 w-24 bg-cover bg-center border-b-4 border-solid border-secondary10" style={{ backgroundImage: `url(${project.author.avatar})` }} />
+            <div 
+              className="block rounded-full shadow-xl mx-auto -mt-16 md:-mt-24 h-24 w-24 bg-cover bg-center border-b-4 border-solid border-secondary10" 
+              style={{ backgroundImage: `url(${!project.author.github.avatar_url ? fakeAvatar : project.author.github.avatar_url})` }} 
+            />
             <div className="pb-5 border-b-2 border-solid border-secondary23 rounded">
               <div className="flex items-center justify-between mb-3">
                 <h1 className="text-2xl font-bold lg:pt-0 text-left">{project.title}</h1>
@@ -115,10 +113,10 @@ function ProjectDetail() {
       {showUpdateModal && (
         <ModalUpdateProject closeModal={() => setShowUpdateModal(false)} />
       )}
-      </div>
+    </div>
 
 
-        );
+  );
 }
 
-        export default ProjectDetail;
+export default ProjectDetail;

@@ -3,8 +3,10 @@ import { LoginResponse } from '../@types/login';
 export const getUserDataFromLocalStorage = () => {
   const userDataStr = localStorage.getItem('user');
   const userData = userDataStr ? (JSON.parse(userDataStr)) as LoginResponse : null;
+
   return userData;
 };
+
 // Je créer une fonction qui me permet de supprimer les données de l'utilisateur dans le localStorage
 export const removeUserDataFromLocalStorage = () => {
   localStorage.removeItem('user');

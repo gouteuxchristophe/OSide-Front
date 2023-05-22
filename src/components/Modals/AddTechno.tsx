@@ -27,6 +27,7 @@ function AddTechno({ closeModal }: { closeModal: () => void }) {
     dispatch(getAllTechnos());
   }, [dispatch]);
 
+  // Afficher un toast si la techno a bien été ajouté
   useEffect(() => {
     if (successAdd) {
       toast.success(`🦄 ${successAdd}`);
@@ -67,6 +68,7 @@ function AddTechno({ closeModal }: { closeModal: () => void }) {
     dispatch(addTechno(technoNotExist))
     }
     dispatch(updatedSelectedTechnos(allTechno))
+    dispatch(getAllTechnos())
     closeModal()
   }
 
