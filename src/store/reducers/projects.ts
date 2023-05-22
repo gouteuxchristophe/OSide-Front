@@ -18,6 +18,8 @@ interface ProjectsState {
   dataReception: boolean
   isLoading: boolean;
   successAdd: string,
+  successUpdate: string,
+  successDelete: string,
   idNewProject: number;
   successUpdate: string,
 }
@@ -38,21 +40,26 @@ export const initialState: ProjectsState = {
   dataReception: false,
   isLoading: true,
   successAdd: '',
+  successUpdate: '',
+  successDelete: '',
   idNewProject: 0,
   successUpdate: '',
 };
 // Action creator qui me permet de récupérer tous les projets
 export const getAllProjects = createAppAsyncThunk('projects/GET_ALL_PROJECTS',
-  async (_, thunkAPI) => {
-    try {
-      const { data: projects } = await axiosInstance.get('/projet');
-      return projects as Project[];
-    } catch (err: any) {
-      if (err) {
-        thunkAPI.dispatch(setProjectErrorMessage(err.response.data));
-      } else {
-        console.error(err);
-        thunkAPI.dispatch(setProjectErrorMessage('Une erreur s\'est produite'));
+   async (_, thunkAPI) => {
+      try {
+        const { data: projects } = await axiosInstance.get('/projet');
+        return projects as Project[];
+      } catch (err: any) {
+        if (err) {
+          thunkAPI.dispatch(setProjectErrorMessage(err.response.data));
+        } else {
+          console.error(err);
+          thunkAPI.dispatch(setProjectErrorMessage('Une erreur s\'est produite'));
+        }
+        throw err;
+
       }
     }
   });
@@ -78,7 +85,9 @@ export const getProjectByID = createAppAsyncThunk('projects/GET_PROJECT_BY_ID',
 export const createProject = createAppAsyncThunk(
   'projet/CREATE_PROJET',
   async (project: newProject, thunkAPI) => {
+    console.log('projet', project);
     try {
+      
       const { data } = await axiosInstance.post('/projet', project);
       console.log(data);
       return data;
@@ -117,7 +126,24 @@ export const updateProject = createAppAsyncThunk(
     }
   },
 );
-
+// Suppression d'un project
+export const deleteProject = createAppAsyncThunk(
+  'projet/DELETE_PROJET',
+  async (idProject: number, thunkAPI) => {
+    try {
+      const { data } = await axiosInstance.delete(`/projet/${idProject}`);
+      return data;
+    } catch (err: any) {
+      if (err.response?.data) {
+        thunkAPI.dispatch(setProjectErrorMessage(err.response.data));
+      } else {
+        console.error(err);
+        thunkAPI.dispatch(setProjectErrorMessage('Une erreur s\'est produite lors de la connexion.'));
+      }
+      throw err;
+    }
+  },
+);
 // Gestions des messages d'erreur
 
 export const deleteMessageAdd = createAction('project/DELETE_SUCCESS_ADD');
@@ -168,6 +194,10 @@ const projectsReducer = createReducer(initialState, (builder) => {
       state.lists.push(action.payload!);
       state.successAdd = 'Projet ajouté avec succès';
       state.idNewProject = action.payload.result.id;
+    })
+    .addCase(deleteProject.fulfilled, (state, action) => {
+      state.lists = action.payload!;
+      state.successDelete = 'Projet supprimé avec succès';
     })
 
 });

@@ -1,21 +1,44 @@
 import { useEffect, useState } from "react";
-import { getAllProjects } from "../../store/reducers/projects";
+import { deleteMessageUpdate, deleteMessageAdd, deleteProject, getAllProjects } from "../../store/reducers/projects";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { Edit3, Eye, Trash2 } from "react-feather";
+import DeleteConfirmation from "./deleteConfirmation";
+import { toast } from "react-toastify";
 
 function Admin_Projects({ closeSection }: { closeSection: (value: string) => void }) {
 
   const projectsList = useAppSelector((state) => state.projects.lists);
   const [showModalUpdateProject, setShowModalUpdateProject] = useState(false);
+  const successDelete = useAppSelector((state) => state.projects.successDelete);
+  const successUpdate = useAppSelector((state) => state.projects.successUpdate);
+  const successAdd = useAppSelector((state) => state.projects.successAdd);
+  const [selectedProjectId, setSelectedProjectId] = useState<number>();
+  const [deleteConfirmation, setDeleteConfirmation] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getAllProjects())
   }, [dispatch])
 
-  const handleDeleteProject = (id: number): void => {
-    throw new Error("Function not implemented.");
+  const handleDeleteProject = () => {
+    setDeleteConfirmation(true);
   }
+  // Permet d'afficher une notification si la techno a bien été supprimée ou modifié et de recharger la liste des technos
+  useEffect(() => {
+    if (successDelete) {
+      toast.error(`🦄 ${successDelete}`);
+      dispatch(deleteMessageAdd());
+    }
+    if (successUpdate) {
+      toast.success(`🦄 ${successUpdate}`);
+      dispatch(deleteMessageUpdate());
+    }
+    if (successAdd) {
+      toast.success(`🦄 ${successAdd}`);
+      dispatch(deleteMessageAdd());
+    }
+    dispatch(getAllProjects());
+  }, [successDelete, successUpdate, successAdd]);
 
   return (
     <div className="relative mx-auto">
@@ -56,7 +79,10 @@ function Admin_Projects({ closeSection }: { closeSection: (value: string) => voi
                   }}>
                     <Edit3 className="w-4" />
                   </button>
-                  <button onClick={() => handleDeleteProject(project.id)}>
+                  <button onClick={() => {
+                    setSelectedProjectId(project.id);
+                    handleDeleteProject()
+                  }}>
                     <Trash2 color="red" className="w-4" />
                   </button>
                 </td>
@@ -70,6 +96,13 @@ function Admin_Projects({ closeSection }: { closeSection: (value: string) => voi
           <div>
 
           </div>
+        )}
+        {deleteConfirmation && (
+          <DeleteConfirmation
+            type="projects"
+            id={selectedProjectId!}
+            closeModal={() => setDeleteConfirmation(false)}
+          />
         )}
       </div>
       <div className="flex justify-center mt-4">

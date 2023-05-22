@@ -4,9 +4,14 @@ import { toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from 'react';
-import { deleteMessageUpdate, getProjectByID } from '../../../store/reducers/projects';
+import { 
+  deleteMessageUpdate,
+  deleteMessageAdd,
+  deleteProject,
+  getProjectByID,
+} from '../../../store/reducers/projects';
 import { createPortal } from 'react-dom';
-import ModalDeleteProject from './ModalDeleteProject';
+import DeleteConfirmation from '../../Admin/deleteConfirmation';
 import ModalUpdateProject from './ModalUpdateProject';
 
 function ProjectDetail() {
@@ -15,6 +20,7 @@ function ProjectDetail() {
   const isLoading = useAppSelector((state) => state.projects.isLoading);
   const [showUpdateModal, setShowUpdateModal] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [deleteConfirmation, setDeleteConfirmation] = useState<boolean>(false);
   const successUpdate = useAppSelector((state) => state.projects.successUpdate);
 
   // Redirige l'utilisateur vers la page d'accueil si il n'est pas connecté
@@ -31,6 +37,9 @@ function ProjectDetail() {
     dispatch(getProjectByID(id as unknown as number));
   }, [id, dispatch]);
 
+  const handleDeleteProject = () => {
+    setDeleteConfirmation(true);
+  }
   useEffect(() => {
     if (successUpdate) {
       toast.success(`🦄 ${successUpdate}`);
@@ -116,7 +125,10 @@ function ProjectDetail() {
                 <button onClick={() => setShowDeleteModal(true)} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-[red] rounded-lg focus:ring-4 focus:outline-none">Delete</button>
               }
               {showDeleteModal && createPortal(
-                <ModalDeleteProject closeModal={() => setShowDeleteModal(false)} />, document.body)
+                <DeleteConfirmation 
+                type="projectsUser"
+                id={project.id}
+                closeModal={() => setShowDeleteModal(false)} />, document.body)
               }
             </div>
           </div>

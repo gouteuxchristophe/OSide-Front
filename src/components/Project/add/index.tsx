@@ -73,12 +73,12 @@ function AddProjects() {
                 <div>
                   <form onSubmit={handleAddProject} className="flex flex-col gap-5">
                     <div className="mb-2 sm:mb-6 flex flex-col items-center justify-center sm:gap-5 w-full">
-                      <label htmlFor="firstname" className="w-[90%] text-center block text-sm font-medium sm:w-[90%] sm:pb-0 pb-2">Title</label>
-                      <input type="text" className="shadow-sm text-sm rounded block p-2.5 sm:w-[40%]" placeholder="Titre" />
+                      <label htmlFor="title" className="w-[90%] text-center block text-sm font-medium sm:w-[90%] sm:pb-0 pb-2">Title</label>
+                      <input onChange={(e) => setTitle(e.currentTarget.value)} type="text" name="" id="" />
                     </div>
                     <div className="mb-2 sm:mb-6 flex flex-col items-center justify-center sm:gap-5 w-full">
-                      <label htmlFor="lastname" className="text-center block text-sm font-medium sm:w-[90%] sm:pb-0 pb-2">Content</label>
-                      <textarea className="shadow-sm text-sm rounded block p-2.5 w-full" placeholder="Description" />
+                      <label htmlFor="content" className="text-center block text-sm font-medium sm:w-[90%] sm:pb-0 pb-2">Content</label>
+                      <textarea onChange={(e) => setContent(e.currentTarget.value)} />
                     </div>
                     <div className="flex flex-col items-center space-x-2 justify-center border-2 border-solid border-primary1 flex-wrap gap-5 pb-5 rounded">
                       <div className="p-5 mb-0 bg-primary1 w-[100%] font-bold">Techno</div>

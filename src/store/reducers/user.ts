@@ -103,6 +103,25 @@ export const updateUser = createAppAsyncThunk(
   },
 );
 
+// On crée une action pour le delete de l'utilisateur
+export const deleteUser = createAppAsyncThunk(
+  'user/DELETE_USER',
+  async (id: number, thunkAPI) => {
+    try {
+      const { data } = await axiosInstance.delete(`/user/${id}`);
+      return data as User;
+    } catch (err: any) {
+      if (err) {
+        thunkAPI.dispatch(setUserErrorMessage(err.response.data));
+      } else { 
+        console.error(err);
+        thunkAPI.dispatch(setUserErrorMessage('Une erreur s\'est produite lors de la connexion.'));
+      }
+      throw err;
+    }
+  },
+);
+
 // On créer une action pour l'update de l'utilisateur
 export const setUser = createAction<User>('user/SET_USER');
 

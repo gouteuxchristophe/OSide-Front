@@ -1,6 +1,9 @@
 import { useAppDispatch } from "../../hooks/redux";
 import { deleteTechno } from "../../store/reducers/techno";
 import { deleteRole } from "../../store/reducers/role";
+import { deleteProject } from "../../store/reducers/projects";
+import { deleteUser } from "../../store/reducers/user";
+import { useNavigate } from "react-router-dom";
 
 interface ModalDeleteProps {
   closeModal: () => void;
@@ -9,11 +12,18 @@ interface ModalDeleteProps {
 }
 
 function DeleteConfirmation({ id, type, closeModal }: ModalDeleteProps) {
-
+  const navigate = useNavigate()
   const dispatch = useAppDispatch();
   const handleConfirmationDeleted = () => {
     if (type === 'techno') dispatch(deleteTechno(id));
     if (type === 'role') dispatch(deleteRole(id));
+    if (type === 'projects') dispatch(deleteProject(id));
+    if (type === 'projectsUser') {
+      dispatch(deleteProject(id))
+      dispatch(getAllProjects)
+      navigate('/dashboard')
+    };
+    if (type === 'users') dispatch(deleteUser(id));
     closeModal();
   }
 
