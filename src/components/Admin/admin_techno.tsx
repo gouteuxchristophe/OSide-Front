@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { Delete, Edit3, Trash2 } from "react-feather";
 import ModalUpdateTechno from "./ModalUpdateTechno";
 import AddTechno from "../Modals/AddTechno";
-import { deleteMessage, deleteMessageUpdate, deleteMessageAdd, deleteTechno, getAllTechnos } from "../../store/reducers/techno";
+import { deleteMessage, deleteMessageUpdate, deleteMessageAdd, deleteTechno, getAllTechnos, emptySelectedTechnos } from "../../store/reducers/techno";
 import { toast } from "react-toastify";
 import DeleteConfirmation from "./deleteConfirmation";
 
@@ -45,6 +45,7 @@ function Admin_Techno({ closeSection }: { closeSection: (value: string) => void 
       toast.success(`🦄 ${successAdd}`);
       dispatch(deleteMessageAdd());
     }
+    dispatch(emptySelectedTechnos())
     dispatch(getAllTechnos());
   }, [successDelete, successUpdate, successAdd]);
 
@@ -54,8 +55,9 @@ function Admin_Techno({ closeSection }: { closeSection: (value: string) => void 
         <button onClick={() => setShowModalAddTechno(true)} className="flex p-2 border border-solid border-[white] rounded-full bg-primary0"> Ajouter une techno</button>
       </div>
       {showModalAddTechno && (
-          <div className="flex justify-center mx-auto w-[80%] sm:w-[40%] mb-5"><AddTechno
-          closeModal={() => setShowModalAddTechno(false)} /></div>)}
+        <div className="flex justify-center mx-auto w-[80%] sm:w-[40%] mb-5"><AddTechno
+          closeModal={() => setShowModalAddTechno(false)}
+        /></div>)}
 
       <table className="text-xs text-center mx-auto w-[80%] sm:w-[40%]">
         <thead className="text-xs uppercase bg-secondary20">

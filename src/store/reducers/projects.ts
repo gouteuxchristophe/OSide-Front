@@ -19,6 +19,7 @@ interface ProjectsState {
   isLoading: boolean;
   successAdd: string,
   idNewProject: number;
+  successUpdate: string,
 }
 
 interface UpdateProject {
@@ -26,6 +27,7 @@ interface UpdateProject {
   title: string | undefined;
   content: string | undefined;
   status: string | undefined;
+  technoProjet: number[]
 }
 
 // Je créer mon state initial
@@ -37,22 +39,23 @@ export const initialState: ProjectsState = {
   isLoading: true,
   successAdd: '',
   idNewProject: 0,
+  successUpdate: '',
 };
 // Action creator qui me permet de récupérer tous les projets
 export const getAllProjects = createAppAsyncThunk('projects/GET_ALL_PROJECTS',
-   async (_, thunkAPI) => {
-      try {
-        const { data: projects } = await axiosInstance.get('/projet');
-        return projects as Project[];
-      } catch (err: any) {
-        if (err) {
-          thunkAPI.dispatch(setProjectErrorMessage(err.response.data));
-        } else {
-          console.error(err);
-          thunkAPI.dispatch(setProjectErrorMessage('Une erreur s\'est produite'));
-        }
+  async (_, thunkAPI) => {
+    try {
+      const { data: projects } = await axiosInstance.get('/projet');
+      return projects as Project[];
+    } catch (err: any) {
+      if (err) {
+        thunkAPI.dispatch(setProjectErrorMessage(err.response.data));
+      } else {
+        console.error(err);
+        thunkAPI.dispatch(setProjectErrorMessage('Une erreur s\'est produite'));
       }
-    });
+    }
+  });
 
 // Action creator qui me permet de récupérer tous les projets
 export const getProjectByID = createAppAsyncThunk('projects/GET_PROJECT_BY_ID',
@@ -94,18 +97,17 @@ export const createProject = createAppAsyncThunk(
 export const updateProject = createAppAsyncThunk(
   'projet/UPDATE_PROJET',
   async (project: UpdateProject, thunkAPI) => {
-
-
+    console.log(project);
     try {
       const { data } = await axiosInstance.put(`/projet/${project.id}`, {
         title: project.title,
         content: project.content,
         status: project.status,
+        technoProjet: project.technoProjet,
       });
-
       return data;
     } catch (err: any) {
-      if (err.response?.data) {
+      if (err) {
         thunkAPI.dispatch(setProjectErrorMessage(err.response.data));
       } else {
         console.error(err);
@@ -130,6 +132,9 @@ const projectsReducer = createReducer(initialState, (builder) => {
     .addCase(deleteMessageAdd, (state) => {
       state.successAdd = '';
     })
+    .addCase(deleteMessageUpdate, (state) => {
+      state.successUpdate = '';
+    })
     .addCase(setProjectErrorMessage, (state, action) => {
       state.errorApiProjects = action.payload;
     })
@@ -141,9 +146,11 @@ const projectsReducer = createReducer(initialState, (builder) => {
       state.lists = action.payload!;
       state.dataReception = true;
     })
-    .addCase(updateProject.fulfilled, (state, action) => {
-      const { title, content, status } = action.payload.result
-      state.projectByID = { ...state.projectByID, title, content, status };
+    .addCase(updateProject.fulfilled, (state) => {
+      state.successUpdate = 'Projet modifié avec succès';
+    })
+    .addCase(updateProject.rejected, (state) => {
+      state.errorApiProjects = null;
     })
     .addCase(getProjectByID.rejected, (state) => {
       state.errorApiProjects = null;

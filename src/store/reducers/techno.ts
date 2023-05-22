@@ -113,6 +113,8 @@ export const deleteTechno = createAppAsyncThunk(
   },
 );
 
+// Action qui vide le tableau des technos sélectionnées lors de l'ajout l'update
+export const emptySelectedTechnos = createAction('technos/EMPTY_SELECTED_TECHNO');
 // Action creator qui me permet de supprimer le message de succès de la suppression d'une techno
 export const deleteMessage = createAction('technos/DELETE_MESSAGE');
 // Action creator qui me permet de supprimer le message de succès de la modification d'une techno
@@ -123,6 +125,9 @@ export const deleteMessageAdd = createAction('technos/DELETE_SUCCESS_ADD');
 // Je créer mon reducer
 const technoReducer = createReducer(initialState, (builder) => {
   builder
+  .addCase(emptySelectedTechnos, (state) => {
+    state.selectedTechnos = [];
+  })
   .addCase(setTechnoErrorMessage, (state, action) => {
     state.errorApiTechno = action.payload;
   })

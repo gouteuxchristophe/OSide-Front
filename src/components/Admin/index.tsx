@@ -3,11 +3,6 @@ import Admin_Techno from "./admin_techno";
 import Admin_Users from "./admin_user";
 import Admin_Projects from "./admin_projects";
 import Admin_Roles from "./admin_roles";
-import { Navigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import { getUserDataFromLocalStorage } from "../../utils/login";
-import { LoginResponse } from "../../@types/login";
-import { useAppSelector } from "../../hooks/redux";
 
 function AdminPage() {
 
