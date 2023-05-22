@@ -13,7 +13,6 @@ import {
 import { createPortal } from 'react-dom';
 import DeleteConfirmation from '../../Admin/deleteConfirmation';
 import ModalUpdateProject from './ModalUpdateProject';
-import AddTechno from '../../Modals/AddTechno';
 
 function ProjectDetail() {
   const isLogged = useAppSelector((state) => state.login.logged);
@@ -22,13 +21,13 @@ function ProjectDetail() {
   const [showUpdateModal, setShowUpdateModal] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [deleteConfirmation, setDeleteConfirmation] = useState<boolean>(false);
+  const successUpdate = useAppSelector((state) => state.projects.successUpdate);
 
   // Redirige l'utilisateur vers la page d'accueil si il n'est pas connecté
   if (!isLogged) {
     toast.warn('🦄 Veuillez vous connecter !');
     return <Navigate to="/login" replace />
   }
-
   // On récupère l'id du projet recherché
   const { id } = useParams();
   const idUser = useAppSelector((state) => state.user.data.id); 
@@ -41,6 +40,15 @@ function ProjectDetail() {
   const handleDeleteProject = () => {
     setDeleteConfirmation(true);
   }
+  useEffect(() => {
+    if (successUpdate) {
+      toast.success(`🦄 ${successUpdate}`);
+      dispatch(deleteMessageUpdate())
+      dispatch(getProjectByID(id as unknown as number));
+    }
+  }, [successUpdate]);
+
+
   const project = useAppSelector((state) => state.projects.projectByID)
   
   if (isLoading) {
@@ -53,7 +61,7 @@ function ProjectDetail() {
   }
 
   return (
-    <div className="flex items-center h-auto lg:h-screen flex-wrap my-2 lg:my-0 relative justify-center">
+    <div className="flex items-center h-auto lg:h-screen flex-wrap my-2 lg:my-0 relative justify-center py-10">
       {!showUpdateModal && (
         <div className="w-full lg:w-3/5 rounded-lg lg:rounded-l-lg lg:rounded-r-none shadow-xl bg-white opacity-75 mx-6 lg:mx-0 border-2 border-solid border-secondary10">
           <div className="p-4 md:p-12 text-center lg:text-left flex flex-col gap-7 relative">
@@ -61,7 +69,7 @@ function ProjectDetail() {
               
               className="block rounded-full shadow-xl mx-auto -mt-16 md:-mt-24 h-24 w-24 bg-cover bg-center border-b-4 border-solid border-secondary10" 
               
-              style={{ backgroundImage: `url(${!!project.author.github.avatar_url ? fakeAvatar : project.author.github.avatar_url ? fakeAvatar : project.author.github.avatar_url})` }} 
+              style={{ backgroundImage: `url(${!project.author.github.avatar_url ? fakeAvatar : project.author.github.avatar_url})` }} 
             
             />
             <div className="pb-5 border-b-2 border-solid border-secondary23 rounded">
@@ -127,7 +135,9 @@ function ProjectDetail() {
         </div>
       )}
       {showUpdateModal && (
-        <ModalUpdateProject closeModal={() => setShowUpdateModal(false)} />
+        <ModalUpdateProject 
+        project={project}
+        closeModal={() => setShowUpdateModal(false)} />
       )}
     </div>
 
