@@ -1,4 +1,4 @@
-import { XCircle } from "react-feather"
+import { XCircle, PlusSquare } from "react-feather"
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux"
 import { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
@@ -121,5 +121,6 @@ export default function ModalUpdateContent({ closeModal }: { closeModal: () => v
       </div>
       <ToastContainer />
     </div>
+
   )
 }

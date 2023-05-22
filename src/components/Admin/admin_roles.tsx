@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { deleteMessageAdd, deleteRole, getAllRole } from "../../store/reducers/role";
+import { deleteMessageAdd, deleteMessageAdd, deleteRole, getAllRole } from "../../store/reducers/role";
 import { Edit3, PlusSquare, Trash2 } from "react-feather";
 import ModalUpdateRole from "./ModalUpdateRole";
 import { toast } from "react-toastify";
@@ -43,8 +43,10 @@ function Admin_Roles({ closeSection }: { closeSection: () => void }) {
     if (successAdd) {
       toast.success(`🦄 ${successAdd}`);
       dispatch(deleteMessageAdd());
+      dispatch(deleteMessageAdd());
     }
     dispatch(getAllRole());
+  }, [successDelete, successUpdate, successAdd]);
   }, [successDelete, successUpdate, successAdd]);
 
   const handleDeleteRole = () => {

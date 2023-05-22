@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch } from "../../hooks/redux";
-import { updateRole } from "../../store/reducers/role";
+import { getAllRole, updateRole } from "../../store/reducers/role";
 
 interface ModalUpdateRoleProps {
   closeModal: () => void;
@@ -8,6 +8,7 @@ interface ModalUpdateRoleProps {
   label: string;
   color: string;
 }
+
 
 function ModalUpdateRole({ closeModal, id, label, color }: ModalUpdateRoleProps) {
 

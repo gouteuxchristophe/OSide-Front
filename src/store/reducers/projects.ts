@@ -26,6 +26,7 @@ interface UpdateProject {
   title: string | undefined;
   content: string | undefined;
   status: string | undefined;
+  status: string | undefined;
 }
 
 // Je créer mon state initial
@@ -36,23 +37,25 @@ export const initialState: ProjectsState = {
   dataReception: false,
   isLoading: true,
   successAdd: '',
+  idNewProject: 0,,
+  successAdd: '',
   idNewProject: 0,
 };
 // Action creator qui me permet de récupérer tous les projets
 export const getAllProjects = createAppAsyncThunk('projects/GET_ALL_PROJECTS',
-  async (_, thunkAPI) => {
-    try {
-      const { data: projects } = await axiosInstance.get('/projet');
-      return projects as Project[];
-    } catch (err: any) {
-      if (err) {
-        thunkAPI.dispatch(setProjectErrorMessage(err.response.data));
-      } else {
-        console.error(err);
-        thunkAPI.dispatch(setProjectErrorMessage('Une erreur s\'est produite'));
+   async (_, thunkAPI) => {
+      try {
+        const { data: projects } = await axiosInstance.get('/projet');
+        return projects as Project[];
+      } catch (err: any) {
+        if (err) {
+          thunkAPI.dispatch(setProjectErrorMessage(err.response.data));
+        } else {
+          console.error(err);
+          thunkAPI.dispatch(setProjectErrorMessage('Une erreur s\'est produite'));
+        }
       }
-    }
-  });
+    });
 
 // Action creator qui me permet de récupérer tous les projets
 export const getProjectByID = createAppAsyncThunk('projects/GET_PROJECT_BY_ID',
@@ -90,9 +93,30 @@ export const createProject = createAppAsyncThunk(
   },
 );
 
+// Action creator qui me permet de créer un projet
+export const createProject = createAppAsyncThunk(
+  'projet/CREATE_PROJET',
+  async (project: newProject, thunkAPI) => {
+    try {
+      const { data } = await axiosInstance.post('/projet', project);
+      console.log(data);
+      return data;
+    } catch (err: any) {
+      if (err) {
+        thunkAPI.dispatch(setProjectErrorMessage(err.response.data));
+      } else {
+        console.error(err);
+        thunkAPI.dispatch(setProjectErrorMessage('Une erreur s\'est produite lors de la connexion.'));
+      }
+      throw err;
+    }
+  },
+);
+
 export const updateProject = createAppAsyncThunk(
   'projet/UPDATE_PROJET',
   async (project: UpdateProject, thunkAPI) => {
+
 
     try {
       const { data } = await axiosInstance.put(`/projet/${project.id}`, {
@@ -114,6 +138,8 @@ export const updateProject = createAppAsyncThunk(
   },
 );
 
+export const deleteMessageAdd = createAction('project/DELETE_SUCCESS_ADD');
+// Gestions des messages d'erreur
 
 export const deleteMessageAdd = createAction('project/DELETE_SUCCESS_ADD');
 export const deleteMessageUpdate = createAction('project/DELETE_SUCCESS_UPDATE');
@@ -124,6 +150,9 @@ export const setProjectErrorMessage = createAction<string>('project/SET_PROJECT_
 // Je créer mon reducer
 const projectsReducer = createReducer(initialState, (builder) => {
   builder
+    .addCase(deleteMessageAdd, (state) => {
+      state.successAdd = '';
+    })
     .addCase(deleteMessageAdd, (state) => {
       state.successAdd = '';
     })
@@ -149,6 +178,15 @@ const projectsReducer = createReducer(initialState, (builder) => {
       state.errorApiProjects = null;
       state.projectByID = action.payload!;
       state.isLoading = false;
+    })
+    .addCase(createProject.rejected, (state) => {
+      state.errorApiProjects = null;
+    })
+    .addCase(createProject.fulfilled, (state, action) => {
+      state.errorApiProjects = null;
+      state.lists.push(action.payload!);
+      state.successAdd = 'Projet ajouté avec succès';
+      state.idNewProject = action.payload.result.id;
     })
     .addCase(createProject.rejected, (state) => {
       state.errorApiProjects = null;

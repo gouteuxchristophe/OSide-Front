@@ -8,6 +8,7 @@ import { getProjectByID } from '../../../store/reducers/projects';
 import { createPortal } from 'react-dom';
 import ModalDeleteProject from './ModalDeleteProject';
 import ModalUpdateProject from './ModalUpdateProject';
+import AddTechno from '../../Modals/AddTechno';
 
 function ProjectDetail() {
   const isLogged = useAppSelector((state) => state.login.logged);
@@ -48,8 +49,11 @@ function ProjectDetail() {
         <div className="w-full lg:w-3/5 rounded-lg lg:rounded-l-lg lg:rounded-r-none shadow-xl bg-white opacity-75 mx-6 lg:mx-0 border-2 border-solid border-secondary10">
           <div className="p-4 md:p-12 text-center lg:text-left flex flex-col gap-7 relative">
             <div 
+              
               className="block rounded-full shadow-xl mx-auto -mt-16 md:-mt-24 h-24 w-24 bg-cover bg-center border-b-4 border-solid border-secondary10" 
-              style={{ backgroundImage: `url(${!project.author.github.avatar_url ? fakeAvatar : project.author.github.avatar_url})` }} 
+              
+              style={{ backgroundImage: `url(${!!project.author.github.github.avatar_url ? fakeAvatar : project.author.github.avatar_url_url ? fakeAvatar : project.author.github.avatar_url})` }} 
+            
             />
             <div className="pb-5 border-b-2 border-solid border-secondary23 rounded">
               <div className="flex items-center justify-between mb-3">

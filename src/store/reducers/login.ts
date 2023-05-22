@@ -1,8 +1,8 @@
 import { createAction, createReducer } from '@reduxjs/toolkit';
-import {  getUserDataFromLocalStorage, removeUserDataFromLocalStorage } from '../../utils/login';
+import {   getUserDataFromLocalStorage, removeUserDataFromLocalStorage } from '../../utils/login';
 import createAppAsyncThunk from '../../utils/redux';
 import axiosInstance from '../../utils/axios';
-import { setUser } from './user';
+import { getUserById } from './user';
 
 // Je récupère les données de l'utilisateur dans le localStorage
 const userStorage = getUserDataFromLocalStorage();
@@ -49,8 +49,10 @@ export const loginOAuth = createAppAsyncThunk(
       token: data.token,
       logged: true,
     }
+
     // Je stocke les données de l'utilisateur dans le localStorage
     localStorage.setItem('user', JSON.stringify(userData));
+    
     return userData;
   },
 );

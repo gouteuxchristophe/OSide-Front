@@ -45,6 +45,7 @@ export const addRole = createAppAsyncThunk(
       const { data } = await axiosInstance.post('/role', role);
       console.log(data);
       return data ;
+      
     } catch (err: any) {
       if (err) {
         thunkAPI.dispatch(setRoleErrorMessage(err.response.data));

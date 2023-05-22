@@ -16,16 +16,7 @@ function AdminPage() {
   const [showAdminUser, setShowAdminUser] = useState(false);
   const [showAdminRole, setShowAdminRole] = useState(false);
   const [showAdminProject, setShowAdminProject] = useState(false);
-  const userData = useAppSelector((state) => state.user.data);
-  // Object { token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjg0NjYzOTcxLCJleHAiOjE2ODQ3NTAzNzF9.z3qjC8gxJG6mKAOOWfbJcXWOQ6ZAcGAgvD8hES8QI5Y", id: 1, logged: true, role: "Administrateur" }
-  const role = userData.role.id
   
-
-  if (role !== 3) {
-    toast.warn('🦄 Veuillez vous connecter !');
-    return <Navigate to="/login" replace />
-  }
-
   // Permet de gérer l'affichage des sections
   const handleAdminSection = (value: string) => {
     setShowAdminTechno(value === 'technos');
