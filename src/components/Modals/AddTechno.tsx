@@ -107,7 +107,7 @@ function AddTechno({ closeModal }: { closeModal: () => void }) {
         </div>
       </div>
       <div>
-        <button onClick={handleValidationAddTechno} className="bg-primary0 text-[white] font-medium rounded text-sm px-5 py-2.5 text-center" type='submit' value='Add'>Valider les modif</button>
+        <button onClick={handleValidationAddTechno} className="bg-primary0 text-[white] font-medium rounded text-sm px-5 py-2.5 text-center mb-5" type='submit' value='Add'>Valider les modif</button>
       </div>
       <button
         className="absolute top-1 right-1 w-7 h-7 rounded-full border border-solid border-[red] bg-[red] text-[white]"

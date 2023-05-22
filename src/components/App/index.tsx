@@ -14,10 +14,12 @@ import Register from '../Register';
 import Dashboard from '../Dashboard';
 import AdminPage from '../Admin';
 import { toast } from 'react-toastify';
-
+import { getUserById } from '../../store/reducers/user';
+import AddProjects from '../Project/add';
 function App() {
   const errorAPIUser = useAppSelector((state) => state.user.errorAPIUser);
   const dataReception = useAppSelector((state) => state.projects.dataReception);
+  const isLogged = useAppSelector((state) => state.login.logged);
   //  Permet de scroller en haut de la page à chaque nouvel affiche url
   const location = useLocation();
   useEffect(() => {
@@ -31,6 +33,12 @@ function App() {
       dispatch(getAllProjects());
     }
   }, [dispatch, dataReception]);
+
+  useEffect(() => {
+    if (sessionStorage.length > 0 || isLogged === true) {
+      dispatch(getUserById())
+    }
+  }, [dispatch, sessionStorage, isLogged]);
 
   // Affiche la notification si la récupération des données de l'utilisateur a échoué
   useEffect(() => {
@@ -102,6 +110,12 @@ function App() {
           path="/admin"
           element={(
             <AdminPage />
+          )}
+        />
+        <Route
+          path="/addProject"
+          element={(
+            <AddProjects />
           )}
         />
         <Route

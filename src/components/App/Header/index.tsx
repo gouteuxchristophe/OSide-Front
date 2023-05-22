@@ -12,10 +12,10 @@ function Header() {
   const githubLogin = useAppSelector((state) => state.user.data.github.login);
 
   return (
-    <div className="flex items-center justify-between py-4 sticky top-0 z-10 bg-secondary20 h-[20vh]">
+    <div className="flex items-center justify-between py-4 sticky top-0 z-10 bg-secondary20">
       <div>
         <ToastContainer
-        position="bottom-left"
+        position="top-left"
         autoClose= {3000}
         hideProgressBar= {false}
         closeOnClick= {true}

@@ -27,12 +27,12 @@ function Projects() {
           <div className="p-4 md:p-12 text-center lg:text-left flex flex-col gap-7 relative">
             <div className="flex flex-col items-center justify-between mb-3">
               <p>
-                Lorem ipsum dolor sit amet consectetur
-                adipisicing elit. Molestias illo nesciunt
-                eaque labore rerum sit, laudantium
-                temporibus expedita cupiditate saepe,
-                unde fuga reprehenderit! Labore deleniti,
-                repellat maxime veniam modi consequuntur.
+                Bienvenue sur notre plateforme, le lieu de rencontre des développeurs web et mobile passionnés. 
+                Ici, vous pouvez partager vos idées de projets, explorer des initiatives alignées avec vos compétences 
+                et demander à y participer. Si vous cherchez le projet idéal, utilisez notre formulaire 
+                de recherche personnalisé. Rejoignez-nous pour transformer vos idées 
+                en réalité et propulser vos projets au niveau supérieur. Nous sommes ravis de vous aider à développer, apprendre 
+                et collaborer dans cet espace dédié à l'innovation.
               </p>
             </div>
           </div>

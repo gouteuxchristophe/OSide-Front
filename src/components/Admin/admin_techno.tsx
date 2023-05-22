@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { Delete, Edit3, Trash2 } from "react-feather";
 import ModalUpdateTechno from "./ModalUpdateTechno";
-import { deleteMessage, deleteMessageUpdate, deleteTechno, getAllTechnos } from "../../store/reducers/techno";
+import AddTechno from "../Modals/AddTechno";
+import { deleteMessage, deleteMessageUpdate, deleteMessageAdd, deleteTechno, getAllTechnos } from "../../store/reducers/techno";
 import { toast } from "react-toastify";
 import DeleteConfirmation from "./deleteConfirmation";
 
@@ -11,8 +12,10 @@ function Admin_Techno({ closeSection }: { closeSection: (value: string) => void 
   const technoList = useAppSelector((state) => state.search.technoLists);
   const successDelete = useAppSelector((state) => state.techno.successDelete);
   const successUpdate = useAppSelector((state) => state.techno.successUpdate);
+  const successAdd = useAppSelector((state) => state.techno.successAdd);
   const [deleteConfirmation, setDeleteConfirmation] = useState<boolean>(false);
   const [showModalUpdateTechno, setShowModalUpdateTechno] = useState(false);
+  const [showModalAddTechno, setShowModalAddTechno] = useState(false);
   const [selectedTechnoId, setSelectedTechnoId] = useState<number>();
   const [selectedTechnoLabel, setSelectedTechnoLabel] = useState<string>('');
   const [selectedTechnoColor, setSelectedTechnoColor] = useState<string | undefined>('');
@@ -38,11 +41,22 @@ function Admin_Techno({ closeSection }: { closeSection: (value: string) => void 
       toast.success(`🦄 ${successUpdate}`);
       dispatch(deleteMessageUpdate());
     }
+    if (successAdd) {
+      toast.success(`🦄 ${successAdd}`);
+      dispatch(deleteMessageAdd());
+    }
     dispatch(getAllTechnos());
-  }, [successDelete, successUpdate]);
+  }, [successDelete, successUpdate, successAdd]);
 
   return (
     <div className="relative mx-auto">
+      <div className="flex justify-center mb-5">
+        <button onClick={() => setShowModalAddTechno(true)} className="flex p-2 border border-solid border-[white] rounded-full bg-primary0"> Ajouter une techno</button>
+      </div>
+      {showModalAddTechno && (
+          <div className="flex justify-center mx-auto w-[80%] sm:w-[40%] mb-5"><AddTechno
+          closeModal={() => setShowModalAddTechno(false)} /></div>)}
+
       <table className="text-xs text-center mx-auto w-[80%] sm:w-[40%]">
         <thead className="text-xs uppercase bg-secondary20">
           <tr>

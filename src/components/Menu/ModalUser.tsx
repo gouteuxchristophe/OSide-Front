@@ -34,7 +34,7 @@ function ModalUser({ handleCloseModal }: ModalUserProps) {
         >
           Dashboard
         </Link>
-        {(role.label === 'admin') && (
+        {(role.id === 3) && (
           <Link
           to="/admin"
           onClick={handleCloseModal}

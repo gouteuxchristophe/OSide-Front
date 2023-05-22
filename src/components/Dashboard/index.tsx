@@ -13,7 +13,6 @@ function Dashboard() {
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const fakeAvatar = useAppSelector((state) => state.user.data.fakeAvatar);
   const maDate = new Date(user.created_at as string)
-  const userData = useAppSelector(state => state.user.dataReception)
   const isLogged = useAppSelector(state => state.login.logged)
   const projectsLists = useAppSelector(state => state.projects.lists)
   const filterProjectsById = (id: number) => projectsLists!.filter((project) => searchProjectByUser(project, user.id)) as Project[];
@@ -25,14 +24,7 @@ function Dashboard() {
         <>
           {!showUpdateModal ? (
             <div className="px-6 py-8">
-              <div className="w-[90%] mx-auto rounded-lg shadow relative bg-secondary20">
-                {!userData ? (
-                  <div className=" w-[80%] mx-auto flex flex-col justify-center items-center py-10 text-center gap-2">
-                    <h2 className="text-[white]">🚧 Une erreur est survenue 🚧</h2>
-                    <span className="text-[white]">Nous ne sommes pas en mesure de récupérér vos données</span>
-                  </div>
-                ) : (
-                  <>
+              <div className="w-[90%] mx-auto relative">
                     <div className="flex justify-end px-4 pt-4">
                       <div className="inline-block rounded-lg text-sm p-1.5">
                         Inscrit depuit le : {maDate.toLocaleDateString("fr")}
@@ -40,9 +32,9 @@ function Dashboard() {
                     </div>
                     <div className="flex flex-col items-center pb-10 gap-2">
                       <img className="w-24 h-24 mb-3 rounded-full shadow-lg" src={(user.github.avatar_url.length === 0) ? fakeAvatar : user.github.avatar_url} alt={user.github.login} />
-                      <h5 className="mb-1 text-xl font-medium text-[white]">{user.github.login ? user.github.login : user.username}</h5>
-                      <span className="text-sm text-[white]">{user.first_name} {user.last_name}</span>
-                      <span className="text-sm text-[white]">{user.email}</span>
+                      <h5 className="mb-1 text-xl font-medium text-secondary20">{user.github.login ? user.github.login : user.username}</h5>
+                      <span className="text-sm text-secondary20">{user.first_name} {user.last_name}</span>
+                      <span className="text-sm text-secondary20">{user.email}</span>
                       <span style={{ borderColor: `${user.role.color}` }} className="bg-[white] border-2 border-solid text-sm px-3 rounded-full pt-[0.1em] pb-[0.1em]">{user.role.label}</span>
                       <div className="flex space-x-2 justify-center border-2 border-solid border-primary1 flex-wrap gap-2 pb-5 rounded w-[80%]">
                         <div className="p-5 mb-0 bg-primary1 w-[100%] font-bold text-center">Skills</div>
@@ -61,7 +53,7 @@ function Dashboard() {
                       </div>
                     </div>
                     <div className="flex flex-col pb-10 items-center md:flex-row md:flex-wrap md:justify-center md:gap-10 overflow-hidden">
-                      <h2 className="text-[white] font-bold text-lg">Mes projets</h2>
+                      <h2 className="text-secondary20 font-bold text-lg">Mes projets</h2>
                       {projectOwner.map((item) => (
                         <ProjectItem
                           key={item.id}
@@ -69,8 +61,6 @@ function Dashboard() {
                         />
                       ))}
                     </div>
-                  </>
-                )}
               </div>
               <div>
                 {showDeleteModal && createPortal(
@@ -78,7 +68,6 @@ function Dashboard() {
                   document.body
                 )}
               </div>
-
             </div>
           ) : (
             <ModalUpdateUser closeModal={() => setShowUpdateModal(false)} />

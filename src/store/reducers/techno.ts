@@ -117,6 +117,8 @@ export const deleteTechno = createAppAsyncThunk(
 export const deleteMessage = createAction('technos/DELETE_MESSAGE');
 // Action creator qui me permet de supprimer le message de succès de la modification d'une techno
 export const deleteMessageUpdate = createAction('technos/DELETE_SUCCESS');
+// Action creator qui me permet de supprimer le message de succès de l'ajout d'une techno
+export const deleteMessageAdd = createAction('technos/DELETE_SUCCESS_ADD');
 
 // Je créer mon reducer
 const technoReducer = createReducer(initialState, (builder) => {
@@ -156,6 +158,9 @@ const technoReducer = createReducer(initialState, (builder) => {
   })
   .addCase(deleteMessageUpdate, (state) => {
     state.successUpdate = '';
+  })
+  .addCase(deleteMessageAdd, (state) => {
+    state.successAdd = '';
   })
 });
 

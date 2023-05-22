@@ -3,9 +3,10 @@ import createAppAsyncThunk from '../../utils/redux';
 import axiosInstance from '../../utils/axios';
 import { User } from '../../@types/user';
 import { getUserDataFromLocalStorage } from '../../utils/login';
-import { LoginResponse } from '../../@types/login';
 import fakeAvatar from '../../assets/fakeAvatar.png';
 
+// Je récupère les données de l'utilisateur dans le localStorage
+const userData = getUserDataFromLocalStorage();
 
 interface UserUpdate {
   id: number,
@@ -19,7 +20,6 @@ interface UserUpdate {
 interface UserState {
   data: User,
   errorAPIUser: string | null,
-  dataReception: boolean
   allUsers: User[]
 }
 // Je créer mon interface pour le state de mon reducer
@@ -44,11 +44,8 @@ export const initialState: UserState = {
     fakeAvatar: fakeAvatar,
   },
   errorAPIUser: null,
-  dataReception: false,
   allUsers: [],
 };
-// Je récupère les données de l'utilisateur dans le localStorage
-const userData = getUserDataFromLocalStorage() as LoginResponse;
 
 export const getAllUsers = createAppAsyncThunk(
   'user/GET_ALL_USERS',
@@ -73,9 +70,7 @@ export const getUserById = createAppAsyncThunk(
   'user/GET_USER_BY_ID',
   async (_, thunkAPI) => {
     try {
-      const { data } = await axiosInstance.get(`/user/${userData.id}`);
-      console.log(data);
-      
+      const { data } = await axiosInstance.get(`/user/${userData!.id}`);
       return data as User;
     } catch (err: any) {
       if (err) {
@@ -107,11 +102,18 @@ export const updateUser = createAppAsyncThunk(
     }
   },
 );
+
+// On créer une action pour l'update de l'utilisateur
+export const setUser = createAction<User>('user/SET_USER');
+
 // Gestions des messages d'erreur
 export const setUserErrorMessage = createAction<string>('user/SET_USER_ERROR_MESSAGE');
 // Je créer mon reducer
 const userReducer = createReducer(initialState, (builder) => {
   builder
+    .addCase(setUser, (state, action) => {
+      state.data = action.payload;
+    })
     .addCase(setUserErrorMessage, (state, action) => {
       state.errorAPIUser = action.payload;
     })
@@ -128,7 +130,6 @@ const userReducer = createReducer(initialState, (builder) => {
     .addCase(getUserById.fulfilled, (state, action) => {
       state.data = action.payload;
       state.errorAPIUser = null;
-      state.dataReception = true;
     });
 });
 
