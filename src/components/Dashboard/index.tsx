@@ -1,11 +1,12 @@
-import { useState } from "react";
-import { useAppSelector } from "../../hooks/redux";
+import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { Project } from "../../@types/project";
 import { searchProjectByUser } from "../../store/selectors/search";
 import ProjectItem from "../Project/excerp";
 import ModalUpdateUser from "./ModalUpdateUser";
 import { createPortal } from "react-dom";
 import ModalDeleteUser from "./ModalDeleteUser";
+import { getAllProjects } from "../../store/reducers/projects";
 
 function Dashboard() {
   const user = useAppSelector(state => state.user.data)

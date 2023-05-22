@@ -18,7 +18,6 @@ interface ProjectsState {
   dataReception: boolean
   isLoading: boolean;
   successAdd: string,
-  successUpdate: string,
   successDelete: string,
   idNewProject: number;
   successUpdate: string,
@@ -40,29 +39,28 @@ export const initialState: ProjectsState = {
   dataReception: false,
   isLoading: true,
   successAdd: '',
-  successUpdate: '',
   successDelete: '',
   idNewProject: 0,
   successUpdate: '',
 };
 // Action creator qui me permet de récupérer tous les projets
 export const getAllProjects = createAppAsyncThunk('projects/GET_ALL_PROJECTS',
-   async (_, thunkAPI) => {
-      try {
-        const { data: projects } = await axiosInstance.get('/projet');
-        return projects as Project[];
-      } catch (err: any) {
-        if (err) {
-          thunkAPI.dispatch(setProjectErrorMessage(err.response.data));
-        } else {
-          console.error(err);
-          thunkAPI.dispatch(setProjectErrorMessage('Une erreur s\'est produite'));
-        }
-        throw err;
-
+  async (_, thunkAPI) => {
+    try {
+      const { data: projects } = await axiosInstance.get('/projet');
+      return projects as Project[];
+    } catch (err: any) {
+      if (err) {
+        thunkAPI.dispatch(setProjectErrorMessage(err.response.data));
+      } else {
+        console.error(err);
+        thunkAPI.dispatch(setProjectErrorMessage('Une erreur s\'est produite'));
       }
+      throw err;
+
     }
-  });
+  }
+);
 
 // Action creator qui me permet de récupérer tous les projets
 export const getProjectByID = createAppAsyncThunk('projects/GET_PROJECT_BY_ID',
@@ -87,7 +85,7 @@ export const createProject = createAppAsyncThunk(
   async (project: newProject, thunkAPI) => {
     console.log('projet', project);
     try {
-      
+
       const { data } = await axiosInstance.post('/projet', project);
       console.log(data);
       return data;
@@ -131,10 +129,10 @@ export const deleteProject = createAppAsyncThunk(
   'projet/DELETE_PROJET',
   async (idProject: number, thunkAPI) => {
     try {
-      const { data } = await axiosInstance.delete(`/projet/${idProject}`);
+      const { data } = await axiosInstance.delete(`/projet/${idProject}`, idProject as any);
       return data;
     } catch (err: any) {
-      if (err.response?.data) {
+      if (err) {
         thunkAPI.dispatch(setProjectErrorMessage(err.response.data));
       } else {
         console.error(err);
@@ -144,12 +142,14 @@ export const deleteProject = createAppAsyncThunk(
     }
   },
 );
-// Gestions des messages d'erreur
 
+// Action creator qui me permet de supprimer le message de succès d'ajout
 export const deleteMessageAdd = createAction('project/DELETE_SUCCESS_ADD');
+// Action creator qui me permet de supprimer le message de succès de modification
 export const deleteMessageUpdate = createAction('project/DELETE_SUCCESS_UPDATE');
+// Action creator qui me permet de supprimer le message de succès de suppression
 export const deleteMessageDelete = createAction('project/DELETE_SUCCESS_DELETE');
-
+// Gestions des messages d'erreur
 export const setProjectErrorMessage = createAction<string>('project/SET_PROJECT_ERROR_MESSAGE');
 
 // Je créer mon reducer
@@ -160,6 +160,9 @@ const projectsReducer = createReducer(initialState, (builder) => {
     })
     .addCase(deleteMessageUpdate, (state) => {
       state.successUpdate = '';
+    })
+    .addCase(deleteMessageDelete, (state) => {
+      state.successDelete = '';
     })
     .addCase(setProjectErrorMessage, (state, action) => {
       state.errorApiProjects = action.payload;
@@ -196,7 +199,6 @@ const projectsReducer = createReducer(initialState, (builder) => {
       state.idNewProject = action.payload.result.id;
     })
     .addCase(deleteProject.fulfilled, (state, action) => {
-      state.lists = action.payload!;
       state.successDelete = 'Projet supprimé avec succès';
     })
 

@@ -1,16 +1,15 @@
-import { Navigate, useParams, Link } from 'react-router-dom';
+import { Navigate, useParams, Link, useNavigate } from 'react-router-dom';
 import { Settings, MessageCircle } from 'react-feather';
 import { toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from 'react';
-import { 
+import {
   deleteMessageUpdate,
-  deleteMessageAdd,
-  deleteProject,
   getProjectByID,
+  getAllProjects,
+  deleteMessageDelete,
 } from '../../../store/reducers/projects';
-import { createPortal } from 'react-dom';
 import DeleteConfirmation from '../../Admin/deleteConfirmation';
 import ModalUpdateProject from './ModalUpdateProject';
 
@@ -20,9 +19,9 @@ function ProjectDetail() {
   const isLoading = useAppSelector((state) => state.projects.isLoading);
   const [showUpdateModal, setShowUpdateModal] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
-  const [deleteConfirmation, setDeleteConfirmation] = useState<boolean>(false);
+  const successDelete = useAppSelector((state) => state.projects.successDelete)
   const successUpdate = useAppSelector((state) => state.projects.successUpdate);
-
+  const navigate = useNavigate()
   // Redirige l'utilisateur vers la page d'accueil si il n'est pas connecté
   if (!isLogged) {
     toast.warn('🦄 Veuillez vous connecter !');
@@ -30,16 +29,22 @@ function ProjectDetail() {
   }
   // On récupère l'id du projet recherché
   const { id } = useParams();
-  const idUser = useAppSelector((state) => state.user.data.id); 
+  const idUser = useAppSelector((state) => state.user.data.id);
 
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getProjectByID(id as unknown as number));
   }, [id, dispatch]);
 
-  const handleDeleteProject = () => {
-    setDeleteConfirmation(true);
-  }
+  useEffect(() => {
+    if (successDelete) {
+      toast.success(`🦄 ${successDelete}`);
+      dispatch(getAllProjects())
+      dispatch(deleteMessageDelete())
+      navigate('/dashboard')
+    }
+  }, [successDelete]);
+
   useEffect(() => {
     if (successUpdate) {
       toast.success(`🦄 ${successUpdate}`);
@@ -50,7 +55,7 @@ function ProjectDetail() {
 
 
   const project = useAppSelector((state) => state.projects.projectByID)
-  
+
   if (isLoading) {
     return <div>Loading...</div>
   }
@@ -65,12 +70,12 @@ function ProjectDetail() {
       {!showUpdateModal && (
         <div className="w-full lg:w-3/5 rounded-lg lg:rounded-l-lg lg:rounded-r-none shadow-xl bg-white opacity-75 mx-6 lg:mx-0 border-2 border-solid border-secondary10">
           <div className="p-4 md:p-12 text-center lg:text-left flex flex-col gap-7 relative">
-            <div 
-              
-              className="block rounded-full shadow-xl mx-auto -mt-16 md:-mt-24 h-24 w-24 bg-cover bg-center border-b-4 border-solid border-secondary10" 
-              
-              style={{ backgroundImage: `url(${!project.author.github.avatar_url ? fakeAvatar : project.author.github.avatar_url})` }} 
-            
+            <div
+
+              className="block rounded-full shadow-xl mx-auto -mt-16 md:-mt-24 h-24 w-24 bg-cover bg-center border-b-4 border-solid border-secondary10"
+
+              style={{ backgroundImage: `url(${!project.author.github.avatar_url ? fakeAvatar : project.author.github.avatar_url})` }}
+
             />
             <div className="pb-5 border-b-2 border-solid border-secondary23 rounded">
               <div className="flex items-center justify-between mb-3">
@@ -124,20 +129,20 @@ function ProjectDetail() {
               {idUser === project?.author.id &&
                 <button onClick={() => setShowDeleteModal(true)} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-[red] rounded-lg focus:ring-4 focus:outline-none">Delete</button>
               }
-              {showDeleteModal && createPortal(
-                <DeleteConfirmation 
-                type="projectsUser"
-                id={project.id}
-                closeModal={() => setShowDeleteModal(false)} />, document.body)
+              {showDeleteModal && (
+                <DeleteConfirmation
+                  type="projectsUser"
+                  id={project.id}
+                  closeModal={() => setShowDeleteModal(false)} />)
               }
             </div>
           </div>
         </div>
       )}
       {showUpdateModal && (
-        <ModalUpdateProject 
-        project={project}
-        closeModal={() => setShowUpdateModal(false)} />
+        <ModalUpdateProject
+          project={project}
+          closeModal={() => setShowUpdateModal(false)} />
       )}
     </div>
 

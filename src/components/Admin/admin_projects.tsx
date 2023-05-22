@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { deleteMessageUpdate, deleteMessageAdd, deleteProject, getAllProjects } from "../../store/reducers/projects";
+import { deleteMessageUpdate, deleteMessageAdd, deleteProject, getAllProjects, deleteMessageDelete } from "../../store/reducers/projects";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { Edit3, Eye, Trash2 } from "react-feather";
 import DeleteConfirmation from "./deleteConfirmation";
@@ -23,11 +23,11 @@ function Admin_Projects({ closeSection }: { closeSection: (value: string) => voi
   const handleDeleteProject = () => {
     setDeleteConfirmation(true);
   }
-  // Permet d'afficher une notification si la techno a bien été supprimée ou modifié et de recharger la liste des technos
+  // Permet d'afficher une notification si le projet a bien été supprimée ou modifié et de recharger la liste des projets
   useEffect(() => {
     if (successDelete) {
-      toast.error(`🦄 ${successDelete}`);
-      dispatch(deleteMessageAdd());
+      toast.success(`🦄 ${successDelete}`);
+      dispatch(deleteMessageDelete());
     }
     if (successUpdate) {
       toast.success(`🦄 ${successUpdate}`);

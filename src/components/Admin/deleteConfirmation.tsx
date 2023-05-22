@@ -12,17 +12,12 @@ interface ModalDeleteProps {
 }
 
 function DeleteConfirmation({ id, type, closeModal }: ModalDeleteProps) {
-  const navigate = useNavigate()
   const dispatch = useAppDispatch();
   const handleConfirmationDeleted = () => {
     if (type === 'techno') dispatch(deleteTechno(id));
     if (type === 'role') dispatch(deleteRole(id));
     if (type === 'projects') dispatch(deleteProject(id));
-    if (type === 'projectsUser') {
-      dispatch(deleteProject(id))
-      dispatch(getAllProjects)
-      navigate('/dashboard')
-    };
+    if (type === 'projectsUser') dispatch(deleteProject(id))
     if (type === 'users') dispatch(deleteUser(id));
     closeModal();
   }
