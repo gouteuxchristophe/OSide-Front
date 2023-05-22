@@ -21,6 +21,13 @@ interface ProjectsState {
   successDelete: string,
   successUpdate: string,
   idNewProject: number;
+  credentialTitle: string;
+  credentialContent: string;
+}
+
+interface credentialsAddProject {
+  title: string;
+  content: string;
 }
 
 interface UpdateProject {
@@ -42,6 +49,8 @@ export const initialState: ProjectsState = {
   successDelete: '',
   successUpdate: '',
   idNewProject: 0,
+  credentialTitle: '',
+  credentialContent: '',
 };
 // Action creator qui me permet de récupérer tous les projets
 export const getAllProjects = createAppAsyncThunk('projects/GET_ALL_PROJECTS',
@@ -137,6 +146,10 @@ export const deleteProject = createAppAsyncThunk(
     }
   },
 );
+// Action creator qui me permet de changer la valeur d'un champ de mon formulaire
+export const changeCredentialsTitle = createAction<string>('project/CHANGE_CREDENTIALS_TITLE');
+// Action creator qui me permet de changer la valeur d'un champ de mon formulaire
+export const changeCredentialsContent = createAction<string>('project/CHANGE_CREDENTIALS_CONTENT');
 
 // Action creator qui me permet de supprimer le message de succès d'ajout
 export const deleteMessageAdd = createAction('project/DELETE_SUCCESS_ADD');
@@ -150,6 +163,12 @@ export const setProjectErrorMessage = createAction<string>('project/SET_PROJECT_
 // Je créer mon reducer
 const projectsReducer = createReducer(initialState, (builder) => {
   builder
+    .addCase(changeCredentialsTitle, (state, action) => {
+      state.credentialTitle = action.payload;
+    })
+    .addCase(changeCredentialsContent, (state, action) => {
+      state.credentialContent = action.payload;
+    })
     // On vide le message de succès d'ajout
     .addCase(deleteMessageAdd, (state) => {
       state.successAdd = '';
@@ -204,6 +223,8 @@ const projectsReducer = createReducer(initialState, (builder) => {
       state.lists.push(action.payload!);
       state.successAdd = 'Projet ajouté avec succès';
       state.idNewProject = action.payload.result.id;
+      state.credentialTitle = '';
+      state.credentialContent = '';
     })
     // On gère la réussite de la requête qui supprime un projet
     .addCase(deleteProject.fulfilled, (state, action) => {

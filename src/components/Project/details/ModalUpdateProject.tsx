@@ -7,7 +7,7 @@ import AddTechno from "../../Modals/AddTechno";
 import { emptySelectedTechnos, getAllTechnos } from "../../../store/reducers/techno";
 
 interface updateProjectProps {
-  project: Project,
+  project: Project ,
   closeModal: () => void
 }
 
@@ -50,7 +50,7 @@ export default function ModalUpdateContent({ closeModal, project }: updateProjec
     <div className="rounded w-[100%] mx-auto pb-5 relative">
       <div
         onClick={closeModal}
-        className="absolute top-0 right-0 p-2.5 cursor-pointer"
+        className="absolute top-0 right-4 p-2.5 "
       >{<XCircle />}
       </div>
       {showModalAddTechno ? (

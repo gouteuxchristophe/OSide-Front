@@ -1,19 +1,31 @@
 import { useEffect, useState } from "react";
-import { deleteMessageUpdate, deleteMessageAdd, deleteProject, getAllProjects, deleteMessageDelete } from "../../store/reducers/projects";
+import { deleteMessageUpdate, deleteMessageAdd, getAllProjects, deleteMessageDelete } from "../../store/reducers/projects";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { Edit3, Eye, Trash2 } from "react-feather";
 import DeleteConfirmation from "./deleteConfirmation";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import ModalUpdateProject from "../Project/details/ModalUpdateProject";
+import ProjectItem from "../Project/excerp";
+import { Project } from "../../@types/project";
 
 function Admin_Projects({ closeSection }: { closeSection: (value: string) => void }) {
 
+  // Permet de récupérer la liste des projets
   const projectsList = useAppSelector((state) => state.projects.lists);
-  const [showModalUpdateProject, setShowModalUpdateProject] = useState(false);
+  // state du projet sélectionné pour la modification
+  const [projetItem, setProjetItem] = useState<Project>();
+  // state du modal
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+  // state de la suppression
   const [selectedProjectId, setSelectedProjectId] = useState<number>();
   const [deleteConfirmation, setDeleteConfirmation] = useState<boolean>(false);
+  // state des messages de succès
   const successDelete = useAppSelector((state) => state.projects.successDelete);
   const successUpdate = useAppSelector((state) => state.projects.successUpdate);
   const successAdd = useAppSelector((state) => state.projects.successAdd);
+
+  const navigate = useNavigate();
 
   // Récupérer la liste des projets
   const dispatch = useAppDispatch();
@@ -73,11 +85,12 @@ function Admin_Projects({ closeSection }: { closeSection: (value: string) => voi
                   </div>
                 </td>
                 <td className="flex justify-around">
-                  <button>
+                  <button onClick={() => navigate(`/project/${project.id}`)}>
                     <Eye className="w-4" />
                     </button>
                   <button onClick={() => {
-                    setShowModalUpdateProject(true);
+                    setShowUpdateModal(true);
+                    setProjetItem(project as Project)
                   }}>
                     <Edit3 className="w-4" />
                   </button>
@@ -94,11 +107,13 @@ function Admin_Projects({ closeSection }: { closeSection: (value: string) => voi
         </tbody>
       </table>
       <div>
-        {showModalUpdateProject && (
-          <div>
-
-          </div>
-        )}
+      {showUpdateModal && (
+        <ModalUpdateProject
+          project={projetItem!}
+          closeModal={() => setShowUpdateModal(false)} />
+      )}
+      </div>
+      <div>
         {deleteConfirmation && (
           <DeleteConfirmation
             type="projects"

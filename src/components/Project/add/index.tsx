@@ -3,8 +3,8 @@ import { toast } from "react-toastify";
 import { Navigate, useNavigate } from "react-router-dom";
 import AddTechno from "../../Modals/AddTechno";
 import { useEffect, useState } from "react";
-import { createProject, deleteMessageAdd, newProject } from "../../../store/reducers/projects";
-import { getAllTechnos } from "../../../store/reducers/techno";
+import { changeCredentialsContent, changeCredentialsTitle, createProject, deleteMessageAdd, newProject } from "../../../store/reducers/projects";
+import { emptySelectedTechnos, getAllTechnos } from "../../../store/reducers/techno";
 
 function AddProjects() {
   // permet de vérifier si l'utilisateur est connecté
@@ -15,8 +15,8 @@ function AddProjects() {
   // state du modal
   const [showModalAddTechno, setShowModalAddTechno] = useState(false);
   // state du formulaire
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const credentialTitle = useAppSelector((state) => state.projects.credentialTitle);
+  const credentialContent = useAppSelector((state) => state.projects.credentialContent);
   // state des messages de succès
   const successAdd = useAppSelector((state) => state.projects.successAdd);
   // state du nouvel id du projet
@@ -42,6 +42,7 @@ function AddProjects() {
   useEffect(() => {
     if (successAdd) {
       toast.success(`🦄 ${successAdd}`);
+      dispatch(emptySelectedTechnos())
       dispatch(deleteMessageAdd())
       navigate(`/project/${idNewProject}`);
     }
@@ -56,8 +57,8 @@ function AddProjects() {
       return technoFind?.id;
     })
     const newProject = {
-      title: title,
-      content: content,
+      title: credentialTitle,
+      content: credentialContent,
       status: 'En cours',
       owner_id: user.id,
       technoProjet: idTechnos
@@ -65,12 +66,20 @@ function AddProjects() {
     dispatch(createProject(newProject as newProject));
   }
 
+  const handleCredentialTitle = (title: string) => {
+    dispatch(changeCredentialsTitle(title));
+  }
+
+  const handleCredentialContent = (content: string) => {
+    dispatch(changeCredentialsContent(content));
+  }
+
   return (
     <>
       {showModalAddTechno ? (
         <AddTechno closeModal={() => setShowModalAddTechno(false)} />
       ) : (
-        <div className="px-10 pt-2 sm:mt-[2rem] rounded w-full ">
+        <div className="px-10 py-10 sm:mt-[2rem] rounded w-full">
           <div className="w-full rounded-lg lg:rounded-l-lg lg:rounded-r-none shadow-xl bg-white opacity-75 mx-6 lg:mx-0 border-2 border-solid border-secondary10">
             <div className="p-4 md:p-12 text-center lg:text-left flex flex-col gap-7 relative">
               <div className="block rounded-full shadow-xl mx-auto -mt-16 md:-mt-24 h-24 w-24 bg-cover bg-center border-b-4 border-solid border-secondary10" style={{ backgroundImage: `url(${!user.github.avatar_url ? fakeAvatar : user.github.avatar_url})` }} />
@@ -83,11 +92,11 @@ function AddProjects() {
                   <form onSubmit={handleAddProject} className="flex flex-col gap-5">
                     <div className="mb-2 sm:mb-6 flex flex-col items-center justify-center sm:gap-5 w-full">
                       <label htmlFor="title" className="w-[90%] text-center block text-sm font-medium sm:w-[90%] sm:pb-0 pb-2">Title</label>
-                      <input onChange={(e) => setTitle(e.currentTarget.value)} type="text" name="" id="" />
+                      <input onChange={(e) => handleCredentialTitle(e.currentTarget.value)} defaultValue={credentialTitle} type="text" name="" id="" />
                     </div>
                     <div className="mb-2 sm:mb-6 flex flex-col items-center justify-center sm:gap-5 w-full">
                       <label htmlFor="content" className="text-center block text-sm font-medium sm:w-[90%] sm:pb-0 pb-2">Content</label>
-                      <textarea onChange={(e) => setContent(e.currentTarget.value)} />
+                      <textarea onChange={(e) => handleCredentialContent(e.currentTarget.value)} defaultValue={credentialContent} className="w-full" />
                     </div>
                     <div className="flex flex-col items-center space-x-2 justify-center border-2 border-solid border-primary1 flex-wrap gap-5 pb-5 rounded">
                       <div className="p-5 mb-0 bg-primary1 w-[100%] font-bold">Techno</div>

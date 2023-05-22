@@ -33,7 +33,7 @@ function AddTechno({ closeModal, technoPred }: AddTechnoProps) {
   const dispatch = useAppDispatch();
   // state des messages de succès ou d'erreur
   const successAdd = useAppSelector((state) => state.techno.successAdd);
-  
+
   // Récupérer la liste des technos
   useEffect(() => {
     dispatch(getAllTechnos());
@@ -81,7 +81,7 @@ function AddTechno({ closeModal, technoPred }: AddTechnoProps) {
   // Ajouter les technos dans la base de données
   const handleValidationAddTechno = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
     if (technoNotExist.length > 0) {
-    dispatch(addTechno(technoNotExist))
+      dispatch(addTechno(technoNotExist))
     }
     dispatch(updatedSelectedTechnos(allTechno))
     dispatch(getAllTechnos())
@@ -90,22 +90,24 @@ function AddTechno({ closeModal, technoPred }: AddTechnoProps) {
   // Supprimer une techno du tableau technoExist, technoNotExist ou technoPredExist
   const handleRemoveTechno = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
     // Si le label de la techno est dans le tableau technoPredExist, on supprime la techno du tableau technoPredExist
-    const technoPred = technoPredExist.find((techno) => techno.label === event.currentTarget.previousSibling?.textContent)
-    if (technoPred) {
-      const arrayTechnoPredExist = technoPredExist.filter((techno) => techno.label !== event.currentTarget.previousSibling?.textContent)
-      setTechnoPredExist(arrayTechnoPredExist)
+    if (technoPredExist) {
+      const technoPred = technoPredExist.find((techno) => techno.label === event.currentTarget.previousSibling?.textContent)
+      if (technoPred) {
+        const arrayTechnoPredExist = technoPredExist.filter((techno) => techno.label !== event.currentTarget.previousSibling?.textContent)
+        setTechnoPredExist(arrayTechnoPredExist)
+      }
     }
     // Si le label de la techno est dans le tableau technoExist, on supprime la techno du tableau technoExist
     const techno = technoExist.find((techno) => techno.label === event.currentTarget.previousSibling?.textContent)
-    if (techno) { 
+    if (techno) {
       const arrayTechnoExist = technoExist.filter((techno) => techno.label !== event.currentTarget.previousSibling?.textContent)
       setTechnoExist(arrayTechnoExist)
-    } 
+    }
     // Sinon, on supprime la techno du tableau technoNotExist
     else {
       const arrayTechnoNotExist = technoNotExist.filter((techno) => techno.label !== event.currentTarget.previousSibling?.textContent)
       setTechnoNotExist(arrayTechnoNotExist)
-    } 
+    }
   }
 
   return (
@@ -124,8 +126,8 @@ function AddTechno({ closeModal, technoPred }: AddTechnoProps) {
         <div className="flex flex-wrap gap-2 justify-center">
           {allTechno.map((techno) => (
             <div className="relative" key={`${techno.id}-${techno.label}`}>
-            <span className={`p-2 bg-[white] rounded border border-solid border-${techno.color}`}>{techno.label}</span>
-            <button onClick={handleRemoveTechno} className="absolute top-[-50%] right-[-10%] w-6 h-6 rounded-full border border-solid border-[red] bg-[red] text-[white]">X</button>
+              <span className={`p-2 bg-[white] rounded border border-solid border-${techno.color}`}>{techno.label}</span>
+              <button onClick={handleRemoveTechno} className="absolute top-[-50%] right-[-10%] w-6 h-6 rounded-full border border-solid border-[red] bg-[red] text-[white]">X</button>
             </div>
           ))}
         </div>
