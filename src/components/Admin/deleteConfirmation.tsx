@@ -1,5 +1,4 @@
 import { useAppDispatch } from "../../hooks/redux";
-import { deleteRole } from "../../store/reducers/role";
 import { deleteTechno } from "../../store/reducers/techno";
 import { deleteRole } from "../../store/reducers/role";
 

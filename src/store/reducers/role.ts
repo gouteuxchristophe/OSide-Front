@@ -1,11 +1,11 @@
 import { createAction, createReducer } from '@reduxjs/toolkit';
 import createAppAsyncThunk from '../../utils/redux';
 import axiosInstance from '../../utils/axios';
-import { RoleId } from '../../@types/user';
+import { Role } from '../../@types/user';
 import { newRole } from '../../components/Admin/ModalAddRole';
 
 interface RoleState {
-  lists: RoleId[],
+  lists: Role[],
   errorAPIRole: string | null,
   successUpdate: string,
   successDelete: string,
@@ -25,7 +25,7 @@ export const getAllRole = createAppAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const { data } = await axiosInstance.get('/role');
-      return data as RoleId[];
+      return data as Role[];
     } catch (err: any) {
       if (err) {
         thunkAPI.dispatch(setRoleErrorMessage(err.response.data));
@@ -61,7 +61,7 @@ export const addRole = createAppAsyncThunk(
 // Requete API pour modifier une techno
 export const updateRole = createAppAsyncThunk(
   'role/PUT_ROLE',
-  async (role: RoleId, thunkAPI) => {  
+  async (role: Role, thunkAPI) => {  
       try {
         const { data } = await axiosInstance.put(`/role/${role.id as number}`, {
           label: role.label,

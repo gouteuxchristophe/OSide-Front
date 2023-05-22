@@ -52,7 +52,7 @@ function ProjectDetail() {
               
               className="block rounded-full shadow-xl mx-auto -mt-16 md:-mt-24 h-24 w-24 bg-cover bg-center border-b-4 border-solid border-secondary10" 
               
-              style={{ backgroundImage: `url(${!!project.author.github.github.avatar_url ? fakeAvatar : project.author.github.avatar_url_url ? fakeAvatar : project.author.github.avatar_url})` }} 
+              style={{ backgroundImage: `url(${!!project.author.github.avatar_url ? fakeAvatar : project.author.github.avatar_url ? fakeAvatar : project.author.github.avatar_url})` }} 
             
             />
             <div className="pb-5 border-b-2 border-solid border-secondary23 rounded">

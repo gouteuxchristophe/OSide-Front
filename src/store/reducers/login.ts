@@ -3,6 +3,7 @@ import {   getUserDataFromLocalStorage, removeUserDataFromLocalStorage } from '.
 import createAppAsyncThunk from '../../utils/redux';
 import axiosInstance from '../../utils/axios';
 import { getUserById } from './user';
+import { setUser } from './user';
 
 // Je récupère les données de l'utilisateur dans le localStorage
 const userStorage = getUserDataFromLocalStorage();
