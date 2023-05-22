@@ -17,7 +17,7 @@ function Register() {
   const navigate = useNavigate();
   // state qui va contenir tout le contenu des inputs au fur
   // et à mesure qu'ils se remplissent par le user
-  const [inputs, setInputs] = useState<InputProps>({});
+  const [inputs, setInputs] = useState<InputProps>({ username: '', last_name: '', first_name: '', email: '', password: '', passwordConfirm: ''});
   // les deux states ci-dessous sont des booléens
   // qui permettent d'afficher ou de masquer les passwords en cliquant sur l'icone 'oeil'
   // (voir dans handleEyeClickPwd et handleEyeClickPwdVerif)
@@ -37,8 +37,8 @@ function Register() {
   // handleChange permet de récupérer les contenus des inputs (onChange)
   // et de l'ajouter au state 'inputs' au fur et à mesure de la saisie
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name } = e.target;
-    const { value } = e.target;
+    const { name } = e.target
+    const { value } = e.target!
     setInputs((values) => ({ ...values, [name]: value }));
   }
   // permet de vérifier le format de l'email
