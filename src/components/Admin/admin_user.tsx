@@ -9,11 +9,13 @@ function Admin_Users({ closeSection }: { closeSection: (value: string) => void }
   const allUser = useAppSelector((state) => state.user.allUsers);
   const [showModalUpdateUser, setShowModalUpdateUser] = useState(false);
 
+  // Récupérer la liste des utilisateurs
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getAllUsers())
   }, [dispatch])
 
+  // Permet d'afficher la modal de suppression d'un utilisateur
   const handleDeleteUser = (id: number): void => {
     throw new Error("Function not implemented.");
   }

@@ -1,8 +1,7 @@
 import { createAction, createReducer } from '@reduxjs/toolkit';
-import {   getUserDataFromLocalStorage, removeUserDataFromLocalStorage } from '../../utils/login';
+import { getUserDataFromLocalStorage, removeUserDataFromLocalStorage } from '../../utils/login';
 import createAppAsyncThunk from '../../utils/redux';
 import axiosInstance from '../../utils/axios';
-import { getUserById } from './user';
 import { setUser } from './user';
 
 // Je récupère les données de l'utilisateur dans le localStorage
@@ -50,10 +49,8 @@ export const loginOAuth = createAppAsyncThunk(
       token: data.token,
       logged: true,
     }
-
     // Je stocke les données de l'utilisateur dans le localStorage
     localStorage.setItem('user', JSON.stringify(userData));
-    
     return userData;
   },
 );
@@ -94,7 +91,6 @@ export const login = createAppAsyncThunk(
         console.error(err);
         thunkAPI.dispatch(setLoginErrorMessage('Une erreur s\'est produite.'));
       }
-      throw err;
     }
   },
 );
@@ -113,14 +109,15 @@ const loginReducer = createReducer(initialState, (builder) => {
       const { propertyKey, value } = action.payload;
       state.credentials[propertyKey] = value;
     })
+    // On gère le rejet de la requête qui me permet de me connecter
     .addCase(login.rejected, (state) => {
       state.errorAPILogin = null;
     })
-    // Dans le cas où ma requête est en réussie
+    // On gère la réussite de la requête qui me permet de me connecter
     .addCase(login.fulfilled, (state, action) => {
       // Je met à jour le state logged et token
       state.logged = true;
-      state.token = action.payload.token;
+      state.token = action.payload!.token;
       state.errorAPILogin = null
       // Je vide les champs de mon formulaire
       state.credentials.email = '';

@@ -1,21 +1,26 @@
-import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { useState } from "react";
+import { useAppSelector } from "../../hooks/redux";
 import { Project } from "../../@types/project";
 import { searchProjectByUser } from "../../store/selectors/search";
 import ProjectItem from "../Project/excerp";
 import ModalUpdateUser from "./ModalUpdateUser";
 import { createPortal } from "react-dom";
 import ModalDeleteUser from "./ModalDeleteUser";
-import { getAllProjects } from "../../store/reducers/projects";
 
 function Dashboard() {
   const user = useAppSelector(state => state.user.data)
+  // State des modals
   const [showUpdateModal, setShowUpdateModal] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
+  // state pour récupérer une image par défaut
   const fakeAvatar = useAppSelector((state) => state.user.data.fakeAvatar);
+  // state pour la date de création du compte
   const maDate = new Date(user.created_at as string)
+  // state qui défini si l'utilisateur est connecté ou non
   const isLogged = useAppSelector(state => state.login.logged)
+  // Récupère la liste des projets
   const projectsLists = useAppSelector(state => state.projects.lists)
+  // Filtrer les projets par id
   const filterProjectsById = (id: number) => projectsLists!.filter((project) => searchProjectByUser(project, user.id)) as Project[];
   const projectOwner = filterProjectsById(user.id)
 

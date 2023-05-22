@@ -18,14 +18,20 @@ interface AddTechnoProps {
 }
 
 function AddTechno({ closeModal, technoPred }: AddTechnoProps) {
-
+  // state des technos
   const technoList = useAppSelector((state) => state.techno.technoLists);
+  // state des champs de saisie
   const [inputValue, setInputValue] = useState('');
+  // state des technos existantes
   const [technoExist, setTechnoExist] = useState<ITechnoProjet[]>([]);
+  // state des technos non existantes
   const [technoNotExist, setTechnoNotExist] = useState<newTechno[]>([]);
+  // state des technos prédéfinies
   const [technoPredExist, setTechnoPredExist] = useState<ITechnoProjet[]>(technoPred as ITechnoProjet[])
+  // state des technos à envoyer
   const [allTechno, setAllTechno] = useState<newTechno[]>([]);
   const dispatch = useAppDispatch();
+  // state des messages de succès ou d'erreur
   const successAdd = useAppSelector((state) => state.techno.successAdd);
   
   // Récupérer la liste des technos
@@ -50,6 +56,7 @@ function AddTechno({ closeModal, technoPred }: AddTechnoProps) {
     setAllTechno(technoSelected)
   }, [technoExist, technoNotExist, technoPredExist])
 
+  // Ajouter une techno dans le tableau technoExist ou technoNotExist
   const handleAddTechno = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     // Vérifier si la techno existe déjà dans la liste
@@ -71,7 +78,7 @@ function AddTechno({ closeModal, technoPred }: AddTechnoProps) {
     setInputValue('')
   }
 
-
+  // Ajouter les technos dans la base de données
   const handleValidationAddTechno = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
     if (technoNotExist.length > 0) {
     dispatch(addTechno(technoNotExist))
@@ -80,7 +87,7 @@ function AddTechno({ closeModal, technoPred }: AddTechnoProps) {
     dispatch(getAllTechnos())
     closeModal()
   }
-
+  // Supprimer une techno du tableau technoExist, technoNotExist ou technoPredExist
   const handleRemoveTechno = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
     // Si le label de la techno est dans le tableau technoPredExist, on supprime la techno du tableau technoPredExist
     const technoPred = technoPredExist.find((techno) => techno.label === event.currentTarget.previousSibling?.textContent)

@@ -23,9 +23,13 @@ export const initialState: ContactFormState = {
   },
 };
 
+// Action creator qui me permet de récupérer l'input du nom
 export const changeInputName = createAction<string>('settings/SUBMIT_CONTACT_FORM_NAME');
+// Action creator qui me permet de récupérer l'input de l'email
 export const changeInputEmail = createAction<string>('settings/SUBMIT_CONTACT_FORM_EMAIL');
+// Action creator qui me permet de récupérer l'input du message
 export const changeInputMessage = createAction<string>('settings/SUBMIT_CONTACT_FORM_MESSAGE');
+// Action creator qui me permet d'envoyer le mail
 export const sendMail = createAction<{
   sendName: string
   sendEmail: string
@@ -45,7 +49,6 @@ const contactFormReducer = createReducer(initialState, (builder) => {
     })
     .addCase(sendMail, (state, action) => {
       state.sendMail = action.payload;
-      console.log(state.sendMail);
     });
 });
 

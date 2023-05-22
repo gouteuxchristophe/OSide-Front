@@ -5,7 +5,7 @@ import Admin_Projects from "./admin_projects";
 import Admin_Roles from "./admin_roles";
 
 function AdminPage() {
-
+  // Permet de gérer l'affichage du menu
   const [showMenuAdmin, setShowMenuAdmin] = useState(true);
   const [showAdminTechno, setShowAdminTechno] = useState(false);
   const [showAdminUser, setShowAdminUser] = useState(false);

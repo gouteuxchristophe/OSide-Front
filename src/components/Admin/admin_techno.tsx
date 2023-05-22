@@ -10,12 +10,15 @@ import DeleteConfirmation from "./deleteConfirmation";
 function Admin_Techno({ closeSection }: { closeSection: (value: string) => void }) {
 
   const technoList = useAppSelector((state) => state.search.technoLists);
+  // state des messages de succès ou d'erreur
   const successDelete = useAppSelector((state) => state.techno.successDelete);
   const successUpdate = useAppSelector((state) => state.techno.successUpdate);
   const successAdd = useAppSelector((state) => state.techno.successAdd);
   const [deleteConfirmation, setDeleteConfirmation] = useState<boolean>(false);
+  // state des modals
   const [showModalUpdateTechno, setShowModalUpdateTechno] = useState(false);
   const [showModalAddTechno, setShowModalAddTechno] = useState(false);
+  // state des technos
   const [selectedTechnoId, setSelectedTechnoId] = useState<number>();
   const [selectedTechnoLabel, setSelectedTechnoLabel] = useState<string>('');
   const [selectedTechnoColor, setSelectedTechnoColor] = useState<string | undefined>('');
@@ -30,7 +33,7 @@ function Admin_Techno({ closeSection }: { closeSection: (value: string) => void 
     setDeleteConfirmation(true);
   }
 
-  // Permet d'afficher une notification si la techno a bien été supprimée ou modifiée
+  // Permet d'afficher une notification si la techno a bien été supprimée, modifiée, ajoutée
   // et de recharger la liste des technos
   useEffect(() => {
     if (successDelete) {
@@ -58,7 +61,6 @@ function Admin_Techno({ closeSection }: { closeSection: (value: string) => void 
         <div className="flex justify-center mx-auto w-[80%] sm:w-[40%] mb-5"><AddTechno
           closeModal={() => setShowModalAddTechno(false)}
         /></div>)}
-
       <table className="text-xs text-center mx-auto w-[80%] sm:w-[40%]">
         <thead className="text-xs uppercase bg-secondary20">
           <tr>

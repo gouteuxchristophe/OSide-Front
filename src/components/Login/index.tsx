@@ -7,14 +7,15 @@ import { toast } from 'react-toastify';
 import { GitHub, EyeOff, Eye } from 'react-feather';
 
 function Login() {
-  // Utilisation du selector pour récupérer les données de l'utilisateur
+  // stte des champs du formulaire
   const email = useAppSelector((state) => state.login.credentials.email);
   const password = useAppSelector((state) => state.login.credentials.password);
   const isLogged = useAppSelector((state) => state.login.logged);
   const errorLogin = useAppSelector((state) => state.login.errorAPILogin);
   const [clickEye, setClickEye] = useState(false);
   const dispatch = useAppDispatch();
-  
+
+  // Permet de rediriger l'utilisateur vers la page d'authentification de GitHub
   const handleGitHubAuth = () => {
     const scope = import.meta.env.VITE_SCOPE;
     const clientId = import.meta.env.VITE_CLIENT_ID;

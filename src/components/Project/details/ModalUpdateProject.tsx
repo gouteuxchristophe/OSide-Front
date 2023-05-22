@@ -12,15 +12,18 @@ interface updateProjectProps {
 }
 
 export default function ModalUpdateContent({ closeModal, project }: updateProjectProps) {
-
+  // state des technos
   const technoList = useAppSelector((state) => state.techno.technoLists);
+  // state des modals
   const [showModalAddTechno, setShowModalAddTechno] = useState(false);
+  // state des technos sélectionnées
   const technoSelected = useAppSelector((state) => state.techno.selectedTechnos);
+  // state des champs de saisie
   const [updateTitle, setUpdateTitle] = useState('')
   const [updateContent, setUpdateContent] = useState('')
   const [updateStatus, setUpdateStatus] = useState('')
   const dispatch = useAppDispatch()
-
+  // Mettre à jour un projet
   const handleUpdateUserSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     dispatch(getAllTechnos())

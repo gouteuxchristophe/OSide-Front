@@ -9,21 +9,23 @@ function Admin_Projects({ closeSection }: { closeSection: (value: string) => voi
 
   const projectsList = useAppSelector((state) => state.projects.lists);
   const [showModalUpdateProject, setShowModalUpdateProject] = useState(false);
+  const [selectedProjectId, setSelectedProjectId] = useState<number>();
+  const [deleteConfirmation, setDeleteConfirmation] = useState<boolean>(false);
   const successDelete = useAppSelector((state) => state.projects.successDelete);
   const successUpdate = useAppSelector((state) => state.projects.successUpdate);
   const successAdd = useAppSelector((state) => state.projects.successAdd);
-  const [selectedProjectId, setSelectedProjectId] = useState<number>();
-  const [deleteConfirmation, setDeleteConfirmation] = useState<boolean>(false);
 
+  // Récupérer la liste des projets
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getAllProjects())
   }, [dispatch])
-
+  // Permet d'afficher la modal de suppression d'un projet
   const handleDeleteProject = () => {
     setDeleteConfirmation(true);
   }
-  // Permet d'afficher une notification si le projet a bien été supprimée ou modifié et de recharger la liste des projets
+  // Permet d'afficher une notification si le projet a bien été supprimée, modifié, ajouté
+  // et de recharger la liste des projets
   useEffect(() => {
     if (successDelete) {
       toast.success(`🦄 ${successDelete}`);

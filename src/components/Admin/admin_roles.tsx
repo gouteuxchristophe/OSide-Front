@@ -11,11 +11,14 @@ import DeleteConfirmation from "./deleteConfirmation";
 function Admin_Roles({ closeSection }: { closeSection: () => void }) {
 
   const rolesList = useAppSelector((state) => state.role.lists);
+  // state des modals
   const [showModalUpdateRole, setShowModalUpdateRole] = useState(false);
   const [showModalAddRole, setShowModalAddRole] = useState(false);
+  // state des roles
   const [selectedRoleId, setSelectedRoleId] = useState<number>();
   const [selectedRoleLabel, setSelectedRoleLabel] = useState<string>();
   const [selectedRoleColor, setSelectedRoleColor] = useState<string>();
+  // state des messages de succès ou d'erreur
   const successDelete = useAppSelector((state) => state.role.successDelete);
   const successUpdate = useAppSelector((state) => state.role.successUpdate);
   const successAdd = useAppSelector((state) => state.role.successAdd);
@@ -29,7 +32,7 @@ function Admin_Roles({ closeSection }: { closeSection: () => void }) {
     dispatch(getAllRole())
   }, [dispatch]);
 
-  // Permet d'afficher une notification si le role a bien été supprimée ou modifiée
+  // Permet d'afficher une notification si le role a bien été supprimée, modifiée, ajoutée
   // et de recharger la liste des roles
   useEffect(() => {
     if (successDelete) {
@@ -48,6 +51,7 @@ function Admin_Roles({ closeSection }: { closeSection: () => void }) {
     dispatch(getAllRole());
   }, [successDelete, successUpdate, successAdd]);
 
+  // Permet d'afficher la modal de suppression d'un role
   const handleDeleteRole = () => {
     setDeleteConfirmation(true);
   }

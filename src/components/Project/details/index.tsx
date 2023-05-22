@@ -14,13 +14,19 @@ import DeleteConfirmation from '../../Admin/deleteConfirmation';
 import ModalUpdateProject from './ModalUpdateProject';
 
 function ProjectDetail() {
+  // Permet de savoir si l'utilisateur est connecté
   const isLogged = useAppSelector((state) => state.login.logged);
+  // Permet de récupérer les données de l'utilisateur
   const fakeAvatar = useAppSelector((state) => state.user.data.fakeAvatar);
+  // Permet de savoir si la requête API est en cours
   const isLoading = useAppSelector((state) => state.projects.isLoading);
+  // state du modal
   const [showUpdateModal, setShowUpdateModal] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
+  // state des messages de succès
   const successDelete = useAppSelector((state) => state.projects.successDelete)
   const successUpdate = useAppSelector((state) => state.projects.successUpdate);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate()
   // Redirige l'utilisateur vers la page d'accueil si il n'est pas connecté
   if (!isLogged) {
@@ -30,12 +36,11 @@ function ProjectDetail() {
   // On récupère l'id du projet recherché
   const { id } = useParams();
   const idUser = useAppSelector((state) => state.user.data.id);
-
-  const dispatch = useAppDispatch();
+  // Permet de récupérer les données du projet
   useEffect(() => {
     dispatch(getProjectByID(id as unknown as number));
   }, [id, dispatch]);
-
+  // Afficher un toast si le projet a bien été supprimé
   useEffect(() => {
     if (successDelete) {
       toast.success(`🦄 ${successDelete}`);
@@ -44,7 +49,7 @@ function ProjectDetail() {
       navigate('/dashboard')
     }
   }, [successDelete]);
-
+  // Afficher un toast si le projet a bien été modifié
   useEffect(() => {
     if (successUpdate) {
       toast.success(`🦄 ${successUpdate}`);
@@ -52,7 +57,6 @@ function ProjectDetail() {
       dispatch(getProjectByID(id as unknown as number));
     }
   }, [successUpdate]);
-
 
   const project = useAppSelector((state) => state.projects.projectByID)
 

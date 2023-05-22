@@ -19,8 +19,8 @@ interface ProjectsState {
   isLoading: boolean;
   successAdd: string,
   successDelete: string,
-  idNewProject: number;
   successUpdate: string,
+  idNewProject: number;
 }
 
 interface UpdateProject {
@@ -40,8 +40,8 @@ export const initialState: ProjectsState = {
   isLoading: true,
   successAdd: '',
   successDelete: '',
-  idNewProject: 0,
   successUpdate: '',
+  idNewProject: 0,
 };
 // Action creator qui me permet de récupérer tous les projets
 export const getAllProjects = createAppAsyncThunk('projects/GET_ALL_PROJECTS',
@@ -56,8 +56,6 @@ export const getAllProjects = createAppAsyncThunk('projects/GET_ALL_PROJECTS',
         console.error(err);
         thunkAPI.dispatch(setProjectErrorMessage('Une erreur s\'est produite'));
       }
-      throw err;
-
     }
   }
 );
@@ -96,7 +94,6 @@ export const createProject = createAppAsyncThunk(
         console.error(err);
         thunkAPI.dispatch(setProjectErrorMessage('Une erreur s\'est produite lors de la connexion.'));
       }
-      throw err;
     }
   },
 );
@@ -120,7 +117,6 @@ export const updateProject = createAppAsyncThunk(
         console.error(err);
         thunkAPI.dispatch(setProjectErrorMessage('Une erreur s\'est produite lors de la connexion.'));
       }
-      throw err;
     }
   },
 );
@@ -138,7 +134,6 @@ export const deleteProject = createAppAsyncThunk(
         console.error(err);
         thunkAPI.dispatch(setProjectErrorMessage('Une erreur s\'est produite lors de la connexion.'));
       }
-      throw err;
     }
   },
 );
@@ -155,53 +150,69 @@ export const setProjectErrorMessage = createAction<string>('project/SET_PROJECT_
 // Je créer mon reducer
 const projectsReducer = createReducer(initialState, (builder) => {
   builder
+    // On vide le message de succès d'ajout
     .addCase(deleteMessageAdd, (state) => {
       state.successAdd = '';
     })
+    // On vide le message de succès de modification
     .addCase(deleteMessageUpdate, (state) => {
       state.successUpdate = '';
     })
+    // On vide le message de succès de suppression
     .addCase(deleteMessageDelete, (state) => {
       state.successDelete = '';
     })
+    // On récupère le message d'erreur
     .addCase(setProjectErrorMessage, (state, action) => {
       state.errorApiProjects = action.payload;
     })
+    // On gère le rejet de la requête qui récupère tous les projets
     .addCase(getAllProjects.rejected, (state) => {
       state.errorApiProjects = null;
     })
+    // On gère la réussite de la requête qui récupère tous les projets
     .addCase(getAllProjects.fulfilled, (state, action) => {
       state.errorApiProjects = null;
       state.lists = action.payload!;
       state.dataReception = true;
     })
+    // On gère la réussite de la requête qui modifie un projet
     .addCase(updateProject.fulfilled, (state) => {
       state.successUpdate = 'Projet modifié avec succès';
     })
+    // On gère le rejet de la requête qui modifie un projet
     .addCase(updateProject.rejected, (state) => {
       state.errorApiProjects = null;
     })
+    // On gère le rejet de la requête qui récupère un projet par son id
     .addCase(getProjectByID.rejected, (state) => {
       state.errorApiProjects = null;
     })
+    // On gère la réussite de la requête qui récupère un projet par son id
     .addCase(getProjectByID.fulfilled, (state, action) => {
       state.errorApiProjects = null;
       state.projectByID = action.payload!;
       state.isLoading = false;
     })
+    // On gère le rejet de la requête qui crée un projet
     .addCase(createProject.rejected, (state) => {
       state.errorApiProjects = null;
     })
+    // On gère la réussite de la requête qui crée un projet
     .addCase(createProject.fulfilled, (state, action) => {
       state.errorApiProjects = null;
       state.lists.push(action.payload!);
       state.successAdd = 'Projet ajouté avec succès';
       state.idNewProject = action.payload.result.id;
     })
+    // On gère la réussite de la requête qui supprime un projet
     .addCase(deleteProject.fulfilled, (state, action) => {
       state.successDelete = 'Projet supprimé avec succès';
     })
-
+    // On gère le rejet de la requête qui supprime un projet
+    .addCase(deleteProject.rejected, (state) => {
+      state.errorApiProjects = null;
+    });
 });
 
 export default projectsReducer;

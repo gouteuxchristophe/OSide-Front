@@ -8,6 +8,7 @@ interface ModalUserProps {
 }
 
 function ModalUser({ handleCloseModal }: ModalUserProps) {
+  // Permet de récupérer le rôle de l'utilisateur
   const role = useAppSelector((state) => state.user.data.role);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();

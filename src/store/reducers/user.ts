@@ -47,6 +47,7 @@ export const initialState: UserState = {
   allUsers: [],
 };
 
+// Action creator qui me récupère tous les utilisateurs
 export const getAllUsers = createAppAsyncThunk(
   'user/GET_ALL_USERS',
   async (_, thunkAPI) => {
@@ -60,7 +61,6 @@ export const getAllUsers = createAppAsyncThunk(
         console.error(err);
         thunkAPI.dispatch(setUserErrorMessage('Les données de l\'utilisateur n\'ont pas pu être récupérées.'));
       }
-      throw err;
     }
   },
 );
@@ -79,12 +79,11 @@ export const getUserById = createAppAsyncThunk(
         console.error(err);
         thunkAPI.dispatch(setUserErrorMessage('Les données de l\'utilisateur n\'ont pas pu être récupérées.'));
       }
-      throw err;
     }
   },
 );
 
-// On créer une action pour l'update de l'utilisateur
+// Action creator qui me permet de mettre à jour les données de l'utilisateur
 export const updateUser = createAppAsyncThunk(
   'user/UPDATE_USER',
   async (user: UserUpdate, thunkAPI) => {
@@ -103,7 +102,7 @@ export const updateUser = createAppAsyncThunk(
   },
 );
 
-// On crée une action pour le delete de l'utilisateur
+// Action creator qui me permet de supprimer un utilisateur
 export const deleteUser = createAppAsyncThunk(
   'user/DELETE_USER',
   async (id: number, thunkAPI) => {
@@ -117,12 +116,11 @@ export const deleteUser = createAppAsyncThunk(
         console.error(err);
         thunkAPI.dispatch(setUserErrorMessage('Une erreur s\'est produite lors de la connexion.'));
       }
-      throw err;
     }
   },
 );
 
-// On créer une action pour l'update de l'utilisateur
+// On créer une action pour l'update de l'utilisateur lors de la connexion
 export const setUser = createAction<User>('user/SET_USER');
 
 // Gestions des messages d'erreur
@@ -130,24 +128,30 @@ export const setUserErrorMessage = createAction<string>('user/SET_USER_ERROR_MES
 // Je créer mon reducer
 const userReducer = createReducer(initialState, (builder) => {
   builder
+  // On récupère les données de l'utilisateur
     .addCase(setUser, (state, action) => {
       state.data = action.payload;
     })
+    // On récupère le message d'erreur
     .addCase(setUserErrorMessage, (state, action) => {
       state.errorAPIUser = action.payload;
     })
+    // On gère le rejet de la requête qui récupère tous les utilisateurs
     .addCase(getAllUsers.rejected, (state, action) => {
       state.errorAPIUser = null;
     })
+    // On gère le succès de la requête qui récupère tous les utilisateurs
     .addCase(getAllUsers.fulfilled, (state, action) => {
-      state.allUsers = action.payload;
+      state.allUsers = action.payload!;
       state.errorAPIUser = null;
     })
+    // On gère le rejet de la requête qui me permet de récupérer un utilisateur par son id
     .addCase(getUserById.rejected, (state, action) => {
       state.errorAPIUser = null;
     })
+    // On gère la réussite de la requête qui me permet de récupérer un utilisateur par son id
     .addCase(getUserById.fulfilled, (state, action) => {
-      state.data = action.payload;
+      state.data = action.payload!;
       state.errorAPIUser = null;
     });
 });

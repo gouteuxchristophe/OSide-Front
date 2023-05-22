@@ -3,33 +3,42 @@ import { toast } from "react-toastify";
 import { Navigate, useNavigate } from "react-router-dom";
 import AddTechno from "../../Modals/AddTechno";
 import { useEffect, useState } from "react";
-import { createProject, deleteMessageAdd, getAllProjects, newProject } from "../../../store/reducers/projects";
+import { createProject, deleteMessageAdd, newProject } from "../../../store/reducers/projects";
 import { getAllTechnos } from "../../../store/reducers/techno";
 
 function AddProjects() {
-
+  // permet de vérifier si l'utilisateur est connecté
   const isLogged = useAppSelector((state) => state.login.logged);
+  // permet de récupérer les données de l'utilisateur
   const user = useAppSelector((state) => state.user.data);
   const fakeAvatar = useAppSelector((state) => state.user.data.fakeAvatar);
+  // state du modal
   const [showModalAddTechno, setShowModalAddTechno] = useState(false);
+  // state du formulaire
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const dispatch = useAppDispatch();
+  // state des messages de succès
   const successAdd = useAppSelector((state) => state.projects.successAdd);
+  // state du nouvel id du projet
   const idNewProject = useAppSelector((state) => state.projects.idNewProject);
+  // state des technos sélectionnées
   const technoSelected = useAppSelector((state) => state.techno.selectedTechnos);
+  // state des technos
   const technoList = useAppSelector((state) => state.techno.technoLists);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
+  // Récupérer la liste des technos
   useEffect(() => {
     dispatch(getAllTechnos());
   }, [technoSelected]);
 
-
+  // Redirige l'utilisateur vers la page d'accueil si il n'est pas connecté
   if (!isLogged) {
     toast.warn('🦄 Veuillez vous connecter !');
     return <Navigate to="/login" replace />
   }
-  const navigate = useNavigate();
+  // Afficher un toast si le projet a bien été ajouté
   useEffect(() => {
     if (successAdd) {
       toast.success(`🦄 ${successAdd}`);
@@ -38,7 +47,7 @@ function AddProjects() {
     }
   }, [successAdd]);
 
-
+  // Permet d'ajouter un projet
   const handleAddProject = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Je compare la liste technoSelected avec la technoList pour récupérer les id des technos sélectionnées en fonction des labels

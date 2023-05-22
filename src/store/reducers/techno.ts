@@ -26,11 +26,6 @@ export const initialState: technoState = {
   errorApiTechno: null,
 };
 
-export const updatedSelectedTechnos = createAction<newTechno[]>('technos/UPDATED_SELECTED_TECHNO');
-// Gestions des messages d'erreur
-export const setTechnoErrorMessage = createAction<string>('techno/SET_Techno_ERROR_MESSAGE');
-
-
 // Requete API pour récupérer toutes les technos
 export const getAllTechnos = createAppAsyncThunk(
   'technos/GET_All_TECHNO',
@@ -46,7 +41,6 @@ export const getAllTechnos = createAppAsyncThunk(
       } else {
         thunkAPI.dispatch(setTechnoErrorMessage('Une erreur s\'est produite'));
       }
-      throw err;
     }
   },
 );
@@ -65,7 +59,6 @@ export const addTechno = createAppAsyncThunk(
         console.error(err);
         thunkAPI.dispatch(setTechnoErrorMessage('Une erreur s\'est produite'));
       }
-      throw err;
     }
   },
 );
@@ -88,7 +81,6 @@ export const updateTechno = createAppAsyncThunk(
           console.error(err);
           thunkAPI.dispatch(setTechnoErrorMessage('Une erreur s\'est produite'));
         }
-        throw err;
       }
   },
 );
@@ -108,11 +100,14 @@ export const deleteTechno = createAppAsyncThunk(
           console.error(err);
           thunkAPI.dispatch(setTechnoErrorMessage('Une erreur s\'est produite'));
         }
-        throw err;
       }
   },
 );
 
+// Action creator qui me permet de mettre à jour le tableau des technos sélectionnées
+export const updatedSelectedTechnos = createAction<newTechno[]>('technos/UPDATED_SELECTED_TECHNO');
+// Gestions des messages d'erreur
+export const setTechnoErrorMessage = createAction<string>('techno/SET_Techno_ERROR_MESSAGE');
 // Action qui vide le tableau des technos sélectionnées lors de l'ajout l'update
 export const emptySelectedTechnos = createAction('technos/EMPTY_SELECTED_TECHNO');
 // Action creator qui me permet de supprimer le message de succès de la suppression d'une techno
@@ -125,45 +120,59 @@ export const deleteMessageAdd = createAction('technos/DELETE_SUCCESS_ADD');
 // Je créer mon reducer
 const technoReducer = createReducer(initialState, (builder) => {
   builder
+  // On vide le tableau des technos sélectionnées
   .addCase(emptySelectedTechnos, (state) => {
     state.selectedTechnos = [];
   })
+  // On gère le message d'erreur
   .addCase(setTechnoErrorMessage, (state, action) => {
     state.errorApiTechno = action.payload;
   })
+  // On gère le rejet de la requête qui récupère toutes les technos
   .addCase(getAllTechnos.rejected, (state) => {
     state.errorApiTechno = null;
   })
+  // On gère le succès de la requête qui récupère toutes les technos
   .addCase(getAllTechnos.fulfilled, (state, action) => {
-    state.technoLists = action.payload;
+    state.technoLists = action.payload!;
   })
+  // On gère le rejet de la requête qui me permet d'ajouter une techno
   .addCase(addTechno.rejected, (state) => {
     state.errorApiTechno = null;
   })
+  // On gère la réussite de la requête qui me permet d'ajouter une techno
   .addCase(addTechno.fulfilled, (state, action) => {
-    state.successAdd = action.payload.message;
+    state.successAdd = action.payload!.message;
   })
+  // On gère le rejet de la requête qui me permet de modifier une techno
   .addCase(updatedSelectedTechnos, (state, action) => {
     state.selectedTechnos = action.payload;
   })
+  // On gère le rejet de la requête qui me permet de supprimer une techno
   .addCase(deleteTechno.rejected, (state) => {
     state.errorApiTechno = null;
   })
+  // On gère la réussite de la requête qui me permet de supprimer une techno
   .addCase(deleteTechno.fulfilled, (state, action) => {
     state.successDelete = action.payload.message;
   })
+  // On gère le rejet de la requête qui me permet de modifier une techno
   .addCase(updateTechno.rejected, (state) => {
     state.errorApiTechno = null;
   })
+  // On gère la réussite de la requête qui me permet de modifier une techno
   .addCase(updateTechno.fulfilled, (state, action) => {
     state.successUpdate = action.payload.message;
   })
+  // On vide le message de succès du delete
   .addCase(deleteMessage, (state) => {
     state.successDelete = '';
   })
+  // On vide le message de succès de l'update
   .addCase(deleteMessageUpdate, (state) => {
     state.successUpdate = '';
   })
+  // On vide le message de succès de l'ajout
   .addCase(deleteMessageAdd, (state) => {
     state.successAdd = '';
   })

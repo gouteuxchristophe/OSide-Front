@@ -8,12 +8,16 @@ import ModalUser from './ModalUser';
 
 
 function Menu() {
+  // state du menu utilisateur
   const [displayMenu, setDisplayMenu] = useState<boolean>(false);
+  // state qui permet de savoir si l'utilisateur est connecté
   const isLogged = useAppSelector((state) => state.login.logged);
+  // state qui récupère les données de l'utilisateur
   const avatarGitHub = useAppSelector((state) => state.user.data.github.avatar_url);
   const userName = useAppSelector((state) => state.user.data.username);
   const githubLogin = useAppSelector((state) => state.user.data.github.login); 
   const fakeAvatar = useAppSelector((state) => state.user.data.fakeAvatar);
+  // state du modal
   const [showModal, setShowModal] = useState(false);
   
   // Permet d'afficher le menu utilisateur

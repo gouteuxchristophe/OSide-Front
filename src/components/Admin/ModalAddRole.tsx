@@ -13,7 +13,7 @@ function ModalAddRole({ closeModal }: { closeModal: () => void } ) {
   const [inputlabel, setInputLabel] = useState<string>('label');
   const [inputColor, setInputColor] = useState<string>('#808080');
 
-
+  // Permet d'ajouter un role
   const handleUpdateTechnoSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     const data = {

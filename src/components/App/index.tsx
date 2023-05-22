@@ -84,37 +84,42 @@ function App() {
         <Route
           path="/search"
           element={(
-            // Affichage page erreur 404
+            // Affichage page search
             <SearchProject />
           )}
         />
         <Route
           path="/login"
           element={(
+            // Affichage page login
             <Login />
           )}
         />
         <Route
           path="/register"
           element={(
+            // Affichage page register
             <Register />
           )}
         />
         <Route
           path="/dashboard"
           element={(
+            // Affichage page dashboard
             <Dashboard />
           )}
         />
         <Route
           path="/admin"
           element={(
+            // Affichage page admin
             <AdminPage />
           )}
         />
         <Route
           path="/addProject"
           element={(
+            // Affichage page ajout de projet
             <AddProjects />
           )}
         />
