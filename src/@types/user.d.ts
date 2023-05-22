@@ -11,7 +11,7 @@ export interface User {
   updated_at?: string
   delete_at?: string
   last_visited?: string
-  role: RoleId
+  role: Role
   ability: IAbility[],
   fakeAvatar: string
 }
@@ -22,7 +22,7 @@ export interface IGithubUser {
   avatar_url: string
 }
 
-export interface RoleId {
+export interface Role {
   id: number
   label: string
   color?: string

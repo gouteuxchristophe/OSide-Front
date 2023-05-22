@@ -1672,6 +1672,10 @@ video {
     width: 10%;
   }
 
+  .lg\:w-1\/5 {
+    width: 20%;
+  }
+
   .lg\:rounded-l-lg {
     border-top-left-radius: 0.5rem;
     border-bottom-left-radius: 0.5rem;

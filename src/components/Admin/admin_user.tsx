@@ -11,6 +11,7 @@ function Admin_Users({ closeSection }: { closeSection: (value: string) => void }
 
   const dispatch = useAppDispatch();
   useEffect(() => {
+    dispatch(getAllUsers())
   }, [dispatch])
 
   const handleDeleteUser = (id: number): void => {

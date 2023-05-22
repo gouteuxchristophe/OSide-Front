@@ -43,7 +43,9 @@ export const addRole = createAppAsyncThunk(
   async (role: newRole , thunkAPI) => {
     try {
       const { data } = await axiosInstance.post('/role', role);
+      console.log(data);
       return data ;
+      
     } catch (err: any) {
       if (err) {
         thunkAPI.dispatch(setRoleErrorMessage(err.response.data));
@@ -102,7 +104,9 @@ export const deleteRole = createAppAsyncThunk(
 // Action creator qui me permet de supprimer le message de succès de la suppression d'une techno
 export const deleteMessage = createAction('role/DELETE_MESSAGE');
 // Action creator qui me permet de supprimer le message de succès de la modification d'une techno
-export const deleteMessageUpdate = createAction('role/DELETE_SUCCESS');
+export const deleteMessageUpdate = createAction('role/DELETE_SUCCESS_UPDATE');
+// Action creator qui me permet de supprimer le message de succès de la modification d'une techno
+export const deleteMessageAdd = createAction('role/DELETE_SUCCESS_ADD');
 // Gestions des messages d'erreur
 export const setRoleErrorMessage = createAction<string>('role/SET_ROLE_ERROR_MESSAGE');
 // Je créer mon reducer
@@ -116,6 +120,9 @@ const roleReducer = createReducer(initialState, (builder) => {
   })
   .addCase(deleteMessageUpdate, (state) => {
     state.successUpdate = '';
+  })
+  .addCase(deleteMessageAdd, (state) => {
+    state.successAdd = '';
   })
   .addCase(getAllRole.fulfilled, (state, action) => {
     state.lists = action.payload;
