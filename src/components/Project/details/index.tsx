@@ -124,9 +124,11 @@ function ProjectDetail() {
               </div>
             </div>
             <div className="pt-12 pb-8 flex justify-around flex-wrap gap-2 text-[white]">
+            {idUser != project?.author.id &&
               <button type="button" className="py-2 px-4 rounded-full bg-secondary20 border-2 border-solid">
                 Participer
               </button>
+              }
               <Link to="/" className="py-2 px-4 rounded-full bg-secondary20 border-2 border-solid">
                 Retour à la liste
               </Link>

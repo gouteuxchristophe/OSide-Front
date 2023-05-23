@@ -84,7 +84,7 @@ export default function ModalUpdateContent({ closeModal, project }: updateProjec
                       <div className="p-5 mb-0 bg-primary1 w-[100%] font-bold">Techno</div>
                       <button onClick={() => setShowModalAddTechno(true)} className="bg-secondary20 text-[white] font-medium rounded text-sm px-5 py-2.5 text-center">Gérer les technos</button>
                       <div className="flex flex-wrap gap-2 justify-center items-center">
-                        {technoSelected.map((techno) => (
+                        {project.technoProjet.map((techno) => (
                           <div className="relative" key={`${techno.id}-${techno.label}`}>
                             <span className={`p-2 bg-[white] rounded border border-solid border-${techno.color}`}>{techno.label}</span>
                           </div>

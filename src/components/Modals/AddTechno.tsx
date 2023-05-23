@@ -59,6 +59,11 @@ function AddTechno({ closeModal, technoPred }: AddTechnoProps) {
   // Ajouter une techno dans le tableau technoExist ou technoNotExist
   const handleAddTechno = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    // Si la techno existe à déja été ajouté dans allTechno, on ne l'ajoute pas
+    const technoSelected = [...technoExist, ...technoNotExist]
+    if (technoSelected.find((techno) => techno.label === inputValue)) {
+      return
+    }
     // Vérifier si la techno existe déjà dans la liste
     const techno = technoList.find((techno) => techno.label === inputValue)
     if (techno) {

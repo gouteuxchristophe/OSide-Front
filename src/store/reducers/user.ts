@@ -4,6 +4,7 @@ import axiosInstance from '../../utils/axios';
 import { User } from '../../@types/user';
 import { getUserDataFromLocalStorage } from '../../utils/login';
 import fakeAvatar from '../../assets/fakeAvatar.png';
+import { logout } from './login';
 
 // Je récupère les données de l'utilisateur dans le localStorage
 const userData = getUserDataFromLocalStorage();
@@ -108,13 +109,14 @@ export const deleteUser = createAppAsyncThunk(
   async (id: number, thunkAPI) => {
     try {
       const { data } = await axiosInstance.delete(`/user/${id}`);
+      thunkAPI.dispatch(logout());
       return data as User;
     } catch (err: any) {
       if (err) {
         thunkAPI.dispatch(setUserErrorMessage(err.response.data));
       } else { 
         console.error(err);
-        thunkAPI.dispatch(setUserErrorMessage('Une erreur s\'est produite lors de la connexion.'));
+        thunkAPI.dispatch(setUserErrorMessage('Une erreur s\'est produite.'));
       }
     }
   },
@@ -137,7 +139,7 @@ const userReducer = createReducer(initialState, (builder) => {
       state.errorAPIUser = action.payload;
     })
     // On gère le rejet de la requête qui récupère tous les utilisateurs
-    .addCase(getAllUsers.rejected, (state, action) => {
+    .addCase(getAllUsers.rejected, (state) => {
       state.errorAPIUser = null;
     })
     // On gère le succès de la requête qui récupère tous les utilisateurs
@@ -146,14 +148,20 @@ const userReducer = createReducer(initialState, (builder) => {
       state.errorAPIUser = null;
     })
     // On gère le rejet de la requête qui me permet de récupérer un utilisateur par son id
-    .addCase(getUserById.rejected, (state, action) => {
+    .addCase(getUserById.rejected, (state) => {
       state.errorAPIUser = null;
     })
     // On gère la réussite de la requête qui me permet de récupérer un utilisateur par son id
     .addCase(getUserById.fulfilled, (state, action) => {
       state.data = action.payload!;
       state.errorAPIUser = null;
-    });
+    })
+    .addCase(deleteUser.rejected, (state) => {
+      state.errorAPIUser = null;
+    })
+    .addCase(deleteUser.fulfilled, (state) => {
+      state.data = initialState.data;
+    })
 });
 
 export default userReducer;

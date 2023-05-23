@@ -6,6 +6,7 @@ import ProjectItem from "../Project/excerp";
 import ModalUpdateUser from "./ModalUpdateUser";
 import { createPortal } from "react-dom";
 import ModalDeleteUser from "./ModalDeleteUser";
+import { getUserDataFromLocalStorage } from "../../utils/login";
 
 function Dashboard() {
   const user = useAppSelector(state => state.user.data)
@@ -21,7 +22,11 @@ function Dashboard() {
   // Récupère la liste des projets
   const projectsLists = useAppSelector(state => state.projects.lists)
   // Filtrer les projets par id
-  const filterProjectsById = (id: number) => projectsLists!.filter((project) => searchProjectByUser(project, user.id)) as Project[];
+  // Récupérer l'id de l'utilisateur via le sessionStorage
+  const userData = getUserDataFromLocalStorage();
+  console.log(userData!.id);
+  
+  const filterProjectsById = (id: number) => projectsLists!.filter((project) => searchProjectByUser(project, userData!.id)) as Project[];
   const projectOwner = filterProjectsById(user.id)
 
   return (
