@@ -14,12 +14,18 @@ import Register from '../Register';
 import Dashboard from '../Dashboard';
 import AdminPage from '../Admin';
 import { toast } from 'react-toastify';
-import { getUserById } from '../../store/reducers/user';
+import { getUserById, resetSuccessDelete } from '../../store/reducers/user';
 import AddProjects from '../Project/add';
+import { logout } from '../../store/reducers/login';
 function App() {
+  // state pour les erreurs de l'API sur getprojet
   const errorAPIUser = useAppSelector((state) => state.user.errorAPIUser);
+  // state pour s'assurer de la réception des données de l'API
   const dataReception = useAppSelector((state) => state.projects.dataReception);
+  // state qui défini si l'utilisateur est connecté ou non
   const isLogged = useAppSelector((state) => state.login.logged);
+  // state pour le message de delete de l'utilisateur
+  const successDelete = useAppSelector(state => state.user.successDelete)
   //  Permet de scroller en haut de la page à chaque nouvel affiche url
   const location = useLocation();
   useEffect(() => {
@@ -33,7 +39,7 @@ function App() {
       dispatch(getAllProjects());
     }
   }, [dispatch, dataReception]);
-
+  // Permet de récupérer les données de l'utilisateur
   useEffect(() => {
     if (sessionStorage.length > 0 || isLogged === true) {
       dispatch(getUserById())
@@ -46,8 +52,14 @@ function App() {
       toast.error(errorAPIUser);
     }
   }, [errorAPIUser]);
-
   
+  // useEffect pour le delete
+  useEffect(() => {
+    if (successDelete) {
+      toast.success(`🦄 ${successDelete}`)
+      dispatch(resetSuccessDelete())
+    }
+  }, [successDelete])
 
   return (
     <div className="flex flex-col justify-between max-w-screen-xl min-h-screen my-0 mx-auto border border-solid border-secondary20">

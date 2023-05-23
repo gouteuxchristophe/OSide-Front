@@ -1,16 +1,13 @@
-import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { useState } from "react";
+import { useAppSelector } from "../../hooks/redux";
 import { Project } from "../../@types/project";
 import { searchProjectByUser } from "../../store/selectors/search";
 import ProjectItem from "../Project/excerp";
 import ModalUpdateUser from "./ModalUpdateUser";
-import { createPortal } from "react-dom";
 import ModalDeleteUser from "./ModalDeleteUser";
 import { getUserDataFromLocalStorage } from "../../utils/login";
-import { logout } from "../../store/reducers/login";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate} from "react-router-dom";
 import { toast } from "react-toastify";
-import { resetSuccessDelete } from "../../store/reducers/user";
 
 function Dashboard() {
   const user = useAppSelector(state => state.user.data)
@@ -29,8 +26,6 @@ function Dashboard() {
   // Filtrer les projets par id
   // Récupérer l'id de l'utilisateur via le sessionStorage
   const userData = getUserDataFromLocalStorage();
-  // state du delete
-  const successDelete = useAppSelector(state => state.user.successDelete)
 
   // Redirige l'utilisateur vers la page d'accueil si il n'est pas connecté
   if (!isLogged) {
@@ -38,27 +33,14 @@ function Dashboard() {
     return <Navigate to="/login" replace />
   }
 
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-
-  // useEffect pour le delete
-  useEffect(() => {
-    if (successDelete) {
-      toast.success(`🦄 ${successDelete}`)
-      dispatch(resetSuccessDelete())
-      dispatch(logout())
-      navigate("/");
-    }
-  }, [successDelete])
-
   const filterProjectsById = (id: number) => projectsLists!.filter((project) => searchProjectByUser(project, userData!.id)) as Project[];
   const projectOwner = filterProjectsById(user.id)
 
+  // Fonction pour afficher les modals en fonction du bouton cliqué
   const handleShowUpdate = () => {
     setShowModal(!showModal)
     setShowUpdateModal(!showUpdateModal)
   }
-
   const handleShowDelete = () => {
     setShowModal(!showModal)
     setShowDeleteModal(!showDeleteModal)

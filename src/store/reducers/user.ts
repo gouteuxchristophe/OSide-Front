@@ -2,8 +2,9 @@ import { createAction, createReducer } from '@reduxjs/toolkit';
 import createAppAsyncThunk from '../../utils/redux';
 import axiosInstance from '../../utils/axios';
 import { User } from '../../@types/user';
-import { getUserDataFromLocalStorage } from '../../utils/login';
+import { getUserDataFromLocalStorage, removeUserDataFromLocalStorage } from '../../utils/login';
 import fakeAvatar from '../../assets/fakeAvatar.png';
+import { logout } from './login';
 
 // Je récupère les données de l'utilisateur dans le localStorage
 const userData = getUserDataFromLocalStorage();
@@ -145,6 +146,7 @@ export const deleteUser = createAppAsyncThunk(
     try {
       const { data } = await axiosInstance.delete(`/user/${id}`);
       console.log(data);
+      thunkAPI.dispatch(logout());
       return data.message as string;
     } catch (err: any) {
       if (err) {       
@@ -203,7 +205,6 @@ const userReducer = createReducer(initialState, (builder) => {
       state.errorAPIUser = null;
     })
     .addCase(deleteUser.fulfilled, (state,  action) => {
-      state.data = initialState.data;
       state.successDelete = action.payload!;
     })
     .addCase(createUser.rejected, (state) => {  

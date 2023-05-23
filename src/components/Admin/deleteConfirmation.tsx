@@ -3,7 +3,7 @@ import { deleteTechno } from "../../store/reducers/techno";
 import { deleteRole } from "../../store/reducers/role";
 import { deleteProject } from "../../store/reducers/projects";
 import { deleteUser } from "../../store/reducers/user";
-
+import { Navigate, useNavigate } from "react-router-dom";
 
 interface ModalDeleteProps {
   closeModal: () => void;
@@ -13,12 +13,16 @@ interface ModalDeleteProps {
 
 function DeleteConfirmation({ id, type, closeModal }: ModalDeleteProps) {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const handleConfirmationDeleted = () => {
     if (type === 'techno') dispatch(deleteTechno(id));
     if (type === 'role') dispatch(deleteRole(id));
     if (type === 'projects') dispatch(deleteProject(id));
     if (type === 'projectsUser') dispatch(deleteProject(id))
-    if (type === 'user') dispatch(deleteUser(id));
+    if (type === 'user') {
+      dispatch(deleteUser(id));
+      navigate('/');
+    } 
     closeModal();
   }
 

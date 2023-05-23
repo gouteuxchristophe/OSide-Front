@@ -3,8 +3,25 @@ import Admin_Techno from "./admin_techno";
 import Admin_Users from "./admin_user";
 import Admin_Projects from "./admin_projects";
 import Admin_Roles from "./admin_roles";
+import { useAppSelector } from "../../hooks/redux";
+import { toast } from "react-toastify";
+import { Navigate } from "react-router-dom";
 
 function AdminPage() {
+
+  const isLogged = useAppSelector(state => state.login.logged)
+  const user = useAppSelector(state => state.user.data)
+
+
+  if (!isLogged) {
+    toast.warn('🦄 Veuillez vous connecter !');
+    return <Navigate to="/login" replace />
+  }
+  if(user.role.id != 3) {
+    toast.warn('🦄 Vous n\'avez pas accès à cette page !');
+    return <Navigate to="/dashboard" replace />
+  }
+
   // Permet de gérer l'affichage du menu
   const [showMenuAdmin, setShowMenuAdmin] = useState(true);
   const [showAdminTechno, setShowAdminTechno] = useState(false);
