@@ -1,10 +1,9 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Eye, EyeOff } from 'react-feather';
 import { useNavigate } from 'react-router-dom';
-import axiosInstance from '../../utils/axios';
-import { useAppDispatch } from '../../hooks/redux';
-import { createUser } from '../../store/reducers/user';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { createUser, resetErrorMessage, resetSuccessCreate } from '../../store/reducers/user';
 // typage des éléments envoyés en post à l'API
 interface InputProps {
   username: string,
@@ -18,21 +17,24 @@ interface InputProps {
 function Register() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
+  const errorRegister = useAppSelector(state => state.user.errorRegister)
+  const successCreate = useAppSelector(state => state.user.successCreate)
   // state qui va contenir tout le contenu des inputs au fur
   // et à mesure qu'ils se remplissent par le user
-  const [inputs, setInputs] = useState<InputProps>({ username: '', last_name: '', first_name: '', email: '', password: '', passwordConfirm: ''});
+  const [inputs, setInputs] = useState<InputProps>({ username: '', last_name: '', first_name: '', email: '', password: '', passwordConfirm: '' });
   // les deux states ci-dessous sont des booléens
   // qui permettent d'afficher ou de masquer les passwords en cliquant sur l'icone 'oeil'
   // (voir dans handleEyeClickPwd et handleEyeClickPwdVerif)
   const [clickEye, setClickEye] = useState(false);
   const [clickEyeVerif, setClickEyeVerif] = useState(false);
-// ------Variables de test pour chaque condition du password (min, maj, num, carac spé, nb carac)----------
+  // ------Variables de test pour chaque condition du password (min, maj, num, carac spé, nb carac)----------
   const isMajInPwd = (password: string) => /[A-Z]/.test(password);
   const isMinInPwd = (password: string) => /[a-z]/.test(password);
   const isNumbInPwd = (password: string) => /[0-9]/.test(password);
   const isSpeCaracInPwd = (password: string) => /[\W_]/.test(password);
   const isLengthValid = (password: string) => {
-    if(password) {
+    if (password) {
       return password.length >= 8
     }
   }
@@ -53,24 +55,33 @@ function Register() {
   // et la correspondance des deux passwords
   const handleSubmitForm = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // si les deux passwords et le format de l'email sont bons
+    // Si le format de l'email n'est pas correct une notification est envoyée
+    if (isValidEmail(inputs.email) === false) {
+      return toast.error("🦄 L'email n'est pas valide");
+    }
+    // Si le format du mot de passe n'est pas correct une notification est envoyée
+    if (isValidPassword(inputs.password) === false) {
+      return toast.error("🦄 Le mot de passe n'est pas au bon format");
+    }
+    // Si les mots de passe ne correspondent pas une notification est envoyée
+    if (inputs.password as string !== inputs.passwordConfirm) {
+      return toast.error('🦄 Les mots de passe sont différents');
+    }
     // on envoie un post vers l'API
-    if (inputs.password as string === inputs.passwordConfirm
-      && isValidEmail(inputs.email) && isValidPassword(inputs.password)) {
-      dispatch(createUser(inputs));
+    dispatch(createUser(inputs));
+  };
+
+  useEffect(() => {
+    if (successCreate) {
+      dispatch(resetSuccessCreate())
       toast.success('🦄 Vous êtes bien inscrit !');
       navigate('/login');
-    // Si le format de l'email n'est pas correct une notification est envoyée
-    } else if (isValidEmail(inputs.email) === false) {
-      toast.error("🦄 L'email n'est pas valide");
-      // Si le format du mot de passe n'est pas correct une notification est envoyée
-    } else if (isValidPassword(inputs.password) === false) {
-      toast.error("🦄 Le mot de passe n'est pas au bon format");
-      // Si les mots de passe ne correspondent pas une notification est envoyée
-    } else if (inputs.password as string !== inputs.passwordConfirm) {
-      toast.error('🦄 Les mots de passe sont différents');
     }
-  };
+    if (errorRegister) {
+      dispatch(resetErrorMessage())
+      toast.error(`🦄 ${errorRegister}`);
+    }
+  }, [successCreate, errorRegister]);
 
   return (
     <div className="w-full lg:w-3/5 rounded-lg lg:rounded-l-lg lg:rounded-r-rg shadow-xl bg-white opacity-75 mx-auto border-2 border-solid border-secondary10 my-4">
@@ -121,18 +132,18 @@ function Register() {
                   Password
                 </label>
                 <input onChange={handleChange} required name="password" className="appearance-none block w-full bg-[gray-200] text-[gray-700] border border-[gray-200] rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-[white] focus:border-[gray-500]" id="password" type={clickEye ? 'text' : 'password'} placeholder="Mot de passe" />
-                <button type="button" className="absolute top-9 right-6"onClick={() => setClickEye(!clickEye)}>
+                <button type="button" className="absolute top-9 right-6" onClick={() => setClickEye(!clickEye)}>
                   {clickEye ? <EyeOff /> : <Eye />}
                 </button>
                 <p className="font-bold">Le mot de passe doit contenir au moins :</p>
                 <ul className="text-sm">
-                {/*  on passe le password en cours (à chaque caractère ajouté à l'input) dans les variables de test */}
-                {/* si la variable est vérifiée la ligne de la liste devient verte */}
-                {isMinInPwd(inputs.password) ? <li className="text-secondary10">une lettre minuscule</li> : <li className="text-[grey]">une lettre minuscule</li>}
-                {isMajInPwd(inputs.password) ? <li className="text-secondary10">une lettre majuscule</li> : <li className="text-[grey]">une lettre majuscule</li>}
-                {isNumbInPwd(inputs.password) ? <li className="text-secondary10">un chiffre</li> : <li className="text-[grey]">un chiffre</li>}
-                {isSpeCaracInPwd(inputs.password) ? <li className="text-secondary10">un caractère spécial</li> : <li className="text-[grey]">un caractère spécial</li>}
-                {isLengthValid(inputs.password) ? <li className="text-secondary10">au moins 8 caractères</li> : <li className="text-[grey]">au moins 8 caractères</li>}
+                  {/*  on passe le password en cours (à chaque caractère ajouté à l'input) dans les variables de test */}
+                  {/* si la variable est vérifiée la ligne de la liste devient verte */}
+                  {isMinInPwd(inputs.password) ? <li className="text-secondary10">une lettre minuscule</li> : <li className="text-[grey]">une lettre minuscule</li>}
+                  {isMajInPwd(inputs.password) ? <li className="text-secondary10">une lettre majuscule</li> : <li className="text-[grey]">une lettre majuscule</li>}
+                  {isNumbInPwd(inputs.password) ? <li className="text-secondary10">un chiffre</li> : <li className="text-[grey]">un chiffre</li>}
+                  {isSpeCaracInPwd(inputs.password) ? <li className="text-secondary10">un caractère spécial</li> : <li className="text-[grey]">un caractère spécial</li>}
+                  {isLengthValid(inputs.password) ? <li className="text-secondary10">au moins 8 caractères</li> : <li className="text-[grey]">au moins 8 caractères</li>}
                 </ul>
               </div>
             </div>

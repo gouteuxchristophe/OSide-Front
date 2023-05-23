@@ -60,7 +60,7 @@ export const getAllProjects = createAppAsyncThunk('projects/GET_ALL_PROJECTS',
       return projects as Project[];
     } catch (err: any) {
       if (err) {
-        thunkAPI.dispatch(setProjectErrorMessage(err.response.data));
+        thunkAPI.dispatch(setProjectErrorMessage(err.response.data.message));
       } else {
         console.error(err);
         thunkAPI.dispatch(setProjectErrorMessage('Une erreur s\'est produite'));
@@ -77,7 +77,7 @@ export const getProjectByID = createAppAsyncThunk('projects/GET_PROJECT_BY_ID',
       return data as Project;
     } catch (err: any) {
       if (err) {
-        thunkAPI.dispatch(setProjectErrorMessage(err.response.data));
+        thunkAPI.dispatch(setProjectErrorMessage(err.response.data.message));
       } else {
         console.error(err);
         thunkAPI.dispatch(setProjectErrorMessage('Une erreur s\'est produite'));
@@ -98,7 +98,7 @@ export const createProject = createAppAsyncThunk(
       return data;
     } catch (err: any) {
       if (err) {
-        thunkAPI.dispatch(setProjectErrorMessage(err.response.data));
+        thunkAPI.dispatch(setProjectErrorMessage(err.response.data.message));
       } else {
         console.error(err);
         thunkAPI.dispatch(setProjectErrorMessage('Une erreur s\'est produite lors de la connexion.'));
@@ -121,7 +121,7 @@ export const updateProject = createAppAsyncThunk(
       return data;
     } catch (err: any) {
       if (err) {
-        thunkAPI.dispatch(setProjectErrorMessage(err.response.data));
+        thunkAPI.dispatch(setProjectErrorMessage(err.response.data.message));
       } else {
         console.error(err);
         thunkAPI.dispatch(setProjectErrorMessage('Une erreur s\'est produite lors de la connexion.'));
@@ -138,7 +138,7 @@ export const deleteProject = createAppAsyncThunk(
       return data;
     } catch (err: any) {
       if (err) {
-        thunkAPI.dispatch(setProjectErrorMessage(err.response.data));
+        thunkAPI.dispatch(setProjectErrorMessage(err.response.data.message));
       } else {
         console.error(err);
         thunkAPI.dispatch(setProjectErrorMessage('Une erreur s\'est produite lors de la connexion.'));

@@ -28,7 +28,7 @@ export const getAllRole = createAppAsyncThunk(
       return data as Role[];
     } catch (err: any) {
       if (err) {
-        thunkAPI.dispatch(setRoleErrorMessage(err.response.data));
+        thunkAPI.dispatch(setRoleErrorMessage(err.response.data.message));
       } else {
         console.error(err);
         thunkAPI.dispatch(setRoleErrorMessage('Une erreur s\'est produite'));
@@ -46,7 +46,7 @@ export const addRole = createAppAsyncThunk(
       return data ;
     } catch (err: any) {
       if (err) {
-        thunkAPI.dispatch(setRoleErrorMessage(err.response.data));
+        thunkAPI.dispatch(setRoleErrorMessage(err.response.data.message));
       } else {
         console.error(err);
         thunkAPI.dispatch(setRoleErrorMessage('Une erreur s\'est produite'));
@@ -68,7 +68,7 @@ export const updateRole = createAppAsyncThunk(
         return data;
       } catch (err: any) {
         if (err) {
-          thunkAPI.dispatch(setRoleErrorMessage(err.response.data));
+          thunkAPI.dispatch(setRoleErrorMessage(err.response.data.message));
         } else {
           console.error(err);
           thunkAPI.dispatch(setRoleErrorMessage('Une erreur s\'est produite'));
@@ -86,7 +86,7 @@ export const deleteRole = createAppAsyncThunk(
         return data;
       } catch (err: any) {
         if (err) {
-          thunkAPI.dispatch(setRoleErrorMessage(err.response.data));
+          thunkAPI.dispatch(setRoleErrorMessage(err.response.data.message));
         } else {
           console.error(err);
           thunkAPI.dispatch(setRoleErrorMessage('Une erreur s\'est produite'));

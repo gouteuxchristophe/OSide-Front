@@ -86,7 +86,7 @@ export const login = createAppAsyncThunk(
       return userLogin as LoginState;
     } catch (err: any) {
       if (err) {
-        thunkAPI.dispatch(setLoginErrorMessage(err.response.data));
+        thunkAPI.dispatch(setLoginErrorMessage(err.response.data.message));
       } else {
         console.error(err);
         thunkAPI.dispatch(setLoginErrorMessage('Une erreur s\'est produite.'));

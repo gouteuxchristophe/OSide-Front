@@ -10,6 +10,7 @@ import { getUserDataFromLocalStorage } from "../../utils/login";
 import { logout } from "../../store/reducers/login";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { resetSuccessDelete } from "../../store/reducers/user";
 
 function Dashboard() {
   const user = useAppSelector(state => state.user.data)
@@ -30,20 +31,23 @@ function Dashboard() {
   // state du delete
   const successDelete = useAppSelector(state => state.user.successDelete)
 
+ 
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   // useEffect pour le delete
   useEffect(() => {
     if (successDelete) {
-      toast.success("Votre compte a bien été supprimé")
+      toast.success(`🦄 ${successDelete}`)
+      dispatch(resetSuccessDelete())
       dispatch(logout())
       navigate("/");
     }
   }, [successDelete])
   
-  const filterProjectsById = (id: number) => projectsLists!.filter((project) => searchProjectByUser(project, userData!.id)) as Project[];
-  const projectOwner = filterProjectsById(user.id)
+    const filterProjectsById = (id: number) => projectsLists!.filter((project) => searchProjectByUser(project, userData!.id)) as Project[];
+    const projectOwner = filterProjectsById(user.id)
 
   return (
     <>

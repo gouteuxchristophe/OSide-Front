@@ -47,6 +47,7 @@ function App() {
     }
   }, [errorAPIUser]);
 
+  
 
   return (
     <div className="flex flex-col justify-between max-w-screen-xl min-h-screen my-0 mx-auto border border-solid border-secondary20">

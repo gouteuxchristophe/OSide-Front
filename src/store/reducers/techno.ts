@@ -37,7 +37,7 @@ export const getAllTechnos = createAppAsyncThunk(
       return data as ITechnoProjet[];
     } catch (err: any) {
       if (err) {
-        thunkAPI.dispatch(setTechnoErrorMessage(err.response.data));
+        thunkAPI.dispatch(setTechnoErrorMessage(err.response.data.message));
       } else {
         thunkAPI.dispatch(setTechnoErrorMessage('Une erreur s\'est produite'));
       }
@@ -54,7 +54,7 @@ export const addTechno = createAppAsyncThunk(
       return data as technoState;
     } catch (err: any) {
       if (err) {
-        thunkAPI.dispatch(setTechnoErrorMessage(err.response.data));
+        thunkAPI.dispatch(setTechnoErrorMessage(err.response.data.message));
       } else {
         console.error(err);
         thunkAPI.dispatch(setTechnoErrorMessage('Une erreur s\'est produite'));
@@ -76,7 +76,7 @@ export const updateTechno = createAppAsyncThunk(
         return data;
       } catch (err: any) {
         if (err) {
-          thunkAPI.dispatch(setTechnoErrorMessage(err.response.data));
+          thunkAPI.dispatch(setTechnoErrorMessage(err.response.data.message));
         } else {
           console.error(err);
           thunkAPI.dispatch(setTechnoErrorMessage('Une erreur s\'est produite'));
@@ -95,7 +95,7 @@ export const deleteTechno = createAppAsyncThunk(
         return data;
       } catch (err: any) {
         if (err) {
-          thunkAPI.dispatch(setTechnoErrorMessage(err.response.data));
+          thunkAPI.dispatch(setTechnoErrorMessage(err.response.data.message));
         } else {
           console.error(err);
           thunkAPI.dispatch(setTechnoErrorMessage('Une erreur s\'est produite'));
