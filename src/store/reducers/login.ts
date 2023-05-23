@@ -17,6 +17,7 @@ interface LoginState {
   };
   token: string;
   errorAPILogin: string | null;
+  message: string | null;
 }
 // Je créer un type qui me permet de récupérer les clés de mon interface
 export type KeysOfCredentials = keyof LoginState['credentials'];
@@ -31,6 +32,7 @@ export const initialState: LoginState = {
     passwordConfirm: '',
   },
   errorAPILogin: null ,
+  message: null,
   ...userStorage,
 };
 
@@ -83,6 +85,7 @@ export const login = createAppAsyncThunk(
       const user = await axiosInstance.get(`/user/${userLogin.id}`);
       // Je modifie le state de mon reducer user
       thunkAPI.dispatch(setUser(user.data));
+      console.log(userLogin);
       return userLogin as LoginState;
     } catch (err: any) {
       if (err) {
@@ -116,6 +119,7 @@ const loginReducer = createReducer(initialState, (builder) => {
     // On gère la réussite de la requête qui me permet de me connecter
     .addCase(login.fulfilled, (state, action) => {
       // Je met à jour le state logged et token
+      state.message = action.payload!.message;
       state.logged = true;
       state.token = action.payload!.token;
       state.errorAPILogin = null
@@ -124,6 +128,7 @@ const loginReducer = createReducer(initialState, (builder) => {
     })
     // Je gère la déconnexion
     .addCase(logout, (state) => {
+      state.message = null;
       state.logged = false;
       state.token = '';
       // Je supprime les données du localStorage

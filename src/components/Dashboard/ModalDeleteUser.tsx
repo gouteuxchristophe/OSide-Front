@@ -16,7 +16,7 @@ function ModalDeleteUser({ closeModal }: { closeModal: () => void }) {
       <div className="fixed z-10 top-1/3 left-1/2 -translate-x-1/2 bg-primary0 rounded w-[50%]">
         <div className="w-full p-8 flex flex-col items-center gap-2">
           <h2 className="text-center">⚠️ Vous vous apprêtez à supprimer votre compte !</h2>
-          <p className="text-center">Toutes vos informations seront supprimés. Êtes-vous sûr de vouloir continuer ?</p>
+          <p className="text-center">Toutes vos informations seront conservés pendant un an avant suppression de nos serveurs. Si vous souhaitez conservez votre compte, il suffit de vous connecter. Êtes-vous sûr de vouloir continuer ?</p>
           <button onClick={() => setShowModalConfirmation(true)} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-[red] rounded-lg focus:ring-4 focus:outline-none">Confirmer</button>
         </div>
         <button

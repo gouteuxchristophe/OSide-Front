@@ -13,6 +13,8 @@ function Login() {
   const isLogged = useAppSelector((state) => state.login.logged);
   const errorLogin = useAppSelector((state) => state.login.errorAPILogin);
   const [clickEye, setClickEye] = useState(false);
+  // state du message de login
+  const messageLogin = useAppSelector((state) => state.login.message);
   const dispatch = useAppDispatch();
 
   // Permet de rediriger l'utilisateur vers la page d'authentification de GitHub
@@ -36,7 +38,7 @@ function Login() {
   // Affiche la notification si l'utilisateur est connecté
  useEffect(() => {
   if (isLogged) {
-    toast.success('Login Success !');
+    toast.success(`🦄 ${messageLogin} !`);
   }
   else {
     toast.error(errorLogin);
