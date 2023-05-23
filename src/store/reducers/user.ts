@@ -18,10 +18,20 @@ interface UserUpdate {
   ability: number[]
 }
 
+interface UserRegister {
+  username: string,
+  first_name: string,
+  last_name: string,
+  email: string,
+  password: string,
+  passwordConfirm: string,
+}
+
 interface UserState {
   data: User,
   errorAPIUser: string | null,
   allUsers: User[]
+  successDelete: boolean
 }
 // Je créer mon interface pour le state de mon reducer
 export const initialState: UserState = {
@@ -46,7 +56,29 @@ export const initialState: UserState = {
   },
   errorAPIUser: null,
   allUsers: [],
+  successDelete: false
 };
+
+// Action creator qui me permet de créer un utilisateur
+export const createUser = createAppAsyncThunk(
+  'user/CREATE_USER',
+  async (user : UserRegister, thunkAPI) => {
+    try {
+      console.log(user);
+      const { data } = await axiosInstance.post('/user/register', user);
+      console.log(data);
+      return data as User;
+    } catch (err: any) {
+      if (err) {
+        thunkAPI.dispatch(setUserErrorMessage(err.response.data));
+      } else {
+        console.error(err);
+        thunkAPI.dispatch(setUserErrorMessage('Une erreur s\'est produite.'));
+      }
+    }
+  },
+);
+
 
 // Action creator qui me récupère tous les utilisateurs
 export const getAllUsers = createAppAsyncThunk(
@@ -109,7 +141,6 @@ export const deleteUser = createAppAsyncThunk(
   async (id: number, thunkAPI) => {
     try {
       const { data } = await axiosInstance.delete(`/user/${id}`);
-      thunkAPI.dispatch(logout());
       return data as User;
     } catch (err: any) {
       if (err) {
@@ -161,6 +192,8 @@ const userReducer = createReducer(initialState, (builder) => {
     })
     .addCase(deleteUser.fulfilled, (state) => {
       state.data = initialState.data;
+      state.successDelete = true;
+
     })
 });
 

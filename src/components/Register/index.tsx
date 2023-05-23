@@ -3,6 +3,8 @@ import { toast } from 'react-toastify';
 import { Eye, EyeOff } from 'react-feather';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../utils/axios';
+import { useAppDispatch } from '../../hooks/redux';
+import { createUser } from '../../store/reducers/user';
 // typage des éléments envoyés en post à l'API
 interface InputProps {
   username: string,
@@ -15,6 +17,7 @@ interface InputProps {
 
 function Register() {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   // state qui va contenir tout le contenu des inputs au fur
   // et à mesure qu'ils se remplissent par le user
   const [inputs, setInputs] = useState<InputProps>({ username: '', last_name: '', first_name: '', email: '', password: '', passwordConfirm: ''});
@@ -54,17 +57,9 @@ function Register() {
     // on envoie un post vers l'API
     if (inputs.password as string === inputs.passwordConfirm
       && isValidEmail(inputs.email) && isValidPassword(inputs.password)) {
-      console.log(inputs);
-      axiosInstance.post('/user/register', inputs)
-        .then((response) => {
-          if (response.status === 200) {
-            toast.success("🦄 Votre profil est créé !");
-            navigate('/login');
-          }
-        })
-        .catch((error) => {
-          console.error(error.response.data);
-        });
+      dispatch(createUser(inputs));
+      toast.success('🦄 Vous êtes bien inscrit !');
+      navigate('/login');
     // Si le format de l'email n'est pas correct une notification est envoyée
     } else if (isValidEmail(inputs.email) === false) {
       toast.error("🦄 L'email n'est pas valide");

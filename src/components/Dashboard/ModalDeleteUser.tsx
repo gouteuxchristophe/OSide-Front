@@ -7,7 +7,6 @@ function ModalDeleteUser({ closeModal }: { closeModal: () => void }) {
   const [showModalConfirmation, setShowModalConfirmation] = useState(false);
   const userId = useAppSelector((state) => state.user.data.id);
 
-
   return (
     <>
       <div

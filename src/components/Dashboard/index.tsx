@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useAppSelector } from "../../hooks/redux";
+import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { Project } from "../../@types/project";
 import { searchProjectByUser } from "../../store/selectors/search";
 import ProjectItem from "../Project/excerp";
@@ -7,6 +7,9 @@ import ModalUpdateUser from "./ModalUpdateUser";
 import { createPortal } from "react-dom";
 import ModalDeleteUser from "./ModalDeleteUser";
 import { getUserDataFromLocalStorage } from "../../utils/login";
+import { logout } from "../../store/reducers/login";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Dashboard() {
   const user = useAppSelector(state => state.user.data)
@@ -24,7 +27,20 @@ function Dashboard() {
   // Filtrer les projets par id
   // Récupérer l'id de l'utilisateur via le sessionStorage
   const userData = getUserDataFromLocalStorage();
-  console.log(userData!.id);
+  // state du delete
+  const successDelete = useAppSelector(state => state.user.successDelete)
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  // useEffect pour le delete
+  useEffect(() => {
+    if (successDelete) {
+      toast.success("Votre compte a bien été supprimé")
+      dispatch(logout())
+      navigate("/");
+    }
+  }, [successDelete])
   
   const filterProjectsById = (id: number) => projectsLists!.filter((project) => searchProjectByUser(project, userData!.id)) as Project[];
   const projectOwner = filterProjectsById(user.id)
