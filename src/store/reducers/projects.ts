@@ -13,7 +13,7 @@ export interface newProject {
 // Je créer mon interface pour le state de mon reducer
 interface ProjectsState {
   lists: Project[];
-  errorApiProjects: string | null;
+  errorApiProjects: string
   projectByID: Project;
   dataReception: boolean
   isLoading: boolean;
@@ -23,11 +23,6 @@ interface ProjectsState {
   idNewProject: number;
   credentialTitle: string;
   credentialContent: string;
-}
-
-interface credentialsAddProject {
-  title: string;
-  content: string;
 }
 
 interface UpdateProject {
@@ -41,7 +36,7 @@ interface UpdateProject {
 // Je créer mon state initial
 export const initialState: ProjectsState = {
   lists: [],
-  errorApiProjects: null,
+  errorApiProjects: '',
   projectByID: {} as Project,
   dataReception: false,
   isLoading: true,
@@ -90,12 +85,9 @@ export const getProjectByID = createAppAsyncThunk('projects/GET_PROJECT_BY_ID',
 export const createProject = createAppAsyncThunk(
   'projet/CREATE_PROJET',
   async (project: newProject, thunkAPI) => {
-    console.log('projet', project);
     try {
-
       const { data } = await axiosInstance.post('/projet', project);
-      console.log(data);
-      return data;
+      return data
     } catch (err: any) {
       if (err) {
         thunkAPI.dispatch(setProjectErrorMessage(err.response.data.message));
@@ -110,7 +102,6 @@ export const createProject = createAppAsyncThunk(
 export const updateProject = createAppAsyncThunk(
   'projet/UPDATE_PROJET',
   async (project: UpdateProject, thunkAPI) => {
-    console.log(project);
     try {
       const { data } = await axiosInstance.put(`/projet/${project.id}`, {
         title: project.title,
@@ -118,7 +109,7 @@ export const updateProject = createAppAsyncThunk(
         status: project.status,
         technoProjet: project.technoProjet,
       });
-      return data;
+      return data.message;
     } catch (err: any) {
       if (err) {
         thunkAPI.dispatch(setProjectErrorMessage(err.response.data.message));
@@ -138,7 +129,7 @@ export const deleteProject = createAppAsyncThunk(
       return data;
     } catch (err: any) {
       if (err) {
-        thunkAPI.dispatch(setProjectErrorMessage(err.response.data.message));
+        thunkAPI.dispatch(setProjectErrorMessage(err.response.data.message as string));
       } else {
         console.error(err);
         thunkAPI.dispatch(setProjectErrorMessage('Une erreur s\'est produite lors de la connexion.'));
@@ -159,13 +150,16 @@ export const deleteMessageUpdate = createAction('project/DELETE_SUCCESS_UPDATE')
 export const deleteMessageDelete = createAction('project/DELETE_SUCCESS_DELETE');
 // Gestions des messages d'erreur
 export const setProjectErrorMessage = createAction<string>('project/SET_PROJECT_ERROR_MESSAGE');
+export const deleteProjectErrorMessage = createAction('project/DELETE_PROJECT_ERROR_MESSAGE');
 
 // Je créer mon reducer
 const projectsReducer = createReducer(initialState, (builder) => {
   builder
+  // On récupère le titre du projet
     .addCase(changeCredentialsTitle, (state, action) => {
       state.credentialTitle = action.payload;
     })
+    // On récupère le contenu du projet
     .addCase(changeCredentialsContent, (state, action) => {
       state.credentialContent = action.payload;
     })
@@ -185,55 +179,41 @@ const projectsReducer = createReducer(initialState, (builder) => {
     .addCase(setProjectErrorMessage, (state, action) => {
       state.errorApiProjects = action.payload;
     })
-    // On gère le rejet de la requête qui récupère tous les projets
-    .addCase(getAllProjects.rejected, (state) => {
-      state.errorApiProjects = null;
+    .addCase(deleteProjectErrorMessage, (state) => {
+      state.errorApiProjects = '';
     })
     // On gère la réussite de la requête qui récupère tous les projets
     .addCase(getAllProjects.fulfilled, (state, action) => {
-      state.errorApiProjects = null;
+      if (action.payload === undefined) {
+        return;
+      }
       state.lists = action.payload!;
       state.dataReception = true;
     })
     // On gère la réussite de la requête qui modifie un projet
-    .addCase(updateProject.fulfilled, (state) => {
-      state.successUpdate = 'Projet modifié avec succès';
-    })
-    // On gère le rejet de la requête qui modifie un projet
-    .addCase(updateProject.rejected, (state) => {
-      state.errorApiProjects = null;
-    })
-    // On gère le rejet de la requête qui récupère un projet par son id
-    .addCase(getProjectByID.rejected, (state) => {
-      state.errorApiProjects = null;
+    .addCase(updateProject.fulfilled, (state, action) => {
+      state.successUpdate = action.payload as string;
     })
     // On gère la réussite de la requête qui récupère un projet par son id
     .addCase(getProjectByID.fulfilled, (state, action) => {
-      state.errorApiProjects = null;
       state.projectByID = action.payload!;
       state.isLoading = false;
     })
-    // On gère le rejet de la requête qui crée un projet
-    .addCase(createProject.rejected, (state) => {
-      state.errorApiProjects = null;
-    })
     // On gère la réussite de la requête qui crée un projet
     .addCase(createProject.fulfilled, (state, action) => {
-      state.errorApiProjects = null;
+      if (action.payload === undefined) {
+        return;
+      }
       state.lists.push(action.payload!);
-      state.successAdd = 'Projet ajouté avec succès';
+      state.successAdd = action.payload.message as string;
       state.idNewProject = action.payload.result.id;
       state.credentialTitle = '';
       state.credentialContent = '';
     })
     // On gère la réussite de la requête qui supprime un projet
     .addCase(deleteProject.fulfilled, (state, action) => {
-      state.successDelete = 'Projet supprimé avec succès';
+      state.successDelete = action.payload.message;
     })
-    // On gère le rejet de la requête qui supprime un projet
-    .addCase(deleteProject.rejected, (state) => {
-      state.errorApiProjects = null;
-    });
 });
 
 export default projectsReducer;

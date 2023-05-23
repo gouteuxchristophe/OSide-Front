@@ -9,6 +9,7 @@ import {
   getProjectByID,
   getAllProjects,
   deleteMessageDelete,
+  deleteProjectErrorMessage,
 } from '../../../store/reducers/projects';
 import DeleteConfirmation from '../../Admin/deleteConfirmation';
 import ModalUpdateProject from './ModalUpdateProject';
@@ -26,6 +27,7 @@ function ProjectDetail() {
   // state des messages de succès
   const successDelete = useAppSelector((state) => state.projects.successDelete)
   const successUpdate = useAppSelector((state) => state.projects.successUpdate);
+  const errorApiProjects = useAppSelector((state) => state.projects.errorApiProjects);
   const dispatch = useAppDispatch();
   const navigate = useNavigate()
   // Redirige l'utilisateur vers la page d'accueil si il n'est pas connecté
@@ -36,10 +38,12 @@ function ProjectDetail() {
   // On récupère l'id du projet recherché
   const { id } = useParams();
   const idUser = useAppSelector((state) => state.user.data.id);
+
   // Permet de récupérer les données du projet
   useEffect(() => {
     dispatch(getProjectByID(id as unknown as number));
   }, [id, dispatch]);
+
   // Afficher un toast si le projet a bien été supprimé
   useEffect(() => {
     if (successDelete) {
@@ -48,15 +52,17 @@ function ProjectDetail() {
       dispatch(deleteMessageDelete())
       navigate('/dashboard')
     }
-  }, [successDelete]);
-  // Afficher un toast si le projet a bien été modifié
-  useEffect(() => {
     if (successUpdate) {
       toast.success(`🦄 ${successUpdate}`);
       dispatch(deleteMessageUpdate())
       dispatch(getProjectByID(id as unknown as number));
     }
-  }, [successUpdate]);
+    if (errorApiProjects) {
+      toast.error(`🦄 ${errorApiProjects}`);
+      dispatch(deleteProjectErrorMessage())
+    }
+  }, [successDelete, successUpdate, errorApiProjects]);
+
 
   const project = useAppSelector((state) => state.projects.projectByID)
 

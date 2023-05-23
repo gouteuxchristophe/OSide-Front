@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { Navigate, useNavigate } from "react-router-dom";
 import AddTechno from "../../Modals/AddTechno";
 import { useEffect, useState } from "react";
-import { changeCredentialsContent, changeCredentialsTitle, createProject, deleteMessageAdd, newProject } from "../../../store/reducers/projects";
+import { changeCredentialsContent, changeCredentialsTitle, createProject, deleteMessageAdd, deleteProjectErrorMessage, newProject } from "../../../store/reducers/projects";
 import { emptySelectedTechnos, getAllTechnos } from "../../../store/reducers/techno";
 
 function AddProjects() {
@@ -19,6 +19,7 @@ function AddProjects() {
   const credentialContent = useAppSelector((state) => state.projects.credentialContent);
   // state des messages de succès
   const successAdd = useAppSelector((state) => state.projects.successAdd);
+  const errorAdd = useAppSelector((state) => state.projects.errorApiProjects);
   // state du nouvel id du projet
   const idNewProject = useAppSelector((state) => state.projects.idNewProject);
   // state des technos sélectionnées
@@ -46,7 +47,11 @@ function AddProjects() {
       dispatch(deleteMessageAdd())
       navigate(`/project/${idNewProject}`);
     }
-  }, [successAdd]);
+    if (errorAdd) {
+      toast.error(`🦄 ${errorAdd}`);
+      dispatch(deleteProjectErrorMessage())
+    }
+  }, [successAdd, errorAdd]);
 
   // Permet d'ajouter un projet
   const handleAddProject = (e: React.FormEvent<HTMLFormElement>) => {
