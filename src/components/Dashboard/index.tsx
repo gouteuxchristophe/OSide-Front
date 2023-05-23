@@ -79,7 +79,7 @@ function Dashboard() {
               </div>
             </div>
             <div className="flex flex-col pb-10 items-center md:flex-row md:flex-wrap md:justify-center md:gap-10 overflow-hidden">
-              <h2 className="text-secondary20 font-bold text-lg">Mes projets</h2>
+              <h2 className="text-secondary20 font-bold text-lg w-full text-center">Mes projets</h2>
               {projectOwner.map((item) => (
                 <ProjectItem
                   key={item.id}
