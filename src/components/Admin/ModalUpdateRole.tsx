@@ -9,7 +9,6 @@ interface ModalUpdateRoleProps {
   color: string;
 }
 
-
 function ModalUpdateRole({ closeModal, id, label, color }: ModalUpdateRoleProps) {
 
   const dispatch = useAppDispatch();
@@ -36,7 +35,7 @@ function ModalUpdateRole({ closeModal, id, label, color }: ModalUpdateRoleProps)
           <form onSubmit={handleUpdateRoleSubmit} className="flex flex-col gap-5">
             <div className="flex justify-around">
               <label htmlFor="Label">Label</label>
-              <input className="w-[30%] text-[black]" onChange={(e) => setInputLabel(e.currentTarget.value)} type="text" defaultValue={label} />
+              <input className="w-[30%] text-[black]" onChange={(e) => setInputLabel(e.currentTarget.value)} type="text" defaultValue={label} required />
             </div>
             <div className="flex justify-around">
               <label htmlFor="Color">Color</label>

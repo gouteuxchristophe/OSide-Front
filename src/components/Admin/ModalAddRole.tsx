@@ -32,7 +32,7 @@ function ModalAddRole({ closeModal }: { closeModal: () => void } ) {
           <form onSubmit={handleUpdateTechnoSubmit} className="flex flex-col gap-5">
             <div className="flex justify-around">
               <label htmlFor="Label">Label</label>
-              <input className="w-[30%] text-[black]" onChange={(e) => setInputLabel(e.currentTarget.value)} type="text" defaultValue={''} />
+              <input className="w-[30%] text-[black]" onChange={(e) => setInputLabel(e.currentTarget.value)} type="text" defaultValue={''} required />
             </div>
             <div className="flex justify-around">
               <label htmlFor="Color">Color</label>

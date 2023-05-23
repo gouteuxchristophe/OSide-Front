@@ -6,20 +6,15 @@ import Admin_Roles from "./admin_roles";
 import { useAppSelector } from "../../hooks/redux";
 import { toast } from "react-toastify";
 import { Navigate } from "react-router-dom";
+import { getUserDataFromLocalStorage } from "../../utils/login";
 
 function AdminPage() {
 
   const isLogged = useAppSelector(state => state.login.logged)
-  const user = useAppSelector(state => state.user.data)
-
 
   if (!isLogged) {
     toast.warn('🦄 Veuillez vous connecter !');
     return <Navigate to="/login" replace />
-  }
-  if(user.role.id != 3) {
-    toast.warn('🦄 Vous n\'avez pas accès à cette page !');
-    return <Navigate to="/dashboard" replace />
   }
 
   // Permet de gérer l'affichage du menu

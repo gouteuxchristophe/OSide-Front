@@ -6,7 +6,7 @@ import { newRole } from '../../components/Admin/ModalAddRole';
 
 interface RoleState {
   lists: Role[],
-  errorAPIRole: string | null,
+  errorAPIRole: string
   successUpdate: string,
   successDelete: string,
   successAdd: string,
@@ -14,7 +14,7 @@ interface RoleState {
 // Je créer mon interface pour le state de mon reducer
 export const initialState: RoleState = {
   lists: [],
-  errorAPIRole: null,
+  errorAPIRole: '',
   successUpdate: '',
   successDelete: '',
   successAdd: '',
@@ -42,7 +42,6 @@ export const addRole = createAppAsyncThunk(
   async (role: newRole , thunkAPI) => {
     try {
       const { data } = await axiosInstance.post('/role', role);
-      console.log(data);
       return data ;
     } catch (err: any) {
       if (err) {
@@ -103,12 +102,16 @@ export const deleteMessageUpdate = createAction('role/DELETE_SUCCESS_UPDATE');
 export const deleteMessageAdd = createAction('role/DELETE_SUCCESS_ADD');
 // Gestions des messages d'erreur
 export const setRoleErrorMessage = createAction<string>('role/SET_ROLE_ERROR_MESSAGE');
+export const deleteRoleErrorMessage = createAction('role/DELETE_ROLE_ERROR_MESSAGE');
 // Je créer mon reducer
 const roleReducer = createReducer(initialState, (builder) => {
   builder
   // On gère le message d'erreur
   .addCase(setRoleErrorMessage, (state, action) => {
     state.errorAPIRole = action.payload;
+  })
+  .addCase(deleteRoleErrorMessage, (state) => {
+    state.errorAPIRole = '';
   })
   // On vide le message de succès de la suppression d'une techno
   .addCase(deleteMessage, (state) => {
@@ -125,36 +128,24 @@ const roleReducer = createReducer(initialState, (builder) => {
   // On gère le succès de la requête qui récupère tous les rôles
   .addCase(getAllRole.fulfilled, (state, action) => {
     state.lists = action.payload!;
-    state.errorAPIRole = null;
-  })
-  // On gère le rejet de la requête qui récupère tous les rôles
-  .addCase(getAllRole.rejected, (state, action) => {
-    state.errorAPIRole = null
-  })
-  // On gère le rejet de la requête qui me permet de modifier un rôle
-  .addCase(updateRole.rejected, (state) => {
-    state.errorAPIRole = null;
+    state.errorAPIRole = '';
   })
   // On gère la réussite de la requête qui me permet de modifier un rôle
   .addCase(updateRole.fulfilled, (state, action) => {
+    if (state.lists !== null) return
     state.successUpdate = action.payload.message;
-    state.errorAPIRole = null;
-  })
-  // On gère le rejet de la requête qui me permet de supprimer un rôle
-  .addCase(deleteRole.rejected, (state) => {
-    state.errorAPIRole= null;
+    state.errorAPIRole = '';
   })
   // On gère la réussite de la requête qui me permet de supprimer un rôle
   .addCase(deleteRole.fulfilled, (state, action) => {
     state.successDelete = action.payload.message;
-  })
-  // On gère le rejet de la requête qui me permet d'ajouter un rôle
-  .addCase(addRole.rejected, (state) => {
-    state.errorAPIRole= null;
+    state.errorAPIRole = '';
   })
   // On gère la réussite de la requête qui me permet d'ajouter un rôle
   .addCase(addRole.fulfilled, (state, action) => {
+    if (state.lists !== null) return
     state.successAdd = action.payload.message;
+    state.errorAPIRole = '';
   })
 });
 

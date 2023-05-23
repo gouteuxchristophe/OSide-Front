@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { deleteMessageAdd, deleteRole, getAllRole } from "../../store/reducers/role";
+import { deleteMessageAdd, deleteRole, deleteRoleErrorMessage, getAllRole } from "../../store/reducers/role";
 import { Edit3, PlusSquare, Trash2 } from "react-feather";
 import ModalUpdateRole from "./ModalUpdateRole";
 import { toast } from "react-toastify";
@@ -22,6 +22,7 @@ function Admin_Roles({ closeSection }: { closeSection: () => void }) {
   const successDelete = useAppSelector((state) => state.role.successDelete);
   const successUpdate = useAppSelector((state) => state.role.successUpdate);
   const successAdd = useAppSelector((state) => state.role.successAdd);
+  const errorAPIRole = useAppSelector((state) => state.role.errorAPIRole);
   const [deleteConfirmation, setDeleteConfirmation] = useState<boolean>(false);
   
 
@@ -35,6 +36,11 @@ function Admin_Roles({ closeSection }: { closeSection: () => void }) {
   // Permet d'afficher une notification si le role a bien été supprimée, modifiée, ajoutée
   // et de recharger la liste des roles
   useEffect(() => {
+    if (errorAPIRole) {
+      toast.error(`🦄 ${errorAPIRole}`);
+      dispatch(deleteRoleErrorMessage())
+      return
+    }
     if (successDelete) {
       toast.success(`🦄 ${successDelete}`);
       dispatch(deleteMessage());
@@ -49,7 +55,7 @@ function Admin_Roles({ closeSection }: { closeSection: () => void }) {
       dispatch(deleteMessageAdd());
     }
     dispatch(getAllRole());
-  }, [successDelete, successUpdate, successAdd]);
+  }, [successDelete, successUpdate, successAdd, errorAPIRole]);
 
   // Permet d'afficher la modal de suppression d'un role
   const handleDeleteRole = () => {
