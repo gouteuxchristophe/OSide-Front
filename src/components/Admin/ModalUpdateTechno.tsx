@@ -36,7 +36,7 @@ function ModalUpdateTechno({ closeModal, id, label, color }: ModalUpdateTechnoPr
           <form onSubmit={handleUpdateTechnoSubmit} className="flex flex-col gap-5">
             <div className="flex justify-around">
               <label htmlFor="Label">Label</label>
-              <input className="w-[50%] text-[black]" onChange={(e) => setInputLabel(e.currentTarget.value)} type="text" defaultValue={label} />
+              <input className="w-[50%] text-[black]" onChange={(e) => setInputLabel(e.currentTarget.value)} type="text" defaultValue={label} required/>
             </div>
             <div className="flex justify-around">
               <label htmlFor="Color">Color</label>

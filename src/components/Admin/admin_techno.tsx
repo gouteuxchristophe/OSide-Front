@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { Delete, Edit3, Trash2 } from "react-feather";
 import ModalUpdateTechno from "./ModalUpdateTechno";
 import AddTechno from "../Modals/AddTechno";
-import { deleteMessage, deleteMessageUpdate, deleteMessageAdd, deleteTechno, getAllTechnos, emptySelectedTechnos } from "../../store/reducers/techno";
+import { deleteMessage, deleteMessageUpdate, deleteMessageAdd, deleteTechno, getAllTechnos, emptySelectedTechnos, deleteTechnoErrorMessage } from "../../store/reducers/techno";
 import { toast } from "react-toastify";
 import DeleteConfirmation from "./deleteConfirmation";
 
@@ -14,6 +14,7 @@ function Admin_Techno({ closeSection }: { closeSection: (value: string) => void 
   const successDelete = useAppSelector((state) => state.techno.successDelete);
   const successUpdate = useAppSelector((state) => state.techno.successUpdate);
   const successAdd = useAppSelector((state) => state.techno.successAdd);
+  const errorAPITechno = useAppSelector((state) => state.techno.errorApiTechno);
   const [deleteConfirmation, setDeleteConfirmation] = useState<boolean>(false);
   // state des modals
   const [showModalUpdateTechno, setShowModalUpdateTechno] = useState(false);
@@ -36,6 +37,11 @@ function Admin_Techno({ closeSection }: { closeSection: (value: string) => void 
   // Permet d'afficher une notification si la techno a bien été supprimée, modifiée, ajoutée
   // et de recharger la liste des technos
   useEffect(() => {
+    if (errorAPITechno) {
+      toast.error(`🦄 ${errorAPITechno}`);
+      dispatch(deleteTechnoErrorMessage())
+      return
+    }
     if (successDelete) {
       toast.error(`🦄 ${successDelete}`);
       dispatch(deleteMessage());
@@ -50,7 +56,7 @@ function Admin_Techno({ closeSection }: { closeSection: (value: string) => void 
     }
     dispatch(emptySelectedTechnos())
     dispatch(getAllTechnos());
-  }, [successDelete, successUpdate, successAdd]);
+  }, [successDelete, successUpdate, successAdd, errorAPITechno]);
 
   return (
     <div className="relative mx-auto">

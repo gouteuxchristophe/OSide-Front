@@ -12,7 +12,7 @@ interface technoState {
   successDelete: string;
   successUpdate: string;
   selectedTechnos: ITechnoProjet[];
-  errorApiTechno: string | null;
+  errorApiTechno: string;
 }
 
 // Je créer mon state initial
@@ -23,7 +23,7 @@ export const initialState: technoState = {
   successDelete: '',
   successUpdate: '',
   selectedTechnos: [],
-  errorApiTechno: null,
+  errorApiTechno: '',
 };
 
 // Requete API pour récupérer toutes les technos
@@ -108,6 +108,7 @@ export const deleteTechno = createAppAsyncThunk(
 export const updatedSelectedTechnos = createAction<newTechno[]>('technos/UPDATED_SELECTED_TECHNO');
 // Gestions des messages d'erreur
 export const setTechnoErrorMessage = createAction<string>('techno/SET_Techno_ERROR_MESSAGE');
+export const deleteTechnoErrorMessage = createAction('techno/DELETE_Techno_ERROR_MESSAGE');
 // Action qui vide le tableau des technos sélectionnées lors de l'ajout l'update
 export const emptySelectedTechnos = createAction('technos/EMPTY_SELECTED_TECHNO');
 // Action creator qui me permet de supprimer le message de succès de la suppression d'une techno
@@ -128,41 +129,8 @@ const technoReducer = createReducer(initialState, (builder) => {
   .addCase(setTechnoErrorMessage, (state, action) => {
     state.errorApiTechno = action.payload;
   })
-  // On gère le rejet de la requête qui récupère toutes les technos
-  .addCase(getAllTechnos.rejected, (state) => {
-    state.errorApiTechno = null;
-  })
-  // On gère le succès de la requête qui récupère toutes les technos
-  .addCase(getAllTechnos.fulfilled, (state, action) => {
-    state.technoLists = action.payload!;
-  })
-  // On gère le rejet de la requête qui me permet d'ajouter une techno
-  .addCase(addTechno.rejected, (state) => {
-    state.errorApiTechno = null;
-  })
-  // On gère la réussite de la requête qui me permet d'ajouter une techno
-  .addCase(addTechno.fulfilled, (state, action) => {
-    state.successAdd = action.payload!.message;
-  })
-  // On gère le rejet de la requête qui me permet de modifier une techno
-  .addCase(updatedSelectedTechnos, (state, action) => {
-    state.selectedTechnos = action.payload;
-  })
-  // On gère le rejet de la requête qui me permet de supprimer une techno
-  .addCase(deleteTechno.rejected, (state) => {
-    state.errorApiTechno = null;
-  })
-  // On gère la réussite de la requête qui me permet de supprimer une techno
-  .addCase(deleteTechno.fulfilled, (state, action) => {
-    state.successDelete = action.payload.message;
-  })
-  // On gère le rejet de la requête qui me permet de modifier une techno
-  .addCase(updateTechno.rejected, (state) => {
-    state.errorApiTechno = null;
-  })
-  // On gère la réussite de la requête qui me permet de modifier une techno
-  .addCase(updateTechno.fulfilled, (state, action) => {
-    state.successUpdate = action.payload.message;
+  .addCase(deleteTechnoErrorMessage, (state) => {
+    state.errorApiTechno = '';
   })
   // On vide le message de succès du delete
   .addCase(deleteMessage, (state) => {
@@ -176,6 +144,32 @@ const technoReducer = createReducer(initialState, (builder) => {
   .addCase(deleteMessageAdd, (state) => {
     state.successAdd = '';
   })
+  // On gère le succès de la requête qui récupère toutes les technos
+  .addCase(getAllTechnos.fulfilled, (state, action) => {
+    state.technoLists = action.payload!;
+    state.errorApiTechno = '';
+  })
+  // On gère la réussite de la requête qui me permet d'ajouter une techno
+  .addCase(addTechno.fulfilled, (state, action) => {
+    state.successAdd = action.payload!.message;
+    state.errorApiTechno = '';
+  })
+  // On gère le rejet de la requête qui me permet de modifier une techno
+  .addCase(updatedSelectedTechnos, (state, action) => {
+    state.selectedTechnos = action.payload;
+    state.errorApiTechno = '';
+  })
+  // On gère la réussite de la requête qui me permet de supprimer une techno
+  .addCase(deleteTechno.fulfilled, (state, action) => {
+    state.successDelete = action.payload.message;
+    state.errorApiTechno = '';
+  })
+  // On gère la réussite de la requête qui me permet de modifier une techno
+  .addCase(updateTechno.fulfilled, (state, action) => {
+    state.successUpdate = action.payload.message;
+    state.errorApiTechno = '';
+  })
+  
 });
 
 export default technoReducer;
