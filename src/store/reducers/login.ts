@@ -16,8 +16,8 @@ interface LoginState {
     passwordConfirm: string;
   };
   token: string;
-  errorAPILogin: string | null;
-  message: string | null;
+  errorLoginMessage: string;
+  message: string;
 }
 // Je créer un type qui me permet de récupérer les clés de mon interface
 export type KeysOfCredentials = keyof LoginState['credentials'];
@@ -31,8 +31,8 @@ export const initialState: LoginState = {
     password: '',
     passwordConfirm: '',
   },
-  errorAPILogin: null ,
-  message: null,
+  errorLoginMessage: '',
+  message: '',
   ...userStorage,
 };
 
@@ -85,11 +85,10 @@ export const login = createAppAsyncThunk(
       const user = await axiosInstance.get(`/user/${userLogin.id}`);
       // Je modifie le state de mon reducer user
       thunkAPI.dispatch(setUser(user.data));
-      console.log(userLogin);
       return userLogin as LoginState;
     } catch (err: any) {
       if (err) {
-        thunkAPI.dispatch(setLoginErrorMessage(err.response.data.message));
+        thunkAPI.dispatch(setLoginErrorMessage(err.response.data));
       } else {
         console.error(err);
         thunkAPI.dispatch(setLoginErrorMessage('Une erreur s\'est produite.'));
@@ -104,31 +103,30 @@ export const logout = createAction('user/LOGOUT');
 // Je créer mon reducer
 const loginReducer = createReducer(initialState, (builder) => {
   builder
-  .addCase(setLoginErrorMessage, (state, action) => {
-    state.errorAPILogin = action.payload;
-  })
+    .addCase(setLoginErrorMessage, (state, action) => {
+      state.errorLoginMessage = action.payload;
+    })
     // Je met à jour la valeur d'un champ de mon formulaire
     .addCase(changeCredentialsField, (state, action) => {
       const { propertyKey, value } = action.payload;
       state.credentials[propertyKey] = value;
     })
-    // On gère le rejet de la requête qui me permet de me connecter
-    .addCase(login.rejected, (state) => {
-      state.errorAPILogin = null;
-    })
     // On gère la réussite de la requête qui me permet de me connecter
     .addCase(login.fulfilled, (state, action) => {
       // Je met à jour le state logged et token
-      state.message = action.payload!.message;
-      state.logged = true;
-      state.token = action.payload!.token;
-      state.errorAPILogin = null
-      // Je vide les champs de mon formulaire
-      state.credentials.email = '';
+      if (action.payload !== undefined) {
+        state.message = action.payload!.message;
+        state.logged = true;
+        state.token = action.payload!.token;
+        state.errorLoginMessage = ''
+        // Je vide les champs de mon formulaire
+        state.credentials.email = '';
+      }
     })
     // Je gère la déconnexion
     .addCase(logout, (state) => {
-      state.message = null;
+      state.message = '';
+      state.errorLoginMessage = '';
       state.logged = false;
       state.token = '';
       // Je supprime les données du localStorage

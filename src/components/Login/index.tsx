@@ -11,7 +11,7 @@ function Login() {
   const email = useAppSelector((state) => state.login.credentials.email);
   const password = useAppSelector((state) => state.login.credentials.password);
   const isLogged = useAppSelector((state) => state.login.logged);
-  const errorLogin = useAppSelector((state) => state.login.errorAPILogin);
+  const errorLogin = useAppSelector((state) => state.login.errorLoginMessage);
   const [clickEye, setClickEye] = useState(false);
   // state du message de login
   const messageLogin = useAppSelector((state) => state.login.message);
@@ -40,7 +40,7 @@ function Login() {
   if (isLogged) {
     toast.success(`🦄 ${messageLogin} !`);
   }
-  else {
+  if(errorLogin) {
     toast.error(errorLogin);
   }
 }, [isLogged, errorLogin]);
