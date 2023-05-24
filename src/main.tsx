@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom/client';
 
 // On importe notre composant principal
-import { BrowserRouter, MemoryRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import App from './components/App';
 
 import store from './store';
