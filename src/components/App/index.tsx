@@ -16,7 +16,6 @@ import AdminPage from '../Admin';
 import { toast } from 'react-toastify';
 import { getUserById, resetSuccessDelete } from '../../store/reducers/user';
 import AddProjects from '../Project/add';
-import { logout } from '../../store/reducers/login';
 function App() {
   // state pour les erreurs de l'API sur getprojet
   const errorAPIUser = useAppSelector((state) => state.user.errorAPIUser);
@@ -41,10 +40,10 @@ function App() {
   }, [dispatch, dataReception]);
   // Permet de récupérer les données de l'utilisateur
   useEffect(() => {
-    if (sessionStorage.length > 0 || isLogged === true) {
+    if (sessionStorage) {
       dispatch(getUserById())
     }
-  }, [dispatch, sessionStorage, isLogged]);
+  }, [dispatch, sessionStorage]);
 
   // Affiche la notification si la récupération des données de l'utilisateur a échoué
   useEffect(() => {

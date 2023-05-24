@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { logout } from '../../store/reducers/login';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { toast } from 'react-toastify';
+import { resetData } from '../../store/reducers/user';
 
 interface ModalUserProps {
   handleCloseModal: () => void;
@@ -15,6 +16,7 @@ function ModalUser({ handleCloseModal }: ModalUserProps) {
   // Permet de se déconnecter
   const handleLogout = () => {
     dispatch(logout());
+    dispatch(resetData())
     handleCloseModal();
     navigate("/");
   };

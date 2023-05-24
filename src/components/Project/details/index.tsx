@@ -10,9 +10,14 @@ import {
   getAllProjects,
   deleteMessageDelete,
   deleteProjectErrorMessage,
+  participateProject,
+  leaveProject,
+  deleteMessageParticipate,
+  deleteMessageLeave,
 } from '../../../store/reducers/projects';
 import DeleteConfirmation from '../../Admin/deleteConfirmation';
 import ModalUpdateProject from './ModalUpdateProject';
+import ConfettiExplosion from 'react-confetti-explosion';
 
 function ProjectDetail() {
   // Permet de savoir si l'utilisateur est connecté
@@ -28,6 +33,9 @@ function ProjectDetail() {
   const successDelete = useAppSelector((state) => state.projects.successDelete)
   const successUpdate = useAppSelector((state) => state.projects.successUpdate);
   const errorApiProjects = useAppSelector((state) => state.projects.errorApiProjects);
+  const successParticipate = useAppSelector((state) => state.projects.successParticipate)
+  const successLeave = useAppSelector((state) => state.projects.successLeave)
+  const [isExploding, setIsExploding] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate()
   // Redirige l'utilisateur vers la page d'accueil si il n'est pas connecté
@@ -38,6 +46,7 @@ function ProjectDetail() {
   // On récupère l'id du projet recherché
   const { id } = useParams();
   const idUser = useAppSelector((state) => state.user.data.id);
+
 
   // Permet de récupérer les données du projet
   useEffect(() => {
@@ -61,14 +70,53 @@ function ProjectDetail() {
       toast.error(`🦄 ${errorApiProjects}`);
       dispatch(deleteProjectErrorMessage())
     }
-  }, [successDelete, successUpdate, errorApiProjects]);
-
+    if (successParticipate) {
+      dispatch(deleteMessageParticipate())
+      setIsExploding(true)
+      toast.success(`🦄 ${successParticipate}`);
+      dispatch(getProjectByID(id as unknown as number));
+    }
+    if(successLeave) {
+      dispatch(deleteMessageLeave())
+      toast.warn(`🦄 ${successLeave}`);
+      dispatch(getProjectByID(id as unknown as number));
+    }
+  }, [successDelete, successUpdate, errorApiProjects, successParticipate, successLeave]);
 
   const project = useAppSelector((state) => state.projects.projectByID)
+
+  const handleParticipate = () => {
+    const data = {
+      id: project.id,
+      userId: idUser
+    }
+    dispatch(participateProject(data))
+  }
+  const handleLeave = () => {
+    const data = {
+      id: project.id,
+      userId: idUser
+    }
+    dispatch(leaveProject(data))
+  }
+
+  const largeProps = {
+    force: 1,
+    duration: 5000,
+    particleCount: 500,
+    height: '200vh',
+    width: 1600,
+    zIndex: 100,
+    colors: ['#041E43', '#1471BF', '#5BB4DC', '#FC027B', '#66D805', 'F0F'],
+    onComplete: () => setIsExploding(false),
+  };
 
   if (isLoading) {
     return <div>Loading...</div>
   }
+  // Tableau des membres du projet qui retourne true si l'id de l'utilisateur est présent   
+  const alreadyParticipated = project.memberProjet.some((member) => member.id === idUser)
+  console.log(alreadyParticipated);
 
   // Si on ne trouve pas de projet, on dirige vers la page erreur
   if (!project) {
@@ -76,19 +124,20 @@ function ProjectDetail() {
   }
 
   return (
-    <div className="flex items-center h-auto lg:h-screen flex-wrap my-2 lg:my-0 relative justify-center py-10">
+
+    <div className="flex items-center h-auto lg:h-screen flex-wrap my-5 lg:my-0 relative justify-center py-10">
       {!showUpdateModal && (
         <div className="w-full lg:w-3/5 rounded-lg lg:rounded-l-lg lg:rounded-r-none shadow-xl bg-white opacity-75 mx-6 lg:mx-0 border-2 border-solid border-secondary10">
           <div className="p-4 md:p-12 text-center lg:text-left flex flex-col gap-7 relative">
             <div
-
               className="block rounded-full shadow-xl mx-auto -mt-16 md:-mt-24 h-24 w-24 bg-cover bg-center border-b-4 border-solid border-secondary10"
-
               style={{ backgroundImage: `url(${!project.author.github.avatar_url ? fakeAvatar : project.author.github.avatar_url})` }}
-
             />
             <div className="pb-5 border-b-2 border-solid border-secondary23 rounded">
               <div className="flex items-center justify-between mb-3">
+                <div className='absolute'>
+                  {isExploding && <ConfettiExplosion  {...largeProps} />}
+                </div>
                 <h1 className="text-2xl font-bold lg:pt-0 text-left">{project.title}</h1>
                 {/* On vérifie si le user qui est sur la page du projet est son créateur */}
                 {idUser === project?.author.id &&
@@ -130,12 +179,22 @@ function ProjectDetail() {
               </div>
             </div>
             <div className="pt-12 pb-8 flex justify-around flex-wrap gap-2 text-[white]">
-            {idUser != project?.author.id &&
-              <button type="button" className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-secondary20 rounded-lg focus:ring-4 focus:outline-none">
-                Participer
-              </button>
+              {idUser != project?.author.id && (
+                <>
+                  {alreadyParticipated ? (
+                    <button type="button" onClick={handleLeave} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-secondary20 rounded-lg focus:ring-4 focus:outline-none">
+                      Quitter le projet
+                    </button>
+                  ) : (
+                    <button type="button" onClick={handleParticipate} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-secondary20 rounded-lg focus:ring-4 focus:outline-none">
+                      Participer
+                    </button>
+                  )}
+                </>
+
+              )
               }
-              <Link to="/" className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-secondary20 rounded-lg focus:ring-4 focus:outline-none">
+              <Link to="/projects" className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-secondary20 rounded-lg focus:ring-4 focus:outline-none">
                 Retour à la liste
               </Link>
               {idUser === project?.author.id &&

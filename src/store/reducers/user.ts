@@ -11,11 +11,13 @@ const userData = getUserDataFromLocalStorage();
 
 interface UserUpdate {
   id: number,
-  username: string,
-  first_name: string,
-  last_name: string,
-  email: string,
-  ability: number[]
+  first_name?: string,
+  last_name?: string,
+  email?: string,
+  password?: string,
+  passwordConfirm?: string,
+  ability?: number[]
+  roleId?: number
 }
 
 interface UserRegister {
@@ -34,6 +36,8 @@ interface UserState {
   successDelete: string
   successCreate: boolean
   errorRegister: string | null
+  successUpdate: string
+  errorUpdate: string
 }
 // Je créer mon interface pour le state de mon reducer
 export const initialState: UserState = {
@@ -42,7 +46,7 @@ export const initialState: UserState = {
     email: '',
     first_name: '',
     last_name: '',
-    username: 'unknown',
+    username: '',
     github: {
       id: 1,
       login: '',
@@ -61,6 +65,8 @@ export const initialState: UserState = {
   successDelete: '',
   successCreate: false,
   errorRegister: null,
+  successUpdate: '',
+  errorUpdate: '',
 };
 
 // Action creator qui me permet de créer un utilisateur
@@ -68,7 +74,6 @@ export const createUser = createAppAsyncThunk(
   'user/CREATE_USER',
   async (user : UserRegister, thunkAPI) => {
     try {
-      console.log(user);
       const { data } = await axiosInstance.post('/user/register', user);
       return data as User;
     } catch (err: any) {
@@ -124,12 +129,13 @@ export const getUserById = createAppAsyncThunk(
 export const updateUser = createAppAsyncThunk(
   'user/UPDATE_USER',
   async (user: UserUpdate, thunkAPI) => {
+    console.log(user);
     try {
       const { data } = await axiosInstance.put(`/user/${user.id}`, user);
-      return data as User;
+      return data.message;
     } catch (err: any) {
       if (err) {
-        thunkAPI.dispatch(setUserErrorMessage(err.response.data.message));
+        thunkAPI.dispatch(setUserErrorUpdate(err.response.data));
       } else {
         console.error(err);
         thunkAPI.dispatch(setUserErrorMessage('Une erreur s\'est produite lors de la connexion.'));
@@ -159,17 +165,27 @@ export const deleteUser = createAppAsyncThunk(
   },
 );
 
-// On vide le successCreate après la création d'un utilisateur
-export const resetSuccessCreate = createAction('user/RESET_SUCCESS_CREATE');
-// On vide le message d'erreur après le register échec
-export const resetErrorMessage = createAction('user/RESET_ERROR_MESSAGE');
 // On créer une action pour l'update de l'utilisateur lors de la connexion
 export const setUser = createAction<User>('user/SET_USER');
+// On vide les messages de succès ou d'erreur
+// On vide le successCreate après la création d'un utilisateur
+export const resetSuccessCreate = createAction('user/RESET_SUCCESS_CREATE');
+// On vide le message d'erreur après le register
+export const resetErrorMessage = createAction('user/RESET_ERROR_MESSAGE');
 // On vide le successDelete après la suppression d'un utilisateur
 export const resetSuccessDelete = createAction('user/RESET_SUCCESS_DELETE');
-// Gestions des messages d'erreur
+// On vide le successUpdate après la mise à jour d'un utilisateur
+export const resetSuccessUpdate = createAction('user/RESET_SUCCESS_UPDATE');
+// On vide le usertErrorRegister après la mise à jour d'un utilisateur
+export const deleteUserErrorRegister = createAction<string>('user/DELETE_USER_ERROR');
+// On vide le userErrorUpdate après la mise à jour d'un utilisateur
+export const resetUserErrorUpdate = createAction<string>('user/RESET_USER_ERROR_UPDATE');
+// Création des messages d'erreur
+export const setUserErrorUpdate = createAction<string>('user/SET_USER_ERROR_UPDATE');
 export const setUserErrorRegister = createAction<string>('user/SET_USER_ERROR_REGISTER');
 export const setUserErrorMessage = createAction<string>('user/SET_USER_ERROR_MESSAGE');
+// on vide le data lors du logout
+export const resetData = createAction('user/RESET_DATA');
 // Je créer mon reducer
 const userReducer = createReducer(initialState, (builder) => {
   builder
@@ -184,6 +200,19 @@ const userReducer = createReducer(initialState, (builder) => {
     .addCase(setUser, (state, action) => {
       state.data = action.payload;
     })
+    // On récupère le message d'erreur
+    .addCase(setUserErrorUpdate, (state, action) => {
+      state.errorUpdate = action.payload;
+    })
+    // On reset le message de succès de mise à jour
+    .addCase(resetSuccessUpdate, (state) => {
+      state.successUpdate = '';
+    })
+    // On supprime le message d'erreur d'inscription
+    .addCase(deleteUserErrorRegister, (state, action) => {
+      state.errorRegister = action.payload;
+    })
+    // On supprime le message de succès de suppression du compte
     .addCase(resetSuccessDelete, (state) => { 
       state.successDelete = '';
     })
@@ -191,8 +220,13 @@ const userReducer = createReducer(initialState, (builder) => {
     .addCase(setUserErrorMessage, (state, action) => {
       state.errorAPIUser = action.payload;
     })
+    // On supprime le message d'erreur de mise à jour
     .addCase(setUserErrorRegister, (state, action) => {
       state.errorRegister = action.payload;
+    })
+    // On supprime le message d'erreur de mise à jour
+    .addCase(resetUserErrorUpdate, (state) => {
+      state.errorUpdate = ''
     })
     // On gère le succès de la requête qui récupère tous les utilisateurs
     .addCase(getAllUsers.fulfilled, (state, action) => {
@@ -215,6 +249,13 @@ const userReducer = createReducer(initialState, (builder) => {
       state.successCreate = true;
       state.errorRegister = null;
     })
+    .addCase(resetData, (state) => {
+      state.data = initialState.data;
+    })
+    .addCase(updateUser.fulfilled, (state, action) => {
+      if(action.payload === undefined) return;
+      state.successUpdate = action.payload!;
+    });
 });
 
 export default userReducer;

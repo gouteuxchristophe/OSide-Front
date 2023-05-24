@@ -85,7 +85,7 @@ function Admin_Projects({ closeSection }: { closeSection: (value: string) => voi
                   </div>
                 </td>
                 <td className="flex justify-around">
-                  <button onClick={() => navigate(`/project/${project.id}`)}>
+                  <button onClick={() => navigate(`/projet/${project.id}`)}>
                     <Eye className="w-4" />
                     </button>
                   <button onClick={() => {

@@ -23,6 +23,8 @@ interface ProjectsState {
   idNewProject: number;
   credentialTitle: string;
   credentialContent: string;
+  successParticipate: boolean
+  successLeave: boolean
 }
 
 interface UpdateProject {
@@ -32,6 +34,11 @@ interface UpdateProject {
   status: string | undefined;
   technoProjet: number[]
 }
+
+interface ParticipateProject {
+  id: any;
+  userId: number;
+  }
 
 // Je créer mon state initial
 export const initialState: ProjectsState = {
@@ -46,6 +53,8 @@ export const initialState: ProjectsState = {
   idNewProject: 0,
   credentialTitle: '',
   credentialContent: '',
+  successParticipate: false,
+  successLeave: false
 };
 // Action creator qui me permet de récupérer tous les projets
 export const getAllProjects = createAppAsyncThunk('projects/GET_ALL_PROJECTS',
@@ -137,6 +146,46 @@ export const deleteProject = createAppAsyncThunk(
     }
   },
 );
+// Participer à un projet
+export const participateProject = createAppAsyncThunk(
+  'projet/PARTICIPATE_PROJET',
+  async (project: ParticipateProject, thunkAPI) => {
+    try {
+      const { data } = await axiosInstance.post(`/projet/${project.id}/participate`, {
+        memberProject: {
+          id: project.userId
+        }
+      })
+      return data
+    } catch (err: any) {
+      if (err) {
+        thunkAPI.dispatch(setProjectErrorMessage(err.response.data.message as string));
+      } else {
+        console.error(err);
+        thunkAPI.dispatch(setProjectErrorMessage('Une erreur s\'est produite lors de la connexion.'));
+      }
+    }
+});
+// Quitter un projet
+export const leaveProject = createAppAsyncThunk(
+  'projet/LEAVE_PROJET',
+  async (project: ParticipateProject, thunkAPI) => {
+    try {
+      const { data } = await axiosInstance.post(`/projet/${project.id}/leave`, {
+        memberProject: {
+          id: project.userId
+        }
+      })
+      return data
+    } catch (err: any) {
+      if (err) {
+        thunkAPI.dispatch(setProjectErrorMessage(err.response.data.message as string));
+      } else {
+        console.error(err);
+        thunkAPI.dispatch(setProjectErrorMessage('Une erreur s\'est produite lors de la connexion.'));
+      }
+    }
+});
 // Action creator qui me permet de changer la valeur d'un champ de mon formulaire
 export const changeCredentialsTitle = createAction<string>('project/CHANGE_CREDENTIALS_TITLE');
 // Action creator qui me permet de changer la valeur d'un champ de mon formulaire
@@ -151,7 +200,9 @@ export const deleteMessageDelete = createAction('project/DELETE_SUCCESS_DELETE')
 // Gestions des messages d'erreur
 export const setProjectErrorMessage = createAction<string>('project/SET_PROJECT_ERROR_MESSAGE');
 export const deleteProjectErrorMessage = createAction('project/DELETE_PROJECT_ERROR_MESSAGE');
-
+// On vide le message de succès de participation
+export const deleteMessageParticipate = createAction('project/DELETE_SUCCESS_PARTICIPATE');
+export const deleteMessageLeave = createAction('project/DELETE_SUCCESS_LEAVE');
 // Je créer mon reducer
 const projectsReducer = createReducer(initialState, (builder) => {
   builder
@@ -213,6 +264,18 @@ const projectsReducer = createReducer(initialState, (builder) => {
     // On gère la réussite de la requête qui supprime un projet
     .addCase(deleteProject.fulfilled, (state, action) => {
       state.successDelete = action.payload.message;
+    })
+    .addCase(participateProject.fulfilled, (state, action) => {
+      state.successParticipate = action.payload.message
+    })
+    .addCase(deleteMessageParticipate, (state) => {
+      state.successParticipate = false
+    })
+    .addCase(leaveProject.fulfilled, (state, action) => {
+      state.successLeave = action.payload.message
+    })
+    .addCase(deleteMessageLeave, (state) => {
+      state.successLeave = false
     })
 });
 

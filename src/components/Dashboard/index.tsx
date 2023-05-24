@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppSelector } from "../../hooks/redux";
 import { Project } from "../../@types/project";
 import { searchProjectByUser } from "../../store/selectors/search";
@@ -46,6 +46,10 @@ function Dashboard() {
     setShowDeleteModal(!showDeleteModal)
   }
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   return (
     <>
       {!showModal ? (
@@ -68,7 +72,7 @@ function Dashboard() {
                   <div>A l'ouest rien de nouveau</div>
                 )
                   : user.ability.map((skill) => (
-                    <div className="relative w-12 h-12" key={skill.id}>
+                    <div className="relative" key={skill.id}>
                       <div key={skill.id} style={{ borderColor: `${skill.color}` }} className="bg-[white] border-2 border-solid text-sm px-3 rounded-full pt-[0.1em] pb-[0.1em]">{skill.label}</div>
                     </div>
                   ))}
