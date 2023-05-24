@@ -22,6 +22,10 @@ module.exports = {
       secondary22: '#219ACF',
       secondary23: '#115F81',
       secondary24: '#0F4157',
+      emeral: '#a7f3d0',
+      cyan: '#06b6d4',
+      sky: '#38bdf8',
+      fof: '#f0f'
     },
     extend: {
       boxShadow: {

@@ -102,7 +102,7 @@ function ProjectDetail() {
               </span>
             </div>
             <p className="pt-8 text-sm">{project.content}</p>
-            <div className="flex justify-center items-center py-2 px-4 rounded-full bg-secondary20 border-2 border-solid text-[white] w-[50%] self-center">
+            <div className="flex justify-center items-center py-2 px-4 rounded bg-secondary20 text-[white] w-[50%] self-center">
               <MessageCircle />
               {' '}
               Voir les commentaires
@@ -131,11 +131,11 @@ function ProjectDetail() {
             </div>
             <div className="pt-12 pb-8 flex justify-around flex-wrap gap-2 text-[white]">
             {idUser != project?.author.id &&
-              <button type="button" className="py-2 px-4 rounded-full bg-secondary20 border-2 border-solid">
+              <button type="button" className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-secondary20 rounded-lg focus:ring-4 focus:outline-none">
                 Participer
               </button>
               }
-              <Link to="/" className="py-2 px-4 rounded-full bg-secondary20 border-2 border-solid">
+              <Link to="/" className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-secondary20 rounded-lg focus:ring-4 focus:outline-none">
                 Retour à la liste
               </Link>
               {idUser === project?.author.id &&

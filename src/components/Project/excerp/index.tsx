@@ -38,7 +38,7 @@ function ProjectItem({
               }
           </div>
           <div className="flex justify-center text-[white]">
-            <Link to={`/project/${id}`} className="px-4 py-3 rounded-full shadow-xl mt-4 bg-secondary20  text-center border-2 border-solid">
+            <Link to={`/project/${id}`} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-secondary20 rounded-lg focus:ring-4 focus:outline-none">
               Détails du projet
             </Link>
           </div>

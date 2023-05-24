@@ -46,10 +46,10 @@ function AdminPage() {
       <>
         {showMenuAdmin && (
           <div className="flex flex-col gap-5 w-[60%] mx-auto">
-            <button onClick={() => handleAdminSection('technos')} className="py-2 px-4 rounded bg-secondary20 border-2 border-solid">Gestion des technos</button>
-            <button onClick={() => handleAdminSection('users')} className="py-2 px-4 rounded bg-secondary20 border-2 border-solid">Gestion des Utilisateurs</button>
-            <button onClick={() => handleAdminSection('projects')} className="py-2 px-4 rounded bg-secondary20 border-2 border-solid">Gestion des Projets</button>
-            <button onClick={() => handleAdminSection('roles')} className="py-2 px-4 rounded bg-secondary20 border-2 border-solid">Gestion des Rôles</button>
+            <button onClick={() => handleAdminSection('technos')} className="py-2 px-4 rounded bg-secondary20">Gestion des technos</button>
+            <button onClick={() => handleAdminSection('users')} className="py-2 px-4 rounded bg-secondary20">Gestion des Utilisateurs</button>
+            <button onClick={() => handleAdminSection('projects')} className="py-2 px-4 rounded bg-secondary20">Gestion des Projets</button>
+            <button onClick={() => handleAdminSection('roles')} className="py-2 px-4 rounded bg-secondary20">Gestion des Rôles</button>
           </div>
         )}
       </>

@@ -71,7 +71,7 @@ function Admin_Users({ closeSection }: { closeSection: (value: string) => void }
         )}
       </div>
       <div className="flex justify-center mt-4">
-        <button onClick={() => closeSection('users')} className="py-2 px-4 rounded-full bg-secondary20 border-2 border-solid">Retour</button>
+        <button onClick={() => closeSection('users')} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-secondary20 rounded-lg focus:ring-4 focus:outline-none">Retour</button>
       </div>
     </div>
   );

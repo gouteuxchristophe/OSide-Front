@@ -26,8 +26,8 @@ function ModalUser({ handleCloseModal }: ModalUserProps) {
   };
 
   return (
-    <div className="absolute z-10 bg-secondary20 w-full left-0 top-0 flex justify-center h-full">
-      <nav className="flex items-center justify-center p-2 flex-wrap gap-2">
+    <div className="absolute z-10 bg-gradient-to-r from-emeral to-cyan w-full left-0 top-0 flex justify-center ">
+      <nav className="flex items-center justify-center p-2 flex-wrap gap-2 pt-10">
         <Link
           to="/dashboard"
           onClick={handleCloseModal}

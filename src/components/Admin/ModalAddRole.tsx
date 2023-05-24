@@ -38,7 +38,7 @@ function ModalAddRole({ closeModal }: { closeModal: () => void } ) {
               <label htmlFor="Color">Color</label>
               <input onChange={(e) => setInputColor(e.currentTarget.value)} type="color" defaultValue={inputColor} />
             </div>
-            <button className="py-2 px-4 rounded-full bg-secondary20 border-2 border-solid">Ajouter</button>
+            <button className="inline-flex justify-center items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-secondary20 rounded-lg focus:ring-4 focus:outline-none">Ajouter</button>
           </form>
         </div>
         <button

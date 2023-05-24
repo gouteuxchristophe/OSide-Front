@@ -62,7 +62,7 @@ function App() {
   }, [successDelete])
 
   return (
-    <div className="flex flex-col justify-between max-w-screen-xl min-h-screen my-0 mx-auto border border-solid border-secondary20">
+    <div className="flex flex-col justify-between max-w-screen-xl min-h-screen my-0 mx-auto border border-solid bg-gradient-to-t from-emeral to-cyan">
       <Header />
       <Routes>
         <Route

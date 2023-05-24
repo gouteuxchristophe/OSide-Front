@@ -46,32 +46,32 @@ function Menu() {
         <div
           className={`w-full block flex-grow sm:flex sm:items-center sm:w-auto ${displayMenu ? 'block' : 'hidden'}`}
         >
-          <div className="h-full text-sm flex flex-wrap gap-3 items-center justify-center absolute left-0 top-0 w-full sm:pb-0 sm:relative sm:flex-row bg-primary0 sm:bg-secondary20 sm:flex-wrap">
+          <div className="h-full text-sm flex flex-wrap gap-3 items-center justify-center absolute left-0 top-0 w-full sm:pb-0 sm:relative sm:flex-row bg-gradient-to-r from-emeral to-cyan sm:flex-wrap sm:bg-none">
             <Link
               to="/"
               onClick={handleToogleMenu}
-              className="block sm:inline-block sm:mt-0 text-white-200 border border-solid border-[white] rounded p-2 bg-secondary20 sm:bg-primary0 tracking-wider"
+              className="block sm:inline-block sm:mt-0 text-white-200 border border-solid border-[white] rounded p-2 bg-cyan sm:bg-primary0 tracking-wider"
             >
               <Home />
             </Link>
             <Link
               to="/projects"
               onClick={handleToogleMenu}
-              className="block sm:inline-block sm:mt-0 text-white-200 border border-solid border-[white] rounded p-2 bg-secondary20 sm:bg-primary0 tracking-wider"
+              className="block sm:inline-block sm:mt-0 text-white-200 border border-solid border-[white] rounded p-2 bg-cyan sm:bg-primary0 tracking-wider"
             >
               Projets
             </Link>
             <Link
               to="/about"
               onClick={handleToogleMenu}
-              className="block sm:inline-block sm:mt-0 text-white-200 border border-solid border-[white] rounded p-2 bg-secondary20 sm:bg-primary0 tracking-wider"
+              className="block sm:inline-block sm:mt-0 text-white-200 border border-solid border-[white] rounded p-2 bg-cyan sm:bg-primary0 tracking-wider"
             >
               About
             </Link>
             <Link
               to="/search"
               onClick={handleToogleMenu}
-              className="block sm:inline-block sm:mt-0 text-white-200 border border-solid border-[white] rounded p-2 bg-secondary20 sm:bg-primary0 tracking-wider"
+              className="block sm:inline-block sm:mt-0 text-white-200 border border-solid border-[white] rounded p-2 bg-cyan sm:bg-primary0 tracking-wider"
             >
               Rechercher
             </Link>

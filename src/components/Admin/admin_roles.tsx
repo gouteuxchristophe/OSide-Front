@@ -65,7 +65,7 @@ function Admin_Roles({ closeSection }: { closeSection: () => void }) {
   return (
     <div className="relative mx-auto">
       <div className="flex justify-center mb-5">
-        <button onClick={() => setShowModalAddRole(true)} className="flex p-2 border border-solid border-[white] rounded-full bg-primary0"><PlusSquare /> Ajouter un rôle</button>
+        <button onClick={() => setShowModalAddRole(true)} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-secondary20 rounded-lg focus:ring-4 focus:outline-none"><PlusSquare /> Ajouter un rôle</button>
       </div>
       <table className="text-xs text-center mx-auto w-[80%] sm:w-[40%]">
         <thead className="text-xs uppercase bg-secondary20">
@@ -134,7 +134,7 @@ function Admin_Roles({ closeSection }: { closeSection: () => void }) {
         )}
       </div>
       <div className="flex justify-center mt-4">
-        <button onClick={() => closeSection()} className="py-2 px-4 rounded-full bg-secondary20 border-2 border-solid">Retour</button>
+        <button onClick={() => closeSection()} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-secondary20 rounded-lg focus:ring-4 focus:outline-none">Retour</button>
       </div>
       {showModalAddRole && (
         <ModalAddRole closeModal={() => setShowModalAddRole(false)} />
