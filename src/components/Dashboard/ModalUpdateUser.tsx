@@ -27,13 +27,16 @@ export default function ModalUpdateContent({ closeModal }: { closeModal: () => v
       t.label === techno.label
     ))
   )
-  
-
-
   const dispatch = useAppDispatch()
 
   useEffect(() => {
+    dispatch(getAllTechnos())
+  }, [showModalAddTechno])
+  
+
+  useEffect(() => {
     if (successUpdate) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       dispatch(getUserById())
       dispatch(resetSuccessUpdate())
       toast.success(`🦄 ${successUpdate}`);
@@ -55,6 +58,8 @@ export default function ModalUpdateContent({ closeModal }: { closeModal: () => v
       const technoFind = technoList.find((technoList) => technoList.label === techno.label);
       return technoFind?.id as number;
     })
+    console.log(idTechnoSelected);
+    
     // Si le champ password est rempli, on vérifie que les deux champs password sont identiques
     if (updatePassword !== '' && updatePassword !== updateConfirmPassword) {
       toast.error('Les mots de passe ne sont pas identiques')
