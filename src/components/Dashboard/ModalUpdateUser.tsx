@@ -29,6 +29,8 @@ export default function ModalUpdateContent({ closeModal }: { closeModal: () => v
     ))
   )
   const dispatch = useAppDispatch()
+  console.log(updateBio);
+  
 
   useEffect(() => {
     dispatch(getAllTechnos())
@@ -79,10 +81,9 @@ export default function ModalUpdateContent({ closeModal }: { closeModal: () => v
       ...(updatePassword !== '' && { password: updatePassword }),
       ...(updatePassword !== '' && { passwordConfirm: updateConfirmPassword }),
       ...(updateEmail !== '' && { email: updateEmail }),
-      ...(idTechnoSelected.length > 0 && { ability: idTechnoSelected as number[],
+      ...(idTechnoSelected.length > 0 && { ability: idTechnoSelected as number[]}),
       ...(updateBio !== '' && { bio: updateBio }),
-      }),
-    }
+      }
     // action vers le reducer avec les données du formulaire
     dispatch(updateUser(data))
   }

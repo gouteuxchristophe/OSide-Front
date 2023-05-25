@@ -6,10 +6,9 @@ import DeleteConfirmation from "./deleteConfirmation";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import ModalUpdateProject from "../Project/details/ModalUpdateProject";
-import ProjectItem from "../Project/excerp";
 import { Project } from "../../@types/project";
 
-function Admin_Projects({ closeSection }: { closeSection: (value: string) => void }) {
+function Admin_Projects() {
 
   // Permet de récupérer la liste des projets
   const projectsList = useAppSelector((state) => state.projects.lists);
@@ -55,77 +54,83 @@ function Admin_Projects({ closeSection }: { closeSection: (value: string) => voi
   }, [successDelete, successUpdate, successAdd]);
 
   return (
-    <div className="relative mx-auto">
-      <table className="text-xs text-center mx-auto w-[80%] sm:w-[40%]">
-        <thead className="text-xs uppercase bg-secondary20">
-          <tr>
-            <th scope="col" className="px-2 py-2">
-              Technologie
-            </th>
-            <th scope="col" className="px-2 py-2">
-              Couleur
-            </th>
-            <th scope="col" className="px-2 py-2">
-              Actions
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {projectsList.map((project) => (
-            <tr key={project.id} className="bg-[white] border-solid border-b border-primary0">
-              <>
-                <th scope="row" className="align-middle font-medium whitespace-nowrap relative">
-                  <div className="flex items-center justify-around">
-                    {project.title}
-                  </div>
+    <>
+      {!showUpdateModal ? (
+        <div className="relative mx-auto">
+          <table className="text-xs text-center mx-auto w-[80%] sm:w-[40%]">
+            <thead className="text-xs uppercase bg-secondary20">
+              <tr>
+                <th scope="col" className="px-2 py-2">
+                  Technologie
                 </th>
-                <td className="whitespace-nowrap align-middle">
-                  <div className="rounded">
-                    {project.status}
-                  </div>
-                </td>
-                <td className="flex justify-around">
-                  <button onClick={() => navigate(`/projet/${project.id}`)}>
-                    <Eye className="w-4" />
-                    </button>
-                  <button onClick={() => {
-                    setShowUpdateModal(true);
-                    setProjetItem(project as Project)
-                  }}>
-                    <Edit3 className="w-4" />
-                  </button>
-                  <button onClick={() => {
-                    setSelectedProjectId(project.id);
-                    handleDeleteProject()
-                  }}>
-                    <Trash2 color="red" className="w-4" />
-                  </button>
-                </td>
-              </>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <div>
-      {showUpdateModal && (
-        <ModalUpdateProject
-          project={projetItem!}
-          closeModal={() => setShowUpdateModal(false)} />
+                <th scope="col" className="px-2 py-2">
+                  Couleur
+                </th>
+                <th scope="col" className="px-2 py-2">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {projectsList.map((project) => (
+                <tr key={project.id} className="bg-[white] border-solid border-b border-primary0">
+                  <>
+                    <th scope="row" className="align-middle font-medium whitespace-nowrap relative">
+                      <div className="flex items-center justify-around">
+                        {project.title}
+                      </div>
+                    </th>
+                    <td className="whitespace-nowrap align-middle">
+                      <div className="rounded">
+                        {project.status}
+                      </div>
+                    </td>
+                    <td className="flex justify-around">
+                      <button onClick={() => navigate(`/project/${project.id}`)}>
+                        <Eye className="w-4" />
+                      </button>
+                      <button onClick={() => {
+                        setShowUpdateModal(true);
+                        setProjetItem(project as Project)
+                      }}>
+                        <Edit3 className="w-4" />
+                      </button>
+                      <button onClick={() => {
+                        setSelectedProjectId(project.id);
+                        handleDeleteProject()
+                      }}>
+                        <Trash2 color="red" className="w-4" />
+                      </button>
+                    </td>
+                  </>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div>
+            {deleteConfirmation && (
+              <DeleteConfirmation
+                type="projects"
+                id={selectedProjectId!}
+                closeModal={() => setDeleteConfirmation(false)}
+              />
+            )}
+          </div>
+          <div className="flex justify-center mt-4">
+            <button onClick={() => navigate(-1)} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-secondary20 rounded-lg focus:ring-4 focus:outline-none">Retour</button>
+          </div>
+        </div>
+      ) : (
+        <div>
+          {showUpdateModal && (
+            <ModalUpdateProject
+              project={projetItem!}
+              closeModal={() => setShowUpdateModal(false)} />
+          )}
+        </div>
       )}
-      </div>
-      <div>
-        {deleteConfirmation && (
-          <DeleteConfirmation
-            type="projects"
-            id={selectedProjectId!}
-            closeModal={() => setDeleteConfirmation(false)}
-          />
-        )}
-      </div>
-      <div className="flex justify-center mt-4">
-        <button onClick={() => closeSection('projects')} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-secondary20 rounded-lg focus:ring-4 focus:outline-none">Retour</button>
-      </div>
-    </div>
+
+    </>
   );
 }
 

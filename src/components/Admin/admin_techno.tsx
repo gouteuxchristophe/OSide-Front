@@ -3,11 +3,25 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { Delete, Edit3, Trash2 } from "react-feather";
 import ModalUpdateTechno from "./ModalUpdateTechno";
 import AddTechno from "../Modals/AddTechno";
-import { deleteMessage, deleteMessageUpdate, deleteMessageAdd, deleteTechno, getAllTechnos, emptySelectedTechnos, deleteTechnoErrorMessage } from "../../store/reducers/techno";
+import { deleteMessage, deleteMessageUpdate, deleteMessageAdd, getAllTechnos, emptySelectedTechnos, deleteTechnoErrorMessage } from "../../store/reducers/techno";
 import { toast } from "react-toastify";
 import DeleteConfirmation from "./deleteConfirmation";
+import { Navigate, useNavigate } from "react-router-dom";
 
-function Admin_Techno({ closeSection }: { closeSection: (value: string) => void }) {
+function Admin_Techno() {
+
+  const isLogged = useAppSelector(state => state.login.logged)
+  const role = useAppSelector((state) => state.user.data.role);
+
+  if (!isLogged) {
+    toast.warn('🦄 Veuillez vous connecter !');
+    return <Navigate to="/login" replace />
+  }
+
+  if (role.id !== 3) {
+    toast.warn('🦄 Vous n\'avez pas accès à cette page !');
+    return <Navigate to="/home" replace />
+  }
 
   const technoList = useAppSelector((state) => state.search.technoLists);
   // state des messages de succès ou d'erreur
@@ -24,6 +38,7 @@ function Admin_Techno({ closeSection }: { closeSection: (value: string) => void 
   const [selectedTechnoLabel, setSelectedTechnoLabel] = useState<string>('');
   const [selectedTechnoColor, setSelectedTechnoColor] = useState<string | undefined>('');
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   // Récupérer la liste des technos
   useEffect(() => {
@@ -59,8 +74,8 @@ function Admin_Techno({ closeSection }: { closeSection: (value: string) => void 
   }, [successDelete, successUpdate, successAdd, errorAPITechno]);
 
   return (
-    <div className="relative mx-auto">
-      <div className="flex justify-center mb-5">
+    <div className="relative mx-auto w-full">
+      <div className="mt-10 flex justify-center mb-5">
         <button onClick={() => setShowModalAddTechno(true)} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-secondary20 rounded-lg focus:ring-4 focus:outline-none"> Ajouter une techno</button>
       </div>
       {showModalAddTechno && (
@@ -136,7 +151,7 @@ function Admin_Techno({ closeSection }: { closeSection: (value: string) => void 
         )}
       </div>
       <div className="flex justify-center mt-4">
-        <button onClick={() => closeSection('technos')} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-secondary20 rounded-lg focus:ring-4 focus:outline-none">Retour</button>
+        <button onClick={() => navigate(-1)} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-secondary20 rounded-lg focus:ring-4 focus:outline-none">Retour</button>
       </div>
 
     </div>

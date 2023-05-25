@@ -29,8 +29,8 @@ function ModalUpdateTechno({ closeModal, id, label, color }: ModalUpdateTechnoPr
   }
 
   return (
-    <>
-      <div className="absolute z-10 top-1 left-1/2 -translate-x-1/2 bg-primary0 rounded w-[70%] sm:w-[30%] shadow-xl">
+    
+      <div className="absolute top-1 left-1/2 -translate-x-1/2 bg-primary0 rounded  w-[70%] sm:w-[50%] shadow-xl">
         <div className="w-full p-8 flex flex-col gap-3 text-[white]">
           <h2 className="text-center">Modification de la techno</h2>
           <form onSubmit={handleUpdateTechnoSubmit} className="flex flex-col gap-5">
@@ -52,7 +52,7 @@ function ModalUpdateTechno({ closeModal, id, label, color }: ModalUpdateTechnoPr
           X
         </button>
       </div>
-    </>
+    
   );
 }
 

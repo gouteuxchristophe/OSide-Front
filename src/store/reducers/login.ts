@@ -1,4 +1,4 @@
-import { createAction, createReducer } from '@reduxjs/toolkit';
+import { PayloadAction, createAction, createReducer, isAnyOf } from '@reduxjs/toolkit';
 import { getUserDataFromLocalStorage, removeUserDataFromLocalStorage } from '../../utils/login';
 import createAppAsyncThunk from '../../utils/redux';
 import axiosInstance from '../../utils/axios';
@@ -45,15 +45,27 @@ export const loginOAuth = createAppAsyncThunk(
   async (_, thunkAPI) => {
     const state = thunkAPI.getState();
     const code = state.login.code_GitHub;
-    const { data } = await axiosInstance.post(`/user/login/?code=${code}`);
-    // Je créer un objet avec les données de l'utilisateur
-    const userData = {
-      token: data.token,
-      logged: true,
+    try {
+      const { data : userLogin } = await axiosInstance.post(`/user/login/?code=${code}`);
+      const userData = {
+        id: userLogin.id,
+        token: userLogin.sessionToken,
+        logged: true,
+      }
+      // Je stocke les données de l'utilisateur dans le localStorage
+      localStorage.setItem('user', JSON.stringify(userData));
+      // Je récupère les données de l'utilisateur
+      const user = await axiosInstance.get(`/user/${userData.id}`);
+      thunkAPI.dispatch(setUser(user.data));
+      return userLogin as LoginState;
+    } catch (err: any) {
+      if (err) {
+        thunkAPI.dispatch(setLoginErrorMessage(err.response.data));
+      } else {
+        console.error(err);
+        thunkAPI.dispatch(setLoginErrorMessage('Une erreur s\'est produite.'));
+      }
     }
-    // Je stocke les données de l'utilisateur dans le localStorage
-    localStorage.setItem('user', JSON.stringify(userData));
-    return userData;
   },
 );
 
@@ -62,6 +74,7 @@ export const changeCredentialsField = createAction<{
   value: string;
   propertyKey: KeysOfCredentials
 }>('login/changeCredentials');
+
 // Action creator qui me permet de me connecter via le formulaire
 export const login = createAppAsyncThunk(
   'user/LOGIN',
@@ -112,17 +125,6 @@ const loginReducer = createReducer(initialState, (builder) => {
       state.credentials[propertyKey] = value;
     })
     // On gère la réussite de la requête qui me permet de me connecter
-    .addCase(login.fulfilled, (state, action) => {
-      // Je met à jour le state logged et token
-      if (action.payload !== undefined) {
-        state.message = action.payload!.message;
-        state.logged = true;
-        state.token = action.payload!.token;
-        state.errorLoginMessage = ''
-        // Je vide les champs de mon formulaire
-        state.credentials.email = '';
-      }
-    })
     // Je gère la déconnexion
     .addCase(logout, (state) => {
       state.message = '';
@@ -137,9 +139,14 @@ const loginReducer = createReducer(initialState, (builder) => {
       state.code_GitHub = action.payload;
     })
     // Dans le cas où ma requête GitHub est réussie
-    .addCase(loginOAuth.fulfilled, (state, action) => {
-      state.token = action.payload.token;
-      state.logged = true
+    .addMatcher(isAnyOf(login.fulfilled, loginOAuth.fulfilled), (state, action) => {
+      // Je met à jour le state logged et token
+      state.message = action.payload!.message;
+      state.logged = true;
+      state.token = action.payload!.token;
+      state.errorLoginMessage = ''
+      // Je vide les champs de mon formulaire
+      state.credentials.email = '';
     })
 });
 

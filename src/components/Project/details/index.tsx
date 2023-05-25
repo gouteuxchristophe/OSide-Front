@@ -1,4 +1,4 @@
-import { Navigate, useParams, Link, useNavigate } from 'react-router-dom';
+import { Navigate, useParams, Link, useNavigate, unstable_HistoryRouter } from 'react-router-dom';
 import { Settings, MessageCircle } from 'react-feather';
 import { toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
@@ -36,6 +36,8 @@ function ProjectDetail() {
   const successParticipate = useAppSelector((state) => state.projects.successParticipate)
   const successLeave = useAppSelector((state) => state.projects.successLeave)
   const [isExploding, setIsExploding] = useState(false);
+  // Permet d'afficher la bulle d'info du user
+  const [isHovered, setIsHovered] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate()
   // Redirige l'utilisateur vers la page d'accueil si il n'est pas connecté
@@ -46,7 +48,6 @@ function ProjectDetail() {
   // On récupère l'id du projet recherché
   const { id } = useParams();
   const idUser = useAppSelector((state) => state.user.data.id);
-
 
   // Permet de récupérer les données du projet
   useEffect(() => {
@@ -76,7 +77,7 @@ function ProjectDetail() {
       toast.success(`🦄 ${successParticipate}`);
       dispatch(getProjectByID(id as unknown as number));
     }
-    if(successLeave) {
+    if (successLeave) {
       dispatch(deleteMessageLeave())
       toast.warn(`🦄 ${successLeave}`);
       dispatch(getProjectByID(id as unknown as number));
@@ -116,7 +117,6 @@ function ProjectDetail() {
   }
   // Tableau des membres du projet qui retourne true si l'id de l'utilisateur est présent   
   const alreadyParticipated = project.memberProjet.some((member) => member.id === idUser)
-  console.log(alreadyParticipated);
 
   // Si on ne trouve pas de projet, on dirige vers la page erreur
   if (!project) {
@@ -163,10 +163,27 @@ function ProjectDetail() {
                   <div>Aucun participant</div>
                 )
                   : project.memberProjet.map((member) => (
-                    <div className="relative w-12 h-12" key={member.id}>
-                      <img
-                        className="rounded-full shadow-sm" src={(member.github.avatar_url.length === 0) ? fakeAvatar : member.github.avatar_url} alt={(member.github.login.length === 0) ? member.username : member.github.login} />
-                    </div>
+                    <>
+                      <div className="relative w-12 h-12" key={member.id}>
+                        <img onClick={() => navigate(`/profile/${member.id}`)} onMouseOver={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}
+                          className="rounded-full shadow-sm" src={(member.github.avatar_url.length === 0) ? fakeAvatar : member.github.avatar_url} alt={(member.github.login.length === 0) ? member.username : member.github.login} />
+                        <>
+                          {isHovered && (
+                            <div className='absolute bottom-0 left-20'>
+                              <div className="w-full bg-[white] border border-solid border-primary0 rounded shadow px-5">
+                                <div className="flex justify-end px-4 pt-4">
+                                </div>
+                                <div className="flex flex-col items-center pb-10">
+                                  <img className="w-24 h-24 rounded-full shadow-sm" src={(member.github.avatar_url.length === 0) ? fakeAvatar : member.github.avatar_url} alt={(member.github.login.length === 0) ? member.username : member.github.login} />
+                                  <h5 className="mb-1 text-xl font-medium ">{member.github.login}</h5>
+                                  <span className="text-sm">{member.bio}</span>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </>
+                      </div>
+                    </>
                   ))}
               </div>
             </div>
@@ -194,9 +211,9 @@ function ProjectDetail() {
 
               )
               }
-              <Link to="/projects" className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-secondary20 rounded-lg focus:ring-4 focus:outline-none">
+              <button onClick={() => navigate(-1)} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-secondary20 rounded-lg focus:ring-4 focus:outline-none">
                 Retour à la liste
-              </Link>
+              </button>
               {idUser === project?.author.id &&
                 <button onClick={() => setShowDeleteModal(true)} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-[red] rounded-lg focus:ring-4 focus:outline-none">Delete</button>
               }

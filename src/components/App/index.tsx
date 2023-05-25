@@ -16,6 +16,11 @@ import AdminPage from '../Admin';
 import { toast } from 'react-toastify';
 import { getUserById, resetSuccessDelete } from '../../store/reducers/user';
 import AddProjects from '../Project/add';
+import UserProfile from '../Profile';
+import Admin_Techno from '../Admin/admin_techno';
+import Admin_Projects from '../Admin/admin_projects';
+import Admin_Users from '../Admin/admin_user';
+import Admin_Roles from '../Admin/admin_roles';
 function App() {
   // state pour les erreurs de l'API sur getprojet
   const errorAPIUser = useAppSelector((state) => state.user.errorAPIUser);
@@ -129,10 +134,45 @@ function App() {
           )}
         />
         <Route
+          path="/admin/technos"
+          element={(
+            // Affichage page admin
+            <Admin_Techno />
+          )}
+        />
+        <Route
+          path="/admin/projects"
+          element={(
+            // Affichage page admin
+            <Admin_Projects />
+          )}
+        />
+        <Route
+          path="/admin/users"
+          element={(
+            // Affichage page admin
+            <Admin_Users />
+          )}
+        />
+        <Route
+          path="/admin/roles"
+          element={(
+            // Affichage page admin
+            <Admin_Roles />
+          )}
+        />
+        <Route
           path="/addProject"
           element={(
             // Affichage page ajout de projet
             <AddProjects />
+          )}
+        />
+        <Route
+          path="/profile/:id"
+          element={(
+            // Affichage page ajout de projet
+            <UserProfile />
           )}
         />
         <Route
