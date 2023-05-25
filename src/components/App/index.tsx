@@ -21,6 +21,9 @@ import Admin_Techno from '../Admin/admin_techno';
 import Admin_Projects from '../Admin/admin_projects';
 import Admin_Users from '../Admin/admin_user';
 import Admin_Roles from '../Admin/admin_roles';
+import Contact from '../Contact';
+import RGPD from '../RGPD';
+        
 function App() {
   // state pour les erreurs de l'API sur getprojet
   const errorAPIUser = useAppSelector((state) => state.user.errorAPIUser);
@@ -98,6 +101,12 @@ function App() {
             <About />
           )}
         />
+                <Route
+          path="/contact"
+          element={(
+            <Contact />
+          )}
+        />
         <Route
           path="/search"
           element={(
@@ -167,7 +176,14 @@ function App() {
             // Affichage page ajout de projet
             <AddProjects />
           )}
-        />
+        />        
+        <Route
+        path="/rgpd"
+        element={(
+          // Affichage page ajout de projet
+          <RGPD />
+        )}
+      />
         <Route
           path="/profile/:id"
           element={(

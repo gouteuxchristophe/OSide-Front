@@ -1,11 +1,11 @@
 import Description from './Description';
-import Contact from './Contact';
+import Team from './Team';
 
 function About() {
   return (
-    <div className="max-w-4xl flex items-center h-auto lg:h-screen flex-wrap mx-auto my-32 lg:my-0 relative justify-center gap-y-8">
+    <div className="flex flex-col items-center gap-4">
       <Description />
-      <Contact />
+      <Team />
     </div>
   );
 }
