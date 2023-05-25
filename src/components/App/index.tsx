@@ -16,6 +16,7 @@ import AdminPage from '../Admin';
 import { toast } from 'react-toastify';
 import { getUserById, resetSuccessDelete } from '../../store/reducers/user';
 import AddProjects from '../Project/add';
+import RGPD from '../RGPD';
 function App() {
   // state pour les erreurs de l'API sur getprojet
   const errorAPIUser = useAppSelector((state) => state.user.errorAPIUser);
@@ -134,7 +135,14 @@ function App() {
             // Affichage page ajout de projet
             <AddProjects />
           )}
-        />
+        />        
+        <Route
+        path="/rgpd"
+        element={(
+          // Affichage page ajout de projet
+          <RGPD />
+        )}
+      />
         <Route
           path="/error"
           element={(
