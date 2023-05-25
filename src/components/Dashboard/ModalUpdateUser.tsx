@@ -79,6 +79,7 @@ export default function ModalUpdateContent({ closeModal }: { closeModal: () => v
       ...(updatePassword !== '' && { password: updatePassword }),
       ...(updatePassword !== '' && { passwordConfirm: updateConfirmPassword }),
       ...(updateEmail !== '' && { email: updateEmail }),
+
       ...(idTechnoSelected.length > 0 && { ability: idTechnoSelected as number[] }),
       ...(updateBio !== '' && { bio: updateBio }),
   }
