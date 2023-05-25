@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { getAllUsers } from "../../store/reducers/user";
 import { Edit3, Trash2 } from "react-feather";
-import ModalUpdateUser from "./ModalUpdateUser";
+import ModalUpdateUser from "../../components/Dashboard/ModalUpdateUser";
 
 function Admin_Users({ closeSection }: { closeSection: (value: string) => void }) {
 

@@ -16,6 +16,7 @@ import AdminPage from '../Admin';
 import { toast } from 'react-toastify';
 import { getUserById, resetSuccessDelete } from '../../store/reducers/user';
 import AddProjects from '../Project/add';
+import Contact from '../Contact';
 function App() {
   // state pour les erreurs de l'API sur getprojet
   const errorAPIUser = useAppSelector((state) => state.user.errorAPIUser);
@@ -91,6 +92,12 @@ function App() {
           path="/about"
           element={(
             <About />
+          )}
+        />
+                <Route
+          path="/contact"
+          element={(
+            <Contact />
           )}
         />
         <Route
