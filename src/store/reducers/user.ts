@@ -18,6 +18,7 @@ interface UserUpdate {
   passwordConfirm?: string,
   ability?: number[]
   roleId?: number
+  bio?: string
 }
 
 interface UserRegister {
@@ -59,6 +60,7 @@ export const initialState: UserState = {
     ability: [],
     created_at: '',
     fakeAvatar: fakeAvatar,
+    bio: '',
   },
   errorAPIUser: null,
   allUsers: [],

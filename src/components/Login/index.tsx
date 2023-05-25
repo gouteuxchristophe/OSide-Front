@@ -22,7 +22,7 @@ function Login() {
     const scope = import.meta.env.VITE_SCOPE;
     const clientId = import.meta.env.VITE_CLIENT_ID;
     const redirectUri = import.meta.env.VITE_REDIRECT_URI;
-    const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
+    const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;   
     window.location.href = authUrl;
   }
   // Permet de récupérer le code de l'utilisateur dans l'url
@@ -75,9 +75,9 @@ function Login() {
             <h1 className="text-xl font-bold leading-tight tracking-tight md:text-2xl">
               Sign in to your account
             </h1>
-            {/* <div>
+            <div>
               <button onClick={handleGitHubAuth} className='flex gap-2 text-[white] bg-primary0 font-medium rounded-lg text-sm px-5 py-2.5 text-center' > <GitHub className='text-[black]' />Login with Github</button>
-            </div> */}
+            </div>
             <form onSubmit={handleSubmitLogin} className="space-y-4 md:space-y-6" action="#">
               <div>
                 <label htmlFor="email" className="block mb-2 text-sm font-medium">Your email</label>

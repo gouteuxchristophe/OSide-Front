@@ -14,6 +14,7 @@ export default function ModalUpdateContent({ closeModal }: { closeModal: () => v
   const [showModalAddTechno, setShowModalAddTechno] = useState(false)
   const [updatePassword, setUpdatePassword] = useState('')
   const [updateConfirmPassword, setUpdateConfirmPassword] = useState('')
+  const [updateBio, setUpdateBio] = useState('')
   // state des technos de l'utilisateur
   const technoSelected = useAppSelector(state => state.techno.selectedTechnos)
   // state des technos
@@ -78,7 +79,9 @@ export default function ModalUpdateContent({ closeModal }: { closeModal: () => v
       ...(updatePassword !== '' && { password: updatePassword }),
       ...(updatePassword !== '' && { passwordConfirm: updateConfirmPassword }),
       ...(updateEmail !== '' && { email: updateEmail }),
-      ...(idTechnoSelected.length > 0 && { ability: idTechnoSelected as number[] }),
+      ...(idTechnoSelected.length > 0 && { ability: idTechnoSelected as number[],
+      ...(updateBio !== '' && { bio: updateBio }),
+      }),
     }
     // action vers le reducer avec les données du formulaire
     dispatch(updateUser(data))
@@ -120,6 +123,10 @@ export default function ModalUpdateContent({ closeModal }: { closeModal: () => v
               <div className="mb-2 sm:mb-6 sm:flex sm:items-center sm:justify-center sm:gap-5 sm:w-full">
                 <label htmlFor="confirmPassword" className="text-center sm:text-left block text-sm font-medium sm:w-[10%] sm:pb-0 pb-2">Confirmation New Password :</label>
                 <input onChange={(e) => setUpdateConfirmPassword(e.currentTarget.value)} type="password" className="shadow-sm text-sm rounded block w-full p-2.5 sm:w-[40%]" placeholder="Confirmation Password" />
+              </div>
+              <div className="mb-2 sm:mb-6 sm:flex sm:items-center sm:justify-center sm:gap-5 sm:w-full">
+                <label htmlFor="bio" className="text-center sm:text-left block text-sm font-medium sm:w-[10%] sm:pb-0 pb-2">Biographie</label>
+                <textarea onChange={(e) => setUpdateBio(e.currentTarget.value)} defaultValue={user.bio} className="shadow-sm text-sm rounded block w-full p-2.5 sm:w-[40%]" placeholder="Décrivez vous" />
               </div>
               <div className="mb-2 flex-col sm:mb-6 sm:flex sm:items-center sm:justify-center sm:gap-5 sm:w-full">
                 <button onClick={() => setShowModalAddTechno(true)} type="submit" className="bg-secondary20 text-[white] font-medium rounded text-sm px-5 py-2.5 text-center">
