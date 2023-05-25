@@ -1,14 +1,36 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { getAllUsers } from "../../store/reducers/user";
-import { Edit3, Trash2 } from "react-feather";
-import ModalUpdateUser from "../../components/Dashboard/ModalUpdateUser";
+import { getAllUsers, resetSuccessDelete } from "../../store/reducers/user";
+import { Edit3, Eye, Trash2 } from "react-feather";
+import ModalUpdateRole from "./ModalUpdateUser";
+import DeleteConfirmation from "./deleteConfirmation";
+import { toast } from "react-toastify";
+import { Navigate, useNavigate } from "react-router-dom";
 
-function Admin_Users({ closeSection }: { closeSection: (value: string) => void }) {
+
+function Admin_Users() {
+
+  const isLogged = useAppSelector(state => state.login.logged)
+  const role = useAppSelector((state) => state.user.data.role);
+
+  if (!isLogged) {
+    toast.warn('🦄 Veuillez vous connecter !');
+    return <Navigate to="/login" replace />
+  }
+
+  if (role.id !== 3) {
+    toast.warn('🦄 Vous n\'avez pas accès à cette page !');
+    return <Navigate to="/home" replace />
+  }
 
   const allUser = useAppSelector((state) => state.user.allUsers);
-  const [showModalUpdateUser, setShowModalUpdateUser] = useState(false);
-
+  const [showModalUpdateRole, setShowModalUpdateRole] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState<number>();
+  const [selectedRole, setSelectedRole] = useState<number>(0);
+  const [deleteConfirmation, setDeleteConfirmation] = useState<boolean>(false);
+  const successDelete = useAppSelector((state) => state.user.successDelete);
+  const successUpdate = useAppSelector((state) => state.user.successUpdate);
+  const navigate = useNavigate();
   // Récupérer la liste des utilisateurs
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -16,9 +38,22 @@ function Admin_Users({ closeSection }: { closeSection: (value: string) => void }
   }, [dispatch])
 
   // Permet d'afficher la modal de suppression d'un utilisateur
-  const handleDeleteUser = (id: number): void => {
-    throw new Error("Function not implemented.");
+  const handleDeleteUser = () => {
+    setDeleteConfirmation(true);
   }
+
+  useEffect(() => {
+    if (successDelete) {
+      dispatch(getAllUsers());
+      dispatch(resetSuccessDelete())
+      toast.success(`🦄 ${successDelete}`);
+    }
+    if (successUpdate) {
+      dispatch(getAllUsers());
+      toast.success(`🦄 ${successUpdate}`);
+      dispatch(resetSuccessDelete())
+    }
+  }, [successDelete, successUpdate])
 
   return (
     <div className="relative mx-auto">
@@ -29,7 +64,10 @@ function Admin_Users({ closeSection }: { closeSection: (value: string) => void }
               GitHub Login
             </th>
             <th scope="col" className="px-2 py-2">
-              Email
+              Rôle
+            </th>
+            <th scope="col" className="px-2 py-2">
+              Statut
             </th>
             <th scope="col" className="px-2 py-2">
               Actions
@@ -47,14 +85,41 @@ function Admin_Users({ closeSection }: { closeSection: (value: string) => void }
                 </th>
                 <td className="whitespace-nowrap align-middle">
                   <div className="rounded">
-                    {user.email}
+                    {user.role.label}
                   </div>
                 </td>
+                <td className=" align-middle flex-wrap">
+                  {user.delete_at === null ? (
+                    <div className="rounded bg-green-500 text-white px-2 py-1">
+                      Inscrit depuis le : {
+                        new Date(user.created_at as string).toLocaleDateString('fr')}
+                    </div>
+                  ) : (
+                    <div className="rounded bg-red-500 text-white px-2 py-1">
+                      Inactif depuis le : {
+                        new Date(user.delete_at as string).toLocaleDateString('fr')}
+                    </div>
+                  )}
+                </td>
                 <td className="flex justify-around">
-                  <button>
+                  <button onClick={() => navigate(`/profile/${user.id}`)}>
+                    <Eye className="w-4" />
+                  </button>
+                  {/* V2 */}
+                  <button disabled onClick={
+                    () => {
+                      setSelectedUserId(user.id);
+                      setSelectedRole(user.role.id);
+                      setShowModalUpdateRole(true)
+                    }
+                  }>
                     <Edit3 className="w-4" />
                   </button>
-                  <button onClick={() => handleDeleteUser(user.id)}>
+                  <button onClick={() => {
+                    setSelectedUserId(user.id);
+                    handleDeleteUser()
+                  }
+                  } >
                     <Trash2 color="red" className="w-4" />
                   </button>
                 </td>
@@ -64,14 +129,23 @@ function Admin_Users({ closeSection }: { closeSection: (value: string) => void }
         </tbody>
       </table>
       <div>
-        {showModalUpdateUser && (
-          <ModalUpdateUser
-            closeModal={() => setShowModalUpdateUser(false)}
+        {showModalUpdateRole && (
+          <ModalUpdateRole
+            userId={selectedUserId!}
+            roleId={selectedRole}
+            closeModal={() => setShowModalUpdateRole(false)}
+          />
+        )}
+        {deleteConfirmation && (
+          <DeleteConfirmation
+            type="admin_user"
+            id={selectedUserId!}
+            closeModal={() => setDeleteConfirmation(false)}
           />
         )}
       </div>
       <div className="flex justify-center mt-4">
-        <button onClick={() => closeSection('users')} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-secondary20 rounded-lg focus:ring-4 focus:outline-none">Retour</button>
+        <button onClick={() => navigate(-1)} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-secondary20 rounded-lg focus:ring-4 focus:outline-none">Retour</button>
       </div>
     </div>
   );

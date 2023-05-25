@@ -7,8 +7,9 @@ import { toast } from "react-toastify";
 import { deleteMessage, deleteMessageUpdate } from "../../store/reducers/role";
 import ModalAddRole from "./ModalAddRole";
 import DeleteConfirmation from "./deleteConfirmation";
+import { Navigate, useNavigate } from "react-router-dom";
 
-function Admin_Roles({ closeSection }: { closeSection: () => void }) {
+function Admin_Roles() {
 
   const rolesList = useAppSelector((state) => state.role.lists);
   // state des modals
@@ -24,8 +25,22 @@ function Admin_Roles({ closeSection }: { closeSection: () => void }) {
   const successAdd = useAppSelector((state) => state.role.successAdd);
   const errorAPIRole = useAppSelector((state) => state.role.errorAPIRole);
   const [deleteConfirmation, setDeleteConfirmation] = useState<boolean>(false);
-  
 
+  const isLogged = useAppSelector(state => state.login.logged)
+  const role = useAppSelector((state) => state.user.data.role);
+
+  if (!isLogged) {
+    toast.warn('🦄 Veuillez vous connecter !');
+    return <Navigate to="/login" replace />
+  }
+
+  if (role.id !== 3) {
+    toast.warn('🦄 Vous n\'avez pas accès à cette page !');
+    return <Navigate to="/home" replace />
+  }
+
+
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   // Récupérer la liste des roles
@@ -63,7 +78,7 @@ function Admin_Roles({ closeSection }: { closeSection: () => void }) {
   }
 
   return (
-    <div className="relative mx-auto">
+    <div className="w-full relative mx-auto">
       <div className="flex justify-center mb-5">
         <button onClick={() => setShowModalAddRole(true)} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-secondary20 rounded-lg focus:ring-4 focus:outline-none"><PlusSquare /> Ajouter un rôle</button>
       </div>
@@ -134,7 +149,7 @@ function Admin_Roles({ closeSection }: { closeSection: () => void }) {
         )}
       </div>
       <div className="flex justify-center mt-4">
-        <button onClick={() => closeSection()} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-secondary20 rounded-lg focus:ring-4 focus:outline-none">Retour</button>
+        <button onClick={() => navigate(-1)} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-secondary20 rounded-lg focus:ring-4 focus:outline-none">Retour</button>
       </div>
       {showModalAddRole && (
         <ModalAddRole closeModal={() => setShowModalAddRole(false)} />

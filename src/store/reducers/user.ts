@@ -1,10 +1,11 @@
 import { createAction, createReducer } from '@reduxjs/toolkit';
 import createAppAsyncThunk from '../../utils/redux';
 import axiosInstance from '../../utils/axios';
-import { User } from '../../@types/user';
+import { User, IAbility } from '../../@types/user';
 import { getUserDataFromLocalStorage, removeUserDataFromLocalStorage } from '../../utils/login';
 import fakeAvatar from '../../assets/fakeAvatar.png';
 import { logout } from './login';
+import { LoginResponse } from '../../@types/login';
 
 // Je récupère les données de l'utilisateur dans le localStorage
 const userData = getUserDataFromLocalStorage();
@@ -30,6 +31,24 @@ interface UserRegister {
   passwordConfirm: string,
 }
 
+interface Member {
+  id: number,
+  first_name: string,
+  last_name: string,
+  username: string,
+  github: {
+    login: string,
+    avatar_url: string,
+  },
+  role: {
+    label: string,
+    color: string,
+  },
+  bio: string,
+  ability: IAbility[]
+}
+
+
 interface UserState {
   data: User,
   errorAPIUser: string | null,
@@ -39,7 +58,12 @@ interface UserState {
   errorRegister: string | null
   successUpdate: string
   errorUpdate: string
+  member: Member
+  successLink: string
+  successUnlink: string
 }
+
+
 // Je créer mon interface pour le state de mon reducer
 export const initialState: UserState = {
   data: {
@@ -69,12 +93,54 @@ export const initialState: UserState = {
   errorRegister: null,
   successUpdate: '',
   errorUpdate: '',
+  member: {
+    id: 1,
+    first_name: '',
+    last_name: '',
+    username: '',
+    github: {
+      login: '',
+      avatar_url: '',
+    },
+    role: {
+      label: '',
+      color: '',
+    },
+    bio: '',
+    ability: [],
+  },
+  successLink: '',
+  successUnlink: '',
 };
+
+export const linkToGithub = createAppAsyncThunk(
+  'user/LINK_TO_GITHUB',
+  async (id: number, thunkAPI) => {
+    console.log(id);
+
+    const state = thunkAPI.getState();
+    const code = state.login.code_GitHub;
+    const { data } = await axiosInstance.put(`/user/${id}`, {
+      code,
+    });
+    return data.message;
+    ;
+  },
+);
+
+export const unlinkToGithub = createAppAsyncThunk(
+  'user/UNLINK_TO_GITHUB',
+  async (id: number, thunkAPI) => {
+    const { data } = await axiosInstance.put(`/user/${id}`);
+    return data.message;
+  },
+);
+
 
 // Action creator qui me permet de créer un utilisateur
 export const createUser = createAppAsyncThunk(
   'user/CREATE_USER',
-  async (user : UserRegister, thunkAPI) => {
+  async (user: UserRegister, thunkAPI) => {
     try {
       const { data } = await axiosInstance.post('/user/register', user);
       return data as User;
@@ -127,6 +193,25 @@ export const getUserById = createAppAsyncThunk(
   },
 );
 
+// Action creator qui récupère les infos d'un membre
+export const getMemberById = createAppAsyncThunk(
+  'user/GET_MEMBER_BY_ID',
+  async (id: number, thunkAPI) => {
+    try {
+      const { data } = await axiosInstance.get(`/user/${id}`);
+      return data as Member;
+    } catch (err: any) {
+      if (err) {
+        thunkAPI.dispatch(setUserErrorRegister(err.response.data.message));
+      } else {
+        console.error(err);
+        thunkAPI.dispatch(setUserErrorMessage('Les données de l\'utilisateur n\'ont pas pu être récupérées.'));
+      }
+    }
+  },
+);
+
+
 // Action creator qui me permet de mettre à jour les données de l'utilisateur
 export const updateUser = createAppAsyncThunk(
   'user/UPDATE_USER',
@@ -157,9 +242,28 @@ export const deleteUser = createAppAsyncThunk(
       thunkAPI.dispatch(logout());
       return data.message as string;
     } catch (err: any) {
-      if (err) {       
+      if (err) {
         thunkAPI.dispatch(setUserErrorMessage(err.response.data));
-      } else { 
+      } else {
+        console.error(err);
+        thunkAPI.dispatch(setUserErrorMessage('Une erreur s\'est produite.'));
+      }
+    }
+  },
+);
+
+// Action creator qui me permet de supprimer un utilisateur
+export const deleteUserByAdmin = createAppAsyncThunk(
+  'user/DELETE_USER',
+  async (id: number, thunkAPI) => {
+    console.log(id);
+    try {
+      const { data } = await axiosInstance.delete(`/user/${id}`);
+      return data.message as string;
+    } catch (err: any) {
+      if (err) {
+        thunkAPI.dispatch(setUserErrorMessage(err.response.data));
+      } else {
         console.error(err);
         thunkAPI.dispatch(setUserErrorMessage('Une erreur s\'est produite.'));
       }
@@ -182,6 +286,9 @@ export const resetSuccessUpdate = createAction('user/RESET_SUCCESS_UPDATE');
 export const deleteUserErrorRegister = createAction<string>('user/DELETE_USER_ERROR');
 // On vide le userErrorUpdate après la mise à jour d'un utilisateur
 export const resetUserErrorUpdate = createAction<string>('user/RESET_USER_ERROR_UPDATE');
+// On vide le message de link après la mise à jour d'un utilisateur
+export const resetLinkMessage = createAction('user/RESET_LINK_MESSAGE');
+export const resetUnlinkMessage = createAction('user/RESET_UNLINK_MESSAGE');
 // Création des messages d'erreur
 export const setUserErrorUpdate = createAction<string>('user/SET_USER_ERROR_UPDATE');
 export const setUserErrorRegister = createAction<string>('user/SET_USER_ERROR_REGISTER');
@@ -191,14 +298,14 @@ export const resetData = createAction('user/RESET_DATA');
 // Je créer mon reducer
 const userReducer = createReducer(initialState, (builder) => {
   builder
-  .addCase(resetErrorMessage, (state) => {
-    state.errorAPIUser = null;
-    state.errorRegister = null;
-  })
-  .addCase(resetSuccessCreate, (state) => {
-    state.successCreate = false;
-  })
-  // On récupère les données de l'utilisateur
+    .addCase(resetErrorMessage, (state) => {
+      state.errorAPIUser = null;
+      state.errorRegister = null;
+    })
+    .addCase(resetSuccessCreate, (state) => {
+      state.successCreate = false;
+    })
+    // On récupère les données de l'utilisateur
     .addCase(setUser, (state, action) => {
       state.data = action.payload;
     })
@@ -215,7 +322,7 @@ const userReducer = createReducer(initialState, (builder) => {
       state.errorRegister = action.payload;
     })
     // On supprime le message de succès de suppression du compte
-    .addCase(resetSuccessDelete, (state) => { 
+    .addCase(resetSuccessDelete, (state) => {
       state.successDelete = '';
     })
     // On récupère le message d'erreur
@@ -230,6 +337,12 @@ const userReducer = createReducer(initialState, (builder) => {
     .addCase(resetUserErrorUpdate, (state) => {
       state.errorUpdate = ''
     })
+    .addCase(resetLinkMessage, (state) => {
+      state.successLink = '';
+    })
+    .addCase(resetUnlinkMessage, (state) => {
+      state.successUnlink = '';
+    })
     // On gère le succès de la requête qui récupère tous les utilisateurs
     .addCase(getAllUsers.fulfilled, (state, action) => {
       state.allUsers = action.payload!;
@@ -240,14 +353,18 @@ const userReducer = createReducer(initialState, (builder) => {
       state.data = action.payload!;
       state.errorAPIUser = null;
     })
-    .addCase(deleteUser.fulfilled, (state,  action) => {
+    .addCase(getMemberById.fulfilled, (state, action) => {
+      state.member = action.payload!;
+      state.errorAPIUser = null;
+    })
+    .addCase(deleteUser.fulfilled, (state, action) => {
       state.successDelete = action.payload!;
     })
-    .addCase(createUser.rejected, (state) => {  
+    .addCase(createUser.rejected, (state) => {
       state.errorRegister = null;
     })
     .addCase(createUser.fulfilled, (state, action) => {
-      if(action.payload === undefined) return;
+      if (action.payload === undefined) return;
       state.successCreate = true;
       state.errorRegister = null;
     })
@@ -255,9 +372,12 @@ const userReducer = createReducer(initialState, (builder) => {
       state.data = initialState.data;
     })
     .addCase(updateUser.fulfilled, (state, action) => {
-      if(action.payload === undefined) return;
+      if (action.payload === undefined) return;
       state.successUpdate = action.payload!;
-    });
+    })
+    .addCase(linkToGithub.fulfilled, (state, action) => {
+      state.successLink = action.payload!;
+    })
 });
 
 export default userReducer;
