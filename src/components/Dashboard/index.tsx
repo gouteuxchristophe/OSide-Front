@@ -67,6 +67,14 @@ function Dashboard() {
               <span className="text-sm text-secondary20">{user.email}</span>
               <span style={{ borderColor: `${user.role.color}` }} className="bg-[white] border-2 border-solid text-sm px-3 rounded-full pt-[0.1em] pb-[0.1em]">{user.role.label}</span>
               <div className="flex space-x-2 justify-center border-2 border-solid border-primary1 flex-wrap gap-2 pb-5 rounded w-[80%]">
+              <div className="p-5 mb-0 bg-primary1 w-[100%] font-bold text-center">Bio</div>
+              {!user.bio ? (
+                  <div>Pas de biographie</div>
+                )
+                  : <div className="p-5 mb-0 bg-[white] w-[100%] text-center">{user.bio}</div>}
+
+              </div>
+              <div className="flex space-x-2 justify-center border-2 border-solid border-primary1 flex-wrap gap-2 pb-5 rounded w-[80%]">
                 <div className="p-5 mb-0 bg-primary1 w-[100%] font-bold text-center">Skills</div>
                 {user.ability.length === 0 ? (
                   <div>A l'ouest rien de nouveau</div>
