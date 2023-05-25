@@ -86,10 +86,7 @@ export default function ModalUpdateContent({ closeModal }: { closeModal: () => v
       }
     // action vers le reducer avec les données du formulaire
     dispatch(updateUser(data))
-
   }
-
-}
 
 return (
   <>
