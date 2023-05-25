@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { ITechnoProjet } from "../../@types/project";
-import { addTechno, deleteMessage, updatedSelectedTechnos } from "../../store/reducers/techno";
+import { addTechno, deleteMessageAdd, updatedSelectedTechnos } from "../../store/reducers/techno";
 import { getAllTechnos } from "../../store/reducers/techno";
 import { PlusSquare } from "react-feather";
 import { toast } from "react-toastify";
+
 
 export interface newTechno {
   id?: number;
@@ -43,7 +44,7 @@ function AddTechno({ closeModal, technoPred }: AddTechnoProps) {
   useEffect(() => {
     if (successAdd) {
       toast.success(`🦄 ${successAdd}`);
-      dispatch(deleteMessage());
+      dispatch(deleteMessageAdd());
     }
   }, [successAdd]);
 
