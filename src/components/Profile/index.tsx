@@ -26,8 +26,6 @@ function UserProfile() {
     dispatch(getMemberById(Number(id)));
   }, [id, dispatch]);
 
-  console.log(memberInfo);
-
   if (!memberInfo) {
     return <div>Chargement...</div>
   }
@@ -42,7 +40,7 @@ function UserProfile() {
   return (
     <div className="p-4">
       <div className="w-24 h-24 mx-auto rounded-full shadow-2xl">
-        <img src={memberInfo.github.avatar_url} alt={memberInfo.github.login} />
+        <img src={memberInfo.avatar_url} alt={memberInfo.github.login} />
       </div>
       <div className="text-center mt-2">
         <span style={{ borderColor: `${memberInfo.role.color}` }} className="bg-[white] border-2 border-solid text-sm px-3 rounded-full pt-[0.1em] pb-[0.1em]">{memberInfo.role.label}</span>

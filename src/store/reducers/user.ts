@@ -36,9 +36,9 @@ interface Member {
   first_name: string,
   last_name: string,
   username: string,
+  avatar_url: string,
   github: {
     login: string,
-    avatar_url: string,
   },
   role: {
     label: string,
@@ -98,9 +98,9 @@ export const initialState: UserState = {
     first_name: '',
     last_name: '',
     username: '',
+    avatar_url: '',
     github: {
       login: '',
-      avatar_url: '',
     },
     role: {
       label: '',

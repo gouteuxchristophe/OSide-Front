@@ -18,6 +18,7 @@ import {
 import DeleteConfirmation from '../../Admin/deleteConfirmation';
 import ModalUpdateProject from './ModalUpdateProject';
 import ConfettiExplosion from 'react-confetti-explosion';
+import Comments from './comments';
 
 function ProjectDetail() {
   // Permet de savoir si l'utilisateur est connecté
@@ -221,20 +222,22 @@ function ProjectDetail() {
               }
             </div>
             {!showComments ? (
-              <div onClick={() => setShowComments(true)} className="flex justify-center items-center py-2 px-4 rounded bg-secondary20 text-[white] w-[50%] self-center">
+              <div onClick={() => setShowComments(true)} className=" cursor-pointer flex justify-center items-center py-2 px-4 rounded bg-secondary20 text-[white] w-[50%] self-center">
                 <MessageCircle />
                 {' '}
                 Voir les commentaires
               </div>
             ) : (
-              <div onClick={() => setShowComments(false)} className="flex justify-center items-center py-2 px-4 rounded bg-secondary20 text-[white] w-[50%] self-center">
+              <div onClick={() => setShowComments(false)} className="cursor-pointer flex justify-center items-center py-2 px-4 rounded bg-secondary20 text-[white] w-[50%] self-center">
                 <MessageCircle />
                 {' '}
                 Masquer les commentaires
               </div>
             )}
             {showComments && (
-              <div>Commentaires</div>
+              <Comments
+              comments={project.comment}
+              ownerProject={project.author.id} />
             )}
           </div>
         </div>

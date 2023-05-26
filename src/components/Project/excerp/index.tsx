@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Project } from '../../../@types/project';
-import { useAppSelector } from '../../../hooks/redux';
+
 
 function ProjectItem({
   id, title, status, author, content, technoProjet,

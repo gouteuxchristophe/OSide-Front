@@ -11,8 +11,6 @@ function Projects() {
   const projectsListWithOwner = projectsList.filter((project) => project.author.delete_at === null);
   const errorApiProjects = useAppSelector((state) => state.projects.errorApiProjects);
   const location = useLocation();
-  console.log(projectsList)
-  console.log(projectsListWithOwner)
   // Permet de récupérer les 3 derniers projets
   const lastProject = projectsListWithOwner.slice(0, 3);
 
