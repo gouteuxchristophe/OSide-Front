@@ -80,6 +80,7 @@ export const login = createAppAsyncThunk(
   'user/LOGIN',
   async (_, thunkAPI) => {
     const state = thunkAPI.getState();
+    // On récupère l'email et le mot de passe du state credentials
     const { email, password } = state.login.credentials;
     try {
       const { data: userLogin } = await axiosInstance.post('/user/login', {
