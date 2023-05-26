@@ -10,13 +10,13 @@ const userStorage = getUserDataFromLocalStorage();
 interface LoginState {
   logged: boolean;
   code_GitHub: string,
+  role: number;
   credentials: {
     email: string;
     password: string;
     passwordConfirm: string;
   };
   token: string;
-  role: number | null
   errorLoginMessage: string;
   message: string;
 }
@@ -26,8 +26,8 @@ export type KeysOfCredentials = keyof LoginState['credentials'];
 export const initialState: LoginState = {
   logged: false,
   code_GitHub: '',
+  role: 0,
   token: '',
-  role: null,
   credentials: {
     email: '',
     password: '',
@@ -49,16 +49,24 @@ export const loginOAuth = createAppAsyncThunk(
     const code = state.login.code_GitHub;
     try {
       const { data : userLogin } = await axiosInstance.post(`/user/login/?code=${code}`);
-      const userData = {
+      const userDataLogin = {
         id: userLogin.id,
         token: userLogin.sessionToken,
         logged: true,
-        role: userLogin.role.id,
       }
       // Je stocke les données de l'utilisateur dans le localStorage
-      localStorage.setItem('user', JSON.stringify(userData));
+      localStorage.setItem('user', JSON.stringify(userDataLogin));
       // Je récupère les données de l'utilisateur
-      const user = await axiosInstance.get(`/user/${userData.id}`);
+      const user = await axiosInstance.get(`/user/${userDataLogin.id}`);
+      // Je reparse les données de l'utilisateur pour ajouter le role
+      const userData = getUserDataFromLocalStorage();
+      // Je créer un objet qui contient les données de l'utilisateur et le role
+      const userWithRole = {
+        ...userData,
+        role: user.data.role.id,
+      }
+      // Je stocke les données de l'utilisateur dans le localStorage
+      localStorage.setItem('user', JSON.stringify(userWithRole));
       thunkAPI.dispatch(setUser(user.data));
       return userLogin as LoginState;
     } catch (err: any) {
@@ -81,7 +89,7 @@ export const changeCredentialsField = createAction<{
 // Action creator qui me permet de me connecter via le formulaire
 export const login = createAppAsyncThunk(
   'user/LOGIN',
-  async (_, thunkAPI) => {
+  async (_, thunkAPI) => {   
     const state = thunkAPI.getState();
     // On récupère l'email et le mot de passe du state credentials
     const { email, password } = state.login.credentials;
@@ -95,12 +103,20 @@ export const login = createAppAsyncThunk(
         token: userLogin.sessionToken,
         id: userLogin.id,
         logged: true,
-        role: userLogin.role.id,
       }
       // Je stocke les données de l'utilisateur dans le localStorage
       localStorage.setItem('user', JSON.stringify(userDataLogin));
       // Je récupère les données de l'utilisateur
       const user = await axiosInstance.get(`/user/${userLogin.id}`);
+      // Je reparse les données de l'utilisateur pour ajouter le role
+      const userData = getUserDataFromLocalStorage();
+      // Je créer un objet qui contient les données de l'utilisateur et le role
+      const userWithRole = {
+        ...userData,
+        role: user.data.role.id,
+      }
+      // Je stocke les données de l'utilisateur dans le localStorage
+      localStorage.setItem('user', JSON.stringify(userWithRole));
       // Je modifie le state de mon reducer user
       thunkAPI.dispatch(setUser(user.data));
       return userLogin as LoginState;
@@ -136,7 +152,6 @@ const loginReducer = createReducer(initialState, (builder) => {
       state.errorLoginMessage = '';
       state.logged = false;
       state.token = '';
-      state.role = null
       // Je supprime les données du localStorage
       removeUserDataFromLocalStorage();
     })
@@ -151,7 +166,6 @@ const loginReducer = createReducer(initialState, (builder) => {
       state.logged = true;
       state.token = action.payload!.token;
       state.errorLoginMessage = ''
-      state.role = action.payload!.role
       // Je vide les champs de mon formulaire
       state.credentials.email = '';
     })
