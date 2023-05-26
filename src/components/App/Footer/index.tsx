@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 function Footer() {
   return (
     <div className="flex justify-around items-center mt-2 h-full mb-2">
-      <div className='flex flex-col text-center'>
+      <div className='flex flex-col sm:flex-row sm:gap-2 text-center'>
       <p className="tracking-wider text-center ">O&apos;Side copyright 2023</p>
       <p className='tracking-wider '>Créer par trois étudiants 
       <a className='text-fof font-bold' target='_blank' href="https://oclock.io/"> O'Clock</a>
