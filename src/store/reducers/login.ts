@@ -16,6 +16,7 @@ interface LoginState {
     passwordConfirm: string;
   };
   token: string;
+  role: number | null
   errorLoginMessage: string;
   message: string;
 }
@@ -26,6 +27,7 @@ export const initialState: LoginState = {
   logged: false,
   code_GitHub: '',
   token: '',
+  role: null,
   credentials: {
     email: '',
     password: '',
@@ -51,6 +53,7 @@ export const loginOAuth = createAppAsyncThunk(
         id: userLogin.id,
         token: userLogin.sessionToken,
         logged: true,
+        role: userLogin.role.id,
       }
       // Je stocke les données de l'utilisateur dans le localStorage
       localStorage.setItem('user', JSON.stringify(userData));
@@ -92,6 +95,7 @@ export const login = createAppAsyncThunk(
         token: userLogin.sessionToken,
         id: userLogin.id,
         logged: true,
+        role: userLogin.role.id,
       }
       // Je stocke les données de l'utilisateur dans le localStorage
       localStorage.setItem('user', JSON.stringify(userDataLogin));
@@ -132,6 +136,7 @@ const loginReducer = createReducer(initialState, (builder) => {
       state.errorLoginMessage = '';
       state.logged = false;
       state.token = '';
+      state.role = null
       // Je supprime les données du localStorage
       removeUserDataFromLocalStorage();
     })
@@ -146,6 +151,7 @@ const loginReducer = createReducer(initialState, (builder) => {
       state.logged = true;
       state.token = action.payload!.token;
       state.errorLoginMessage = ''
+      state.role = action.payload!.role
       // Je vide les champs de mon formulaire
       state.credentials.email = '';
     })

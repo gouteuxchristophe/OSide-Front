@@ -7,15 +7,15 @@ function AdminPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const isLogged = useAppSelector(state => state.login.logged)
-  const role = useAppSelector((state) => state.user.data.role);
-
+  const role = useAppSelector((state) => state.login.role);
+ 
   useEffect(() => {
     if (!isLogged) {
       toast.warn("🦄 Veuillez vous connecter !");
       navigate("/login", { replace: true });
-    } else if (role.id !== 3) {
+    } else if (role!== 3) {
       toast.warn("🦄 Vous n'avez pas accès à cette page !");
-      navigate("/home", { replace: true });
+      navigate("/", { replace: true });
     }
   }, [isLogged, navigate, role]);
 
