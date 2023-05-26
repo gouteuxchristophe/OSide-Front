@@ -72,10 +72,10 @@ export const initialState: UserState = {
     first_name: '',
     last_name: '',
     username: '',
+    avatar_url: '',
     github: {
       id: 1,
       login: '',
-      avatar_url: '',
     },
     role: {
       id: 1,
