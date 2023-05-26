@@ -23,8 +23,7 @@ function Login() {
   const handleGitHubAuth = () => {
     const scope = import.meta.env.VITE_SCOPE;
     const clientId = import.meta.env.VITE_CLIENT_ID;
-    const redirectUri = import.meta.env.VITE_REDIRECT_URI;
-    const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;   
+    const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&scope=${scope}`;   
     window.location.href = authUrl;
   }
   // Permet de récupérer le code de l'utilisateur dans l'url
@@ -78,12 +77,9 @@ function Login() {
             <h1 className="text-xl font-bold leading-tight tracking-tight md:text-2xl">
               Sign in to your account
             </h1>
-            {/* <div>
-              <button onClick={handleGitHubAuth} className='flex gap-2 text-[white] bg-primary0 font-medium rounded-lg text-sm px-5 py-2.5 text-center' > <GitHub className='text-[black]' />Login with Github</button>
-            </div> */}
             <div>
-              <a href={`https://github.com/login/oauth/authorize?client_id=${import.meta.env.VITE_CLIENT_ID}&scope=${import.meta.env.VITE_SCOPE}`}> Link github mouss</a>
-            </div>
+              <button onClick={handleGitHubAuth} className='flex gap-2 text-[white] bg-primary0 font-medium rounded-lg text-sm px-5 py-2.5 text-center' > <GitHub className='text-[black]' />Login with Github</button>
+            </div> 
             <form onSubmit={handleSubmitLogin} className="space-y-4 md:space-y-6" action="#">
               <div>
                 <label htmlFor="email" className="block mb-2 text-sm font-medium">Your email</label>
@@ -97,14 +93,6 @@ function Login() {
                 </button>
               </div>
               <div className="flex items-center justify-between">
-                <div className="flex items-start">
-                  <div className="flex items-center h-5">
-                    <input id="remember" aria-describedby="remember" type="checkbox" className="w-4 h-4 border border-primary0 rounded" />
-                  </div>
-                  <div className="ml-3 text-sm">
-                    <label htmlFor="remember">Remember me</label>
-                  </div>
-                </div>
                 <Link to="/" className="text-sm font-medium">Forgot password?</Link>
               </div>
               <button type="submit" className="w-full text-[white] bg-primary0 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Sign in</button>
