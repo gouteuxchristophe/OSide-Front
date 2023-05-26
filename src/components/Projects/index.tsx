@@ -8,10 +8,13 @@ import { toast } from 'react-toastify';
 
 function Projects() {
   const projectsList = useAppSelector((state) => state.projects.lists);
+  const projectsListWithOwner = projectsList.filter((project) => project.author.delete_at === null);
   const errorApiProjects = useAppSelector((state) => state.projects.errorApiProjects);
   const location = useLocation();
+  console.log(projectsList)
+  console.log(projectsListWithOwner)
   // Permet de récupérer les 3 derniers projets
-  const lastProject = projectsList.slice(0, 3);
+  const lastProject = projectsListWithOwner.slice(0, 3);
 
    // Affiche la notification si la requête a échoué
  useEffect(() => {
@@ -50,7 +53,7 @@ function Projects() {
           ))}
         </Carousel>
         :
-        projectsList.map((item) => (
+        projectsListWithOwner.map((item) => (
           <ProjectItem
             key={item.id}
             {...item}
