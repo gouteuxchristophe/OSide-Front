@@ -2,10 +2,9 @@ import { createAction, createReducer } from '@reduxjs/toolkit';
 import createAppAsyncThunk from '../../utils/redux';
 import axiosInstance from '../../utils/axios';
 import { User, IAbility } from '../../@types/user';
-import { getUserDataFromLocalStorage, removeUserDataFromLocalStorage } from '../../utils/login';
+import { getUserDataFromLocalStorage } from '../../utils/login';
 import fakeAvatar from '../../assets/fakeAvatar.png';
 import { logout } from './login';
-import { LoginResponse } from '../../@types/login';
 
 // Je récupère les données de l'utilisateur dans le localStorage
 const userData = getUserDataFromLocalStorage();
@@ -20,6 +19,7 @@ interface UserUpdate {
   ability?: number[]
   roleId?: number
   bio?: string
+  github_id?: number | null
 }
 
 interface UserRegister {
@@ -59,8 +59,6 @@ interface UserState {
   successUpdate: string
   errorUpdate: string
   member: Member
-  successLink: string
-  successUnlink: string
 }
 
 
@@ -109,33 +107,7 @@ export const initialState: UserState = {
     bio: '',
     ability: [],
   },
-  successLink: '',
-  successUnlink: '',
 };
-
-export const linkToGithub = createAppAsyncThunk(
-  'user/LINK_TO_GITHUB',
-  async (id: number, thunkAPI) => {
-    console.log(id);
-
-    const state = thunkAPI.getState();
-    const code = state.login.code_GitHub;
-    const { data } = await axiosInstance.put(`/user/${id}`, {
-      code,
-    });
-    return data.message;
-    ;
-  },
-);
-
-export const unlinkToGithub = createAppAsyncThunk(
-  'user/UNLINK_TO_GITHUB',
-  async (id: number, thunkAPI) => {
-    const { data } = await axiosInstance.put(`/user/${id}`);
-    return data.message;
-  },
-);
-
 
 // Action creator qui me permet de créer un utilisateur
 export const createUser = createAppAsyncThunk(
@@ -216,7 +188,6 @@ export const getMemberById = createAppAsyncThunk(
 export const updateUser = createAppAsyncThunk(
   'user/UPDATE_USER',
   async (user: UserUpdate, thunkAPI) => {
-    console.log(user);
     try {
       const { data } = await axiosInstance.put(`/user/${user.id}`, user);
       return data.message;
@@ -286,9 +257,6 @@ export const resetSuccessUpdate = createAction('user/RESET_SUCCESS_UPDATE');
 export const deleteUserErrorRegister = createAction<string>('user/DELETE_USER_ERROR');
 // On vide le userErrorUpdate après la mise à jour d'un utilisateur
 export const resetUserErrorUpdate = createAction<string>('user/RESET_USER_ERROR_UPDATE');
-// On vide le message de link après la mise à jour d'un utilisateur
-export const resetLinkMessage = createAction('user/RESET_LINK_MESSAGE');
-export const resetUnlinkMessage = createAction('user/RESET_UNLINK_MESSAGE');
 // Création des messages d'erreur
 export const setUserErrorUpdate = createAction<string>('user/SET_USER_ERROR_UPDATE');
 export const setUserErrorRegister = createAction<string>('user/SET_USER_ERROR_REGISTER');
@@ -337,12 +305,6 @@ const userReducer = createReducer(initialState, (builder) => {
     .addCase(resetUserErrorUpdate, (state) => {
       state.errorUpdate = ''
     })
-    .addCase(resetLinkMessage, (state) => {
-      state.successLink = '';
-    })
-    .addCase(resetUnlinkMessage, (state) => {
-      state.successUnlink = '';
-    })
     // On gère le succès de la requête qui récupère tous les utilisateurs
     .addCase(getAllUsers.fulfilled, (state, action) => {
       state.allUsers = action.payload!;
@@ -374,9 +336,6 @@ const userReducer = createReducer(initialState, (builder) => {
     .addCase(updateUser.fulfilled, (state, action) => {
       if (action.payload === undefined) return;
       state.successUpdate = action.payload!;
-    })
-    .addCase(linkToGithub.fulfilled, (state, action) => {
-      state.successLink = action.payload!;
     })
 });
 

@@ -8,13 +8,11 @@ import ModalDeleteUser from "./ModalDeleteUser";
 import { getUserDataFromLocalStorage } from "../../utils/login";
 import { Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { updateCode } from "../../store/reducers/login";
 import { GitHub } from "react-feather";
-import { getUserById, linkToGithub, unlinkToGithub } from "../../store/reducers/user";
+import { getUserById, resetSuccessUpdate, updateUser } from "../../store/reducers/user";
 
 function Dashboard() {
   const user = useAppSelector(state => state.user.data)
-  const userId = getUserDataFromLocalStorage()?.id;
   // State des modals
   const [showModal, setShowModal] = useState(false)
   const [showUpdateModal, setShowUpdateModal] = useState(false)
@@ -28,8 +26,8 @@ function Dashboard() {
   // Filtrer les projets par id
   // Récupérer l'id de l'utilisateur via le sessionStorage
   const userData = getUserDataFromLocalStorage();
-  const successLink = useAppSelector(state => state.user.successLink)
-  const successUnlink = useAppSelector(state => state.user.successUnlink)
+  const [pseudoGitHub, setPseudoGitHub] = useState<string>('')
+  const updateMessage = useAppSelector(state => state.user.successUpdate)
 
   const dispatch = useAppDispatch();
 
@@ -53,40 +51,45 @@ function Dashboard() {
   }
 
   useEffect(() => {
-    if (successLink) {
-      dispatch(getUserById())
-      toast.success('🦄 Votre compte GitHub a bien été lié !');
-    }
-    if (successUnlink) {
-      toast.success('🦄 Votre compte GitHub a bien été délié !');
-    }
-  }, [successLink, successUnlink])
-
+    dispatch(getUserById())
+    dispatch(resetSuccessUpdate())
+  }, [updateMessage])
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
   const handleLinkGitHubAuth = () => {
-    const scope = import.meta.env.VITE_SCOPE;
-    const clientId = import.meta.env.VITE_CLIENT_ID;
-    const redirectUri = 'https://oside.mimouss.fr/dashboard'
-    const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
-    window.location.href = authUrl;
+    // je fais une requete a github pour récupérer l'id github en fonction du pseudo
+    const url = `https://api.github.com/users/${pseudoGitHub}`
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        const idGitHub = data.id
+        const dataGithub = {
+          github_id: idGitHub,
+          id: user.id
+        }
+        if (!idGitHub) {
+          toast.error('🦄 Ce pseudo n\'existe pas !');
+          return
+        }
+        dispatch(updateUser(dataGithub))
+        toast.success('🦄 Votre compte GitHub a bien été lié !');
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }
-  // Permet de récupérer le code de l'utilisateur dans l'url
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
-    if (code) {
-      dispatch(updateCode(code))
-      dispatch(linkToGithub(Number(userId)))
-      urlParams.delete('code');
-    }
-  }, []);
 
   const handleUnlinkGitHubAuth = () => {
-    dispatch(unlinkToGithub(Number(userId)))
+    const dataGithub = {
+      github_id: null,
+      id: user.id
+    }
+    dispatch(updateUser(dataGithub))
+    toast.success('🦄 Votre compte GitHub a bien été délié !');
+    dispatch(getUserById())
   }
 
 
@@ -130,7 +133,13 @@ function Dashboard() {
                   <button onClick={handleUnlinkGitHubAuth} className='flex gap-2 text-[white] bg-primary0 font-medium rounded-lg text-sm px-5 py-2.5 text-center' > <GitHub className='text-[black]' />Unlink Github</button>
                 )
                   : (
-                    <button onClick={handleLinkGitHubAuth} className='flex gap-2 text-[white] bg-primary0 font-medium rounded-lg text-sm px-5 py-2.5 text-center' > <GitHub className='text-[black]' />Link Github</button>
+                      <div className="flex">
+                        <div className="pointer-events-none bg-primary0 rounded-l-lg flex items-center px-2">
+                          <GitHub />
+                        </div>
+                        <input onChange={(e) => setPseudoGitHub(e.currentTarget.value)} type="search" className="block w-full p-4 pl-2 text-sm " placeholder="Pseudo GitHub" required />
+                        <button onClick={handleLinkGitHubAuth} type="submit" className="bg-primary0 right-2.5 bottom-2.5 font-medium text-sm px-4 py-2 rounded-r-lg">Link</button>
+                      </div>
                   )
                 }
 
