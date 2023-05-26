@@ -200,7 +200,7 @@ function ProjectDetail() {
                       Quitter le projet
                     </button>
                   ) : (
-                    <button type="button" onClick={handleParticipate} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-secondary20 rounded-lg focus:ring-4 focus:outline-none">
+                    <button type="button" onClick={handleParticipate} className={`${(project.status === 'Equipe complète') ? 'disabled' : ''} inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-secondary20 rounded-lg focus:ring-4 focus:outline-none`}>
                       Participer
                     </button>
                   )}
@@ -211,9 +211,18 @@ function ProjectDetail() {
               <button onClick={() => navigate(-1)} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-secondary20 rounded-lg focus:ring-4 focus:outline-none">
                 Retour à la liste
               </button>
-              {idUser === project?.author.id &&
-                <button onClick={() => setShowDeleteModal(true)} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-[red] rounded-lg focus:ring-4 focus:outline-none">Delete</button>
-              }
+              <>
+                {idUser === project?.author.id &&
+                  <>
+                    {project.status === 'Equipe complète' && (
+                      <button onClick={() => navigate(-1)} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-secondary20 rounded-lg focus:ring-4 focus:outline-none">
+                        Push sur Github
+                      </button>
+                    )}
+                    <button onClick={() => setShowDeleteModal(true)} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-[red] rounded-lg focus:ring-4 focus:outline-none">Delete</button>
+                  </>
+                }
+              </>
               {showDeleteModal && (
                 <DeleteConfirmation
                   type="projectsUser"
@@ -236,8 +245,8 @@ function ProjectDetail() {
             )}
             {showComments && (
               <Comments
-              comments={project.comment}
-              ownerProject={project.author.id} />
+                comments={project.comment}
+                ownerProject={project.author.id} />
             )}
           </div>
         </div>

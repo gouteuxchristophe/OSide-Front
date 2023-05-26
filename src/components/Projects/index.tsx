@@ -8,11 +8,14 @@ import { toast } from 'react-toastify';
 
 function Projects() {
   const projectsList = useAppSelector((state) => state.projects.lists);
+  // Permet de filtrer les projets dont l'auteur n'a pas été supprimé
   const projectsListWithOwner = projectsList.filter((project) => project.author.delete_at === null);
+  // On filtre le projectsListWithOwner pour récupérer les projets dont le statut est différent de "Terminé"
+  const projectsListWithOwnerAndNotFinish = projectsListWithOwner.filter((project) => project.status !== 'Terminé');
   const errorApiProjects = useAppSelector((state) => state.projects.errorApiProjects);
   const location = useLocation();
   // Permet de récupérer les 3 derniers projets
-  const lastProject = projectsListWithOwner.slice(0, 3);
+  const lastProject = projectsListWithOwnerAndNotFinish.slice(0, 3);
 
    // Affiche la notification si la requête a échoué
  useEffect(() => {
@@ -51,7 +54,7 @@ function Projects() {
           ))}
         </Carousel>
         :
-        projectsListWithOwner.map((item) => (
+        projectsListWithOwnerAndNotFinish.map((item) => (
           <ProjectItem
             key={item.id}
             {...item}
