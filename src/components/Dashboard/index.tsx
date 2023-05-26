@@ -10,7 +10,7 @@ import { Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { updateCode } from "../../store/reducers/login";
 import { GitHub } from "react-feather";
-import { linkToGithub, unlinkToGithub } from "../../store/reducers/user";
+import { getUserById, linkToGithub, unlinkToGithub } from "../../store/reducers/user";
 
 function Dashboard() {
   const user = useAppSelector(state => state.user.data)
@@ -56,6 +56,7 @@ function Dashboard() {
 
   useEffect(() => {
     if (successLink) {
+      dispatch(getUserById())
       toast.success('🦄 Votre compte GitHub a bien été lié !');
     }
     if (successUnlink) {
@@ -71,7 +72,7 @@ function Dashboard() {
   const handleLinkGitHubAuth = () => {
     const scope = import.meta.env.VITE_SCOPE;
     const clientId = import.meta.env.VITE_CLIENT_ID;
-    const redirectUri = 'http://localhost:5173/dashboard'
+    const redirectUri = 'https://oside.mimouss.fr/dashboard'
     const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
     window.location.href = authUrl;
   }
@@ -82,6 +83,7 @@ function Dashboard() {
     if (code) {
       dispatch(updateCode(code))
       dispatch(linkToGithub(Number(userId)))
+      urlParams.delete('code');
     }
   }, []);
 
@@ -93,9 +95,9 @@ function Dashboard() {
   return (
     <>
       {!showModal ? (
-        <div className="px-6 py-8">
-          <div className="w-[90%] mx-auto relative">
-            <div className="flex justify-end px-4 pt-4">
+        <div className="px-2 py-8">
+          <div className="w-full mx-auto relative">
+            <div className="flex justify-center px-4 pt-4">
               <div className="inline-block rounded-lg text-sm p-1.5">
                 Inscrit depuis le : {maDate.toLocaleDateString("fr")}
               </div>

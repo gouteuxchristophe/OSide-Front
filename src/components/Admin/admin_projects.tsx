@@ -56,8 +56,8 @@ function Admin_Projects() {
   return (
     <>
       {!showUpdateModal ? (
-        <div className="relative mx-auto">
-          <table className="text-xs text-center mx-auto w-[80%] sm:w-[40%]">
+        <div className="mx-auto mt-5 w-full">
+          <table className="text-xs text-center mx-auto w-[60%] sm:w-[50%]">
             <thead className="text-xs uppercase bg-secondary20">
               <tr>
                 <th scope="col" className="px-2 py-2">
@@ -80,7 +80,7 @@ function Admin_Projects() {
                         {project.title}
                       </div>
                     </th>
-                    <td className="whitespace-nowrap align-middle">
+                    <td className="align-middle">
                       <div className="rounded">
                         {project.status}
                       </div>

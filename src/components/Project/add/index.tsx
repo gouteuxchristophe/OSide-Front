@@ -84,7 +84,7 @@ function AddProjects() {
       {showModalAddTechno ? (
         <AddTechno closeModal={() => setShowModalAddTechno(false)} />
       ) : (
-        <div className="px-10 py-10 sm:mt-[2rem] rounded w-full">
+        <div className="px-10 py-10 mt-[2rem] rounded w-full">
           <div className="w-full rounded-lg lg:rounded-l-lg lg:rounded-r-none shadow-xl bg-white opacity-75 mx-6 lg:mx-0 border-2 border-solid border-secondary10">
             <div className="p-4 md:p-12 text-center lg:text-left flex flex-col gap-7 relative">
               <div className="block rounded-full shadow-xl mx-auto -mt-16 md:-mt-24 h-24 w-24 bg-cover bg-center border-b-4 border-solid border-secondary10" style={{ backgroundImage: `url(${!user.github.avatar_url ? fakeAvatar : user.github.avatar_url})` }} />
@@ -101,7 +101,7 @@ function AddProjects() {
                     </div>
                     <div className="mb-2 sm:mb-6 flex flex-col items-center justify-center sm:gap-5 w-full">
                       <label htmlFor="content" className="text-center block text-sm font-medium sm:w-[90%] sm:pb-0 pb-2">Content</label>
-                      <textarea onChange={(e) => handleCredentialContent(e.currentTarget.value)} defaultValue={credentialContent} className="w-full" />
+                      <textarea rows={10} onChange={(e) => handleCredentialContent(e.currentTarget.value)} defaultValue={credentialContent} className="w-full" />
                     </div>
                     <div className="flex flex-col items-center space-x-2 justify-center border-2 border-solid border-primary1 flex-wrap gap-5 pb-5 rounded">
                       <div className="p-5 mb-0 bg-primary1 w-[100%] font-bold">Techno</div>

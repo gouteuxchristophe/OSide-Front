@@ -28,8 +28,8 @@ function ModalUpdateRole({ closeModal, id, label, color }: ModalUpdateRoleProps)
   }
 
   return (
-      <div className="absolute z-10 top-1 left-1/2 -translate-x-1/2 bg-primary0 rounded w-[70%] sm:w-[50%] lg:w-[10%] shadow-xl">
-        <div className="w-full p-2 flex flex-col gap-3 text-[white]">
+      <div className="bg-primary0 rounded w-[60%] mx-auto mt-5 ">
+        <div className="p-2 flex flex-col items-center gap-3 text-[white]">
           <h2 className="text-center">Modification du rôle</h2>
           <form onSubmit={handleUpdateRoleSubmit} className="flex flex-col gap-5">
             <div className="flex justify-around">

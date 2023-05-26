@@ -15,7 +15,7 @@ function Login() {
   const [clickEye, setClickEye] = useState(false);
   // state du message de login
   const messageLogin = useAppSelector((state) => state.login.message);
-  console.log(messageLogin);
+
   
   const dispatch = useAppDispatch();
 
@@ -32,10 +32,9 @@ function Login() {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
     if (code) {
-      console.log('connect to github');
-      
       dispatch(updateCode(code))
       dispatch(loginOAuth())
+      urlParams.delete('code');
     }
   }, []);
 

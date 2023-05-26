@@ -53,19 +53,19 @@ export default function ModalUpdateContent({ closeModal, project }: updateProjec
   )
 
   return (
-    <div className="rounded w-[100%] mx-auto pb-5 relative">
-      <div
+    <div className="rounded w-[80%] mx-auto pb-5 relative mt-2 pt-8 sm:pt-2">
+      <button
         onClick={closeModal}
-        className="absolute top-0 right-4 p-2.5 "
+        className="absolute top-3 right-2 "
       >{<XCircle />}
-      </div>
+      </button>
       {showModalAddTechno ? (
         <AddTechno
           technoPred={project.technoProjet}
           closeModal={() => setShowModalAddTechno(false)} />
       ) : (
-        <div className="px-10 pt-2 sm:mt-[2rem] rounded w-full">
-          <div className="w-full rounded-lg lg:rounded-l-lg lg:rounded-r-none shadow-xl bg-white opacity-75 mx-6 lg:mx-0 border-2 border-solid border-secondary10">
+        <div className="pt-2 sm:mt-[2rem] rounded w-full mx-auto">
+          <div className="w-full rounded-lg bg-white lg:mx-0 border-2 border-solid border-secondary10">
             <div className="p-4 md:p-12 text-center lg:text-left flex flex-col gap-7 relative">
               <div className="pb-5 border-b-2 border-solid border-secondary23 rounded">
                 <h2 className="text-center pb-2">Modications des informations de votre projet</h2>
@@ -80,7 +80,7 @@ export default function ModalUpdateContent({ closeModal, project }: updateProjec
                     </div>
                     <div className="mb-2 sm:mb-6 flex flex-col items-center justify-center sm:gap-5 w-full">
                       <label htmlFor="lastname" className="text-center block text-sm font-medium sm:w-[90%] sm:pb-0 pb-2">Description</label>
-                      <textarea onChange={(e) => setUpdateContent(e.currentTarget.value)} defaultValue={project.content} className="shadow-sm text-sm rounded block p-2.5 w-full" placeholder="Description" />
+                      <textarea rows={10} onChange={(e) => setUpdateContent(e.currentTarget.value)} defaultValue={project.content} className="shadow-sm text-sm rounded block p-2.5 w-full" placeholder="Description" />
                     </div>
                     <div className="mb-2 sm:mb-6 flex flex-col items-center justify-center sm:gap-5 w-full">
                       <label htmlFor="email" className="text-center block text-sm font-medium sm:w-[90%] sm:pb-0 pb-2">Status</label>

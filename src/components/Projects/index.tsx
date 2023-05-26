@@ -21,7 +21,7 @@ function Projects() {
 }, [errorApiProjects]);
 
   return (
-    <div className="flex flex-col mb-10 items-center md:flex-row md:flex-wrap md:justify-center md:gap-10 overflow-hidden">
+    <div className="flex flex-col mb-10 items-center md:flex-row md:flex-wrap md:justify-center md:gap-10 overflow-hidden w-full">
       {(location.pathname === '/') && (
         <div className="w-[90%] lg:w-3/5 rounded-lg lg:rounded-l-lg lg:rounded-r-none shadow-xl bg-white opacity-75 lg:mx-0 border-2 border-solid border-secondary10 mt-2">
           <div className="p-4 md:p-12 text-center lg:text-left flex flex-col gap-7 relative bg-sky">

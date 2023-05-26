@@ -117,7 +117,7 @@ function AddTechno({ closeModal, technoPred }: AddTechnoProps) {
   }
 
   return (
-    <div className="flex flex-col items-center justify-around gap-[2rem] rounded relative border border-solid w-[90%] mx-auto bg-secondary20 h-full">
+    <div className="flex flex-col items-center justify-around gap-[2rem] rounded relative border border-solid w-[90%] mx-auto bg-secondary20 h-full mt-5">
       <h2 className="bg-[white] px-2 py-1 mt-2 rounded border-2 border-solid border-primary0">Ajouter une techno</h2>
       <form onSubmit={(e) => handleAddTechno(e)} className="flex">
         <input list="technoOptions" type="search" value={inputValue} onChange={(e) => setInputValue(e.currentTarget.value)} />

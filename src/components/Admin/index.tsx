@@ -9,70 +9,57 @@ function AdminPage() {
   const isLogged = useAppSelector(state => state.login.logged)
   const role = useAppSelector((state) => state.user.data.role);
 
-  if (!isLogged) {
-    toast.warn('🦄 Veuillez vous connecter !');
-    return <Navigate to="/login" replace />
-  }
-
-  if (role.id !== 3) {
-    toast.warn('🦄 Vous n\'avez pas accès à cette page !');
-    return <Navigate to="/home" replace />
-  }
+  useEffect(() => {
+    if (!isLogged) {
+      toast.warn("🦄 Veuillez vous connecter !");
+      navigate("/login", { replace: true });
+    } else if (role.id !== 3) {
+      toast.warn("🦄 Vous n'avez pas accès à cette page !");
+      navigate("/home", { replace: true });
+    }
+  }, [isLogged, navigate, role]);
 
 
   // Permet de gérer l'affichage des sections
-  const [showAdminTechno, setShowAdminTechno] = useState(false);
-  const [showAdminUser, setShowAdminUser] = useState(false);
-  const [showAdminRole, setShowAdminRole] = useState(false);
-  const [showAdminProject, setShowAdminProject] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
 
-  // Fonction pour mettre à jour l'état des sections en fonction de l'URL
+  const sections = [
+    { value: "technos", label: "Gestion des technos" },
+    { value: "users", label: "Gestion des Utilisateurs" },
+    { value: "projects", label: "Gestion des Projets" },
+    { value: "roles", label: "Gestion des Rôles" },
+  ];
+
   const updateSectionState = (pathname: string) => {
-    setShowAdminTechno(pathname === "/admin/technos");
-    setShowAdminUser(pathname === "/admin/users");
-    setShowAdminProject(pathname === "/admin/projects");
-    setShowAdminRole(pathname === "/admin/roles");
+    setActiveSection(pathname.replace("/admin/", ""));
   };
 
-  // Fonction pour mettre à jour l'URL en fonction de l'état des sections
   const updateURL = (section: string) => {
-    let pathname = "/admin";
-    if (section === "technos") {
-      pathname += "/technos";
-    } else if (section === "users") {
-      pathname += "/users";
-    } else if (section === "projects") {
-      pathname += "/projects";
-    } else if (section === "roles") {
-      pathname += "/roles";
-    }
-    navigate(pathname);
+    navigate(`/admin/${section}`);
   };
 
-  // Effectue la mise à jour de l'état des sections lors du chargement de la page
-  useEffect(() => {
-    updateSectionState(location.pathname);
-  }, []);
-
-  // Effectue la mise à jour de l'état des sections lors du changement d'URL
   useEffect(() => {
     updateSectionState(location.pathname);
   }, [location]);
 
-  // Permet de gérer l'affichage de la section
-  const handleAdminSection = (value : string) => {
+  const handleAdminSection = (value: string) => {
     updateURL(value);
   };
 
   return (
     <div className="mt-10">
-          <div className="flex flex-col gap-5 w-[60%] mx-auto">
-            <button onClick={() => handleAdminSection('technos')} className="py-2 px-4 rounded bg-secondary20">Gestion des technos</button>
-            <button onClick={() => handleAdminSection('users')} className="py-2 px-4 rounded bg-secondary20">Gestion des Utilisateurs</button>
-            <button onClick={() => handleAdminSection('projects')} className="py-2 px-4 rounded bg-secondary20">Gestion des Projets</button>
-            <button onClick={() => handleAdminSection('roles')} className="py-2 px-4 rounded bg-secondary20">Gestion des Rôles</button>
-          </div> 
-    </div>
+      <div className="flex flex-col gap-5 w-[60%] mx-auto">
+        {sections.map((section) => (
+          <button
+            key={section.value}
+            onClick={() => handleAdminSection(section.value)}
+            className={`py - 2 px-4 rounded bg-secondary20 ${activeSection === section.value ? "bg-secondary30" : ""}`}
+          >
+            {section.label}
+          </button>
+        ))}
+      </div>
+    </div >
   );
 }
 
