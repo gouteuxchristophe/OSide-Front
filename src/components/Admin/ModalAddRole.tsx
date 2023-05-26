@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAppDispatch } from "../../hooks/redux";
-import { addRole, updateRole } from "../../store/reducers/role";
+import { addRole } from "../../store/reducers/role";
 
 export interface newRole {
   label: string,

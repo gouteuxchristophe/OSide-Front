@@ -22,7 +22,7 @@ function Team() {
               <div className="flex flex-col items-center justify-between mb-3">
                 <img
                   className="w-24 h-24 rounded-full object-cover my-1"
-                  src={user.github.avatar_url}
+                  src={user.avatar_url}
                   alt="avatar"
                 />
                 <h2 className="text-xl font-bold text-center">{user.username}</h2>

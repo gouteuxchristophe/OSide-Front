@@ -22,8 +22,6 @@ import ConfettiExplosion from 'react-confetti-explosion';
 function ProjectDetail() {
   // Permet de savoir si l'utilisateur est connecté
   const isLogged = useAppSelector((state) => state.login.logged);
-  // Permet de récupérer les données de l'utilisateur
-  const fakeAvatar = useAppSelector((state) => state.user.data.fakeAvatar);
   // Permet de savoir si la requête API est en cours
   const isLoading = useAppSelector((state) => state.projects.isLoading);
   // state du modal
@@ -38,6 +36,9 @@ function ProjectDetail() {
   const [isExploding, setIsExploding] = useState(false);
   // Permet d'afficher la bulle d'info du user
   const [isHovered, setIsHovered] = useState(false);
+  // Permet d'afficher ou masquer les commentaires
+  const [showComments, setShowComments] = useState(false);
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate()
   // Redirige l'utilisateur vers la page d'accueil si il n'est pas connecté
@@ -131,7 +132,7 @@ function ProjectDetail() {
           <div className="p-4 md:p-12 text-center lg:text-left flex flex-col gap-7 relative">
             <div
               className="block rounded-full shadow-xl mx-auto -mt-16 md:-mt-24 h-24 w-24 bg-cover bg-center border-b-4 border-solid border-secondary10"
-              style={{ backgroundImage: `url(${!project.author.github.avatar_url ? fakeAvatar : project.author.github.avatar_url})` }}
+              style={{ backgroundImage: `url(${project.author.avatar_url})` }}
             />
             <div className="pb-5 border-b-2 border-solid border-secondary23 rounded">
               <div className="flex items-center justify-between mb-3">
@@ -151,11 +152,6 @@ function ProjectDetail() {
               </span>
             </div>
             <p className="pt-8 text-sm">{project.content}</p>
-            <div className="flex justify-center items-center py-2 px-4 rounded bg-secondary20 text-[white] w-[50%] self-center">
-              <MessageCircle />
-              {' '}
-              Voir les commentaires
-            </div>
             <div className="flex flex-col space-y-2">
               <div className="flex space-x-2 justify-center border-2 border-solid border-primary1 flex-wrap gap-2 pb-5 rounded">
                 <div className="p-5 mb-0 bg-primary1 w-[100%] font-bold">Participants</div>
@@ -166,7 +162,7 @@ function ProjectDetail() {
                     <>
                       <div className="relative w-12 h-12" key={member.id}>
                         <img onClick={() => navigate(`/profile/${member.id}`)} onMouseOver={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}
-                          className="rounded-full shadow-sm" src={(member.github.avatar_url.length === 0) ? fakeAvatar : member.github.avatar_url} alt={(member.github.login.length === 0) ? member.username : member.github.login} />
+                          className="rounded-full shadow-sm" src={member.avatar_url} alt={(member.github.login.length === 0) ? member.username : member.github.login} />
                         <>
                           {isHovered && (
                             <div className='absolute bottom-0 left-20'>
@@ -174,7 +170,7 @@ function ProjectDetail() {
                                 <div className="flex justify-end px-4 pt-4">
                                 </div>
                                 <div className="flex flex-col items-center pb-10">
-                                  <img className="w-24 h-24 rounded-full shadow-sm" src={(member.github.avatar_url.length === 0) ? fakeAvatar : member.github.avatar_url} alt={(member.github.login.length === 0) ? member.username : member.github.login} />
+                                  <img className="w-24 h-24 rounded-full shadow-sm" src={member.avatar_url} alt={(member.github.login.length === 0) ? member.username : member.github.login} />
                                   <h5 className="mb-1 text-xl font-medium ">{member.github.login}</h5>
                                   <span className="text-sm">{member.bio}</span>
                                 </div>
@@ -224,6 +220,22 @@ function ProjectDetail() {
                   closeModal={() => setShowDeleteModal(false)} />)
               }
             </div>
+            {!showComments ? (
+              <div onClick={() => setShowComments(true)} className="flex justify-center items-center py-2 px-4 rounded bg-secondary20 text-[white] w-[50%] self-center">
+                <MessageCircle />
+                {' '}
+                Voir les commentaires
+              </div>
+            ) : (
+              <div onClick={() => setShowComments(false)} className="flex justify-center items-center py-2 px-4 rounded bg-secondary20 text-[white] w-[50%] self-center">
+                <MessageCircle />
+                {' '}
+                Masquer les commentaires
+              </div>
+            )}
+            {showComments && (
+              <div>Commentaires</div>
+            )}
           </div>
         </div>
       )}

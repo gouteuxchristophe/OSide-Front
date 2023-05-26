@@ -13,10 +13,9 @@ function Menu() {
   // state qui permet de savoir si l'utilisateur est connecté
   const isLogged = useAppSelector((state) => state.login.logged);
   // state qui récupère les données de l'utilisateur
-  const avatarGitHub = useAppSelector((state) => state.user.data.github.avatar_url);
+  const avatarGitHub = useAppSelector((state) => state.user.data.avatar_url);
   const userName = useAppSelector((state) => state.user.data.username);
   const githubLogin = useAppSelector((state) => state.user.data.github.login); 
-  const fakeAvatar = useAppSelector((state) => state.user.data.fakeAvatar);
   // state du modal
   const [showModal, setShowModal] = useState(false);
   
@@ -85,9 +84,7 @@ function Menu() {
         {/* Affichage de cette partie si utilisateur connecté */}
         {isLogged ? (
           <button type="button" onClick={() => setShowModal(true)}>
-            <img src={
-              (avatarGitHub.length === 0) ? fakeAvatar : avatarGitHub
-              } className="rounded-full mx-auto h-12 w-12 bg-cover bg-center" alt={(githubLogin.length === 0) ? userName : githubLogin} />
+            <img src={avatarGitHub} className="rounded-full mx-auto h-12 w-12 bg-cover bg-center" alt={(githubLogin.length === 0) ? userName : githubLogin} />
             {' '}
           </button>
         ) : (

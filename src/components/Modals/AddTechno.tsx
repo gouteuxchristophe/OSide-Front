@@ -3,7 +3,6 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { ITechnoProjet } from "../../@types/project";
 import { addTechno, deleteMessageAdd, updatedSelectedTechnos } from "../../store/reducers/techno";
 import { getAllTechnos } from "../../store/reducers/techno";
-import { PlusSquare } from "react-feather";
 import { toast } from "react-toastify";
 
 

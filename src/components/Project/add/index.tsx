@@ -11,7 +11,6 @@ function AddProjects() {
   const isLogged = useAppSelector((state) => state.login.logged);
   // permet de récupérer les données de l'utilisateur
   const user = useAppSelector((state) => state.user.data);
-  const fakeAvatar = useAppSelector((state) => state.user.data.fakeAvatar);
   // state du modal
   const [showModalAddTechno, setShowModalAddTechno] = useState(false);
   // state du formulaire
@@ -87,7 +86,7 @@ function AddProjects() {
         <div className="px-10 py-10 mt-[2rem] rounded w-full">
           <div className="w-full rounded-lg lg:rounded-l-lg lg:rounded-r-none shadow-xl bg-white opacity-75 mx-6 lg:mx-0 border-2 border-solid border-secondary10">
             <div className="p-4 md:p-12 text-center lg:text-left flex flex-col gap-7 relative">
-              <div className="block rounded-full shadow-xl mx-auto -mt-16 md:-mt-24 h-24 w-24 bg-cover bg-center border-b-4 border-solid border-secondary10" style={{ backgroundImage: `url(${!user.github.avatar_url ? fakeAvatar : user.github.avatar_url})` }} />
+              <div className="block rounded-full shadow-xl mx-auto -mt-16 md:-mt-24 h-24 w-24 bg-cover bg-center border-b-4 border-solid border-secondary10" style={{ backgroundImage: `url(${user.avatar_url})` }} />
               <div className="pb-5 border-b-2 border-solid border-secondary23 rounded">
                 <h2>Ajout d'un projet</h2>
                 <div className="flex items-center justify-between mb-3">
