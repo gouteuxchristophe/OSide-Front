@@ -19,8 +19,6 @@ function Dashboard() {
   const [showModal, setShowModal] = useState(false)
   const [showUpdateModal, setShowUpdateModal] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
-  // state pour récupérer une image par défaut
-  const fakeAvatar = useAppSelector((state) => state.user.data.fakeAvatar);
   // state pour la date de création du compte
   const maDate = new Date(user.created_at as string)
   // state qui défini si l'utilisateur est connecté ou non
@@ -103,7 +101,7 @@ function Dashboard() {
               </div>
             </div>
             <div className="flex flex-col items-center pb-10 gap-2">
-              <img className="w-24 h-24 mb-3 rounded-full shadow-lg" src={(user.github.avatar_url.length === 0) ? fakeAvatar : user.github.avatar_url} alt={user.github.login} />
+              <img className="w-24 h-24 mb-3 rounded-full shadow-lg" src={user.avatar_url} alt={user.github.login} />
               <h5 className="mb-1 text-xl font-medium text-secondary20">{user.github.login ? user.github.login : user.username}</h5>
               <span className="text-sm text-secondary20">{user.first_name} {user.last_name}</span>
               <span className="text-sm text-secondary20">{user.email}</span>

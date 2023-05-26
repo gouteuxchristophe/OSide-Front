@@ -6,6 +6,7 @@ export interface User {
   first_name: string
   last_name: string
   username: string
+  avatar_url: string
   github: IGithubUser
   created_at?: string
   updated_at?: string
@@ -20,7 +21,6 @@ export interface User {
 export interface IGithubUser {
   id: number
   login: string
-  avatar_url: string
 }
 
 export interface Role {

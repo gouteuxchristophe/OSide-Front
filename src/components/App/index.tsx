@@ -29,8 +29,6 @@ function App() {
   const errorAPIUser = useAppSelector((state) => state.user.errorAPIUser);
   // state pour s'assurer de la réception des données de l'API
   const dataReception = useAppSelector((state) => state.projects.dataReception);
-  // state qui défini si l'utilisateur est connecté ou non
-  const isLogged = useAppSelector((state) => state.login.logged);
   // state pour le message de delete de l'utilisateur
   const successDelete = useAppSelector(state => state.user.successDelete)
   //  Permet de scroller en haut de la page à chaque nouvel affiche url
