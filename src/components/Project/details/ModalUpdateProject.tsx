@@ -84,7 +84,11 @@ export default function ModalUpdateContent({ closeModal, project }: updateProjec
                     </div>
                     <div className="mb-2 sm:mb-6 flex flex-col items-center justify-center sm:gap-5 w-full">
                       <label htmlFor="email" className="text-center block text-sm font-medium sm:w-[90%] sm:pb-0 pb-2">Status</label>
-                      <input onChange={(e) => setUpdateStatus(e.currentTarget.value)} defaultValue={project.status} type="text" className="shadow-sm text-sm rounded block p-2.5 sm:w-[40%]" placeholder="Status" />
+                      <select onChange={(e) => setUpdateStatus(e.currentTarget.value)} defaultValue={project.status}>
+                        <option value="Ouvert à la participation">Ouvert à la participation</option>
+                        <option value="Equipe complète">Equipe complète</option>
+                        <option value="Terminé">Terminé</option>
+                      </select>
                     </div>
                     <div className="flex flex-col items-center space-x-2 justify-center border-2 border-solid border-primary1 flex-wrap gap-5 pb-5 rounded">
                       <div className="p-5 mb-0 bg-primary1 w-[100%] font-bold">Techno</div>

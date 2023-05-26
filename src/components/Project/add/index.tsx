@@ -63,7 +63,7 @@ function AddProjects() {
     const newProject = {
       title: credentialTitle,
       content: credentialContent,
-      status: 'En cours',
+      status: 'Ouvert à la participation',
       owner_id: user.id,
       technoProjet: idTechnos
     }
