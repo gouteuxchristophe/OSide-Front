@@ -24,17 +24,20 @@ function Admin_Projects() {
   const successUpdate = useAppSelector((state) => state.projects.successUpdate);
   const successAdd = useAppSelector((state) => state.projects.successAdd);
 
+  // Permet le dispatch et le navigate
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   // Récupérer la liste des projets
-  const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getAllProjects())
   }, [dispatch])
+
   // Permet d'afficher la modal de suppression d'un projet
   const handleDeleteProject = () => {
     setDeleteConfirmation(true);
   }
+  
   // Permet d'afficher une notification si le projet a bien été supprimée, modifié, ajouté
   // et de recharger la liste des projets
   useEffect(() => {

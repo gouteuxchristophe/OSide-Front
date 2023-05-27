@@ -10,38 +10,44 @@ import { Navigate, useNavigate } from "react-router-dom";
 
 function Admin_Users() {
 
+  //  Permet de savoir si l'utilisateur est connecté et son rôle
   const isLogged = useAppSelector(state => state.login.logged)
   const role = useAppSelector((state) => state.user.data.role);
+  // Permet de récupérer la liste des utilisateurs
+  const allUser = useAppSelector((state) => state.user.allUsers);
+  // state des modals
+  const [showModalUpdateRole, setShowModalUpdateRole] = useState(false);
+  // state des utilisateurs
+  const [selectedUserId, setSelectedUserId] = useState<number>();
+  const [selectedRole, setSelectedRole] = useState<number>(0);
+  // state des messages de succès ou d'erreur
+  const [deleteConfirmation, setDeleteConfirmation] = useState<boolean>(false);
+  const successDelete = useAppSelector((state) => state.user.successDelete);
+  const successUpdate = useAppSelector((state) => state.user.successUpdate);
+  // Permet le dispatch et le navigate
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
+  // Si l'utilisateur n'est pas connecté, il est redirigé vers la page de connexion
   if (!isLogged) {
     toast.warn('🦄 Veuillez vous connecter !');
     return <Navigate to="/login" replace />
   }
-
+  // Si l'utilisateur n'est pas admin, il est redirigé vers la page d'accueil
   if (role.id !== 3) {
     toast.warn('🦄 Vous n\'avez pas accès à cette page !');
     return <Navigate to="/home" replace />
   }
-
-  const allUser = useAppSelector((state) => state.user.allUsers);
-  const [showModalUpdateRole, setShowModalUpdateRole] = useState(false);
-  const [selectedUserId, setSelectedUserId] = useState<number>();
-  const [selectedRole, setSelectedRole] = useState<number>(0);
-  const [deleteConfirmation, setDeleteConfirmation] = useState<boolean>(false);
-  const successDelete = useAppSelector((state) => state.user.successDelete);
-  const successUpdate = useAppSelector((state) => state.user.successUpdate);
-  const navigate = useNavigate();
   // Récupérer la liste des utilisateurs
-  const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getAllUsers())
   }, [dispatch])
-
+  
   // Permet d'afficher la modal de suppression d'un utilisateur
   const handleDeleteUser = () => {
     setDeleteConfirmation(true);
   }
-
+  // Affiche une notification de succès si la suppression ou la modification d'un utilisateur a réussi
   useEffect(() => {
     if (successDelete) {
       dispatch(getAllUsers());

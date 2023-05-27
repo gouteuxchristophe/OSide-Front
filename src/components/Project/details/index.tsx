@@ -1,4 +1,4 @@
-import { Navigate, useParams, Link, useNavigate, unstable_HistoryRouter } from 'react-router-dom';
+import { Navigate, useParams, useNavigate} from 'react-router-dom';
 import { Settings, MessageCircle } from 'react-feather';
 import { toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
@@ -47,6 +47,8 @@ function ProjectDetail() {
     toast.warn('🦄 Veuillez vous connecter !');
     return <Navigate to="/login" replace />
   }
+
+
   // On récupère l'id du projet recherché
   const { id } = useParams();
   const idUser = useAppSelector((state) => state.user.data.id);
@@ -65,6 +67,7 @@ function ProjectDetail() {
       navigate('/dashboard')
     }
     if (successUpdate) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       toast.success(`🦄 ${successUpdate}`);
       dispatch(deleteMessageUpdate())
       dispatch(getProjectByID(id as unknown as number));
@@ -127,7 +130,7 @@ function ProjectDetail() {
 
   return (
 
-    <div className="flex items-center h-auto lg:h-screen flex-wrap my-5 lg:my-0 relative justify-center py-10">
+    <div className="flex items-center flex-wrap my-5 relative justify-center py-10">
       {!showUpdateModal && (
         <div className="w-full lg:w-3/5 rounded-lg lg:rounded-l-lg lg:rounded-r-none shadow-xl bg-white opacity-75 mx-6 lg:mx-0 border-2 border-solid border-secondary10">
           <div className="p-4 md:p-12 text-center lg:text-left flex flex-col gap-7 relative">
@@ -160,27 +163,25 @@ function ProjectDetail() {
                   <div>Aucun participant</div>
                 )
                   : project.memberProjet.map((member) => (
-                    <>
-                      <div className="relative w-12 h-12" key={member.id}>
-                        <img onClick={() => navigate(`/profile/${member.id}`)} onMouseOver={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}
-                          className="rounded-full shadow-sm" src={member.avatar_url} alt={(member.github.login.length === 0) ? member.username : member.github.login} />
-                        <>
-                          {isHovered && (
-                            <div className='absolute bottom-0 left-20'>
-                              <div className="w-full bg-[white] border border-solid border-primary0 rounded shadow px-5">
-                                <div className="flex justify-end px-4 pt-4">
-                                </div>
-                                <div className="flex flex-col items-center pb-10">
-                                  <img className="w-24 h-24 rounded-full shadow-sm" src={member.avatar_url} alt={(member.github.login.length === 0) ? member.username : member.github.login} />
-                                  <h5 className="mb-1 text-xl font-medium ">{member.github.login}</h5>
-                                  <span className="text-sm">{member.bio}</span>
-                                </div>
+                    <div className="relative w-12 h-12" key={member.id}>
+                      <img onClick={() => navigate(`/profile/${member.id}`)} onMouseOver={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}
+                        className="rounded-full shadow-sm" src={member.avatar_url} alt={(member.github.login.length === 0) ? member.username : member.github.login} />
+                      <>
+                        {isHovered && (
+                          <div className='absolute bottom-0 left-20'>
+                            <div className="w-full bg-[white] border border-solid border-primary0 rounded shadow px-5">
+                              <div className="flex justify-end px-4 pt-4">
+                              </div>
+                              <div className="flex flex-col items-center pb-10">
+                                <img className="w-24 h-24 rounded-full shadow-sm" src={member.avatar_url} alt={(member.github.login.length === 0) ? member.username : member.github.login} />
+                                <h5 className="mb-1 text-xl font-medium ">{member.github.login}</h5>
+                                <span className="text-sm">{member.bio}</span>
                               </div>
                             </div>
-                          )}
-                        </>
-                      </div>
-                    </>
+                          </div>
+                        )}
+                      </>
+                    </div>
                   ))}
               </div>
             </div>
@@ -196,12 +197,14 @@ function ProjectDetail() {
               {idUser != project?.author.id && (
                 <>
                   {alreadyParticipated ? (
-                    <button type="button" onClick={handleLeave} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-secondary20 rounded-lg focus:ring-4 focus:outline-none">
-                      Quitter le projet
+                    <button type="button" onClick={handleLeave} className="group relative h-12 w-48 overflow-hidden rounded-lg bg-[white] text-lg shadow">
+                      <div className="absolute inset-0 w-3 bg-[red] transition-all duration-[250ms] ease-out group-hover:w-full"></div>
+                      <span className="relative text-[black] group-hover:text-[white]">Quitter le projet !</span>
                     </button>
                   ) : (
-                    <button type="button" onClick={handleParticipate} className={`${(project.status === 'Equipe complète') ? 'disabled' : ''} inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-secondary20 rounded-lg focus:ring-4 focus:outline-none`}>
-                      Participer
+                    <button type="button" onClick={handleParticipate} className={`${(project.status === 'Equipe complète') ? 'disabled' : ''} group relative h-12 w-48 overflow-hidden rounded-lg bg-[white] text-lg shadow`}>
+                      <div className="absolute inset-0 w-3 bg-[green] transition-all duration-[250ms] ease-out group-hover:w-full"></div>
+                      <span className="relative text-[black] group-hover:text-[white]">Participer au projet !</span>
                     </button>
                   )}
                 </>
@@ -243,11 +246,11 @@ function ProjectDetail() {
                 Masquer les commentaires
               </div>
             )}
-            {showComments && (
+            <div className={`comment-content ${showComments ? 'active' : ''}`}>
               <Comments
                 comments={project.comment}
                 ownerProject={project.author.id} />
-            )}
+            </div>
           </div>
         </div>
       )}

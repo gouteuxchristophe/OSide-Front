@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { Delete, Edit3, Trash2 } from "react-feather";
+import { Edit3, Trash2 } from "react-feather";
 import ModalUpdateTechno from "./ModalUpdateTechno";
 import AddTechno from "../Modals/AddTechno";
 import { deleteMessage, deleteMessageUpdate, deleteMessageAdd, getAllTechnos, emptySelectedTechnos, deleteTechnoErrorMessage } from "../../store/reducers/techno";
@@ -9,20 +9,11 @@ import DeleteConfirmation from "./deleteConfirmation";
 import { Navigate, useNavigate } from "react-router-dom";
 
 function Admin_Techno() {
-
+  // Permet de savoir si l'utilisateur est connecté
   const isLogged = useAppSelector(state => state.login.logged)
+  // Permet de récupérer le role de l'utilisateur
   const role = useAppSelector((state) => state.user.data.role);
-
-  if (!isLogged) {
-    toast.warn('🦄 Veuillez vous connecter !');
-    return <Navigate to="/login" replace />
-  }
-
-  if (role.id !== 3) {
-    toast.warn('🦄 Vous n\'avez pas accès à cette page !');
-    return <Navigate to="/home" replace />
-  }
-
+  // Permet de récupérer la liste des technos
   const technoList = useAppSelector((state) => state.search.technoLists);
   // state des messages de succès ou d'erreur
   const successDelete = useAppSelector((state) => state.techno.successDelete);
@@ -37,13 +28,25 @@ function Admin_Techno() {
   const [selectedTechnoId, setSelectedTechnoId] = useState<number>();
   const [selectedTechnoLabel, setSelectedTechnoLabel] = useState<string>('');
   const [selectedTechnoColor, setSelectedTechnoColor] = useState<string | undefined>('');
+  // Permet le dispatch et le navigate
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
+  
+  // Permet de savoir si l'utilisateur est connecté
+  if (!isLogged) {
+    toast.warn('🦄 Veuillez vous connecter !');
+    return <Navigate to="/login" replace />
+  }
+  // Permet de savoir si l'utilisateur est admin
+  if (role.id !== 3) {
+    toast.warn('🦄 Vous n\'avez pas accès à cette page !');
+    return <Navigate to="/home" replace />
+  }
   // Récupérer la liste des technos
   useEffect(() => {
     dispatch(getAllTechnos());
   }, [dispatch]);
+
   // Permet de supprimer une techno
   const handleDeleteTechno = () => {
     setDeleteConfirmation(true);

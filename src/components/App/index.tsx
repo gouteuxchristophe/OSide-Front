@@ -23,6 +23,7 @@ import Admin_Users from '../Admin/admin_user';
 import Admin_Roles from '../Admin/admin_roles';
 import Contact from '../Contact';
 import RGPD from '../RGPD';
+import { getUserDataFromLocalStorage } from '../../utils/login';
         
 function App() {
   // state pour les erreurs de l'API sur getprojet
@@ -33,6 +34,7 @@ function App() {
   const successDelete = useAppSelector(state => state.user.successDelete)
   //  Permet de scroller en haut de la page à chaque nouvel affiche url
   const location = useLocation();
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [location]);

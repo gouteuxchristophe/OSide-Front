@@ -10,6 +10,7 @@ import { Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { GitHub } from "react-feather";
 import { getUserById, resetSuccessUpdate, updateUser } from "../../store/reducers/user";
+import { getAllProjects } from "../../store/reducers/projects";
 
 function Dashboard() {
   const user = useAppSelector(state => state.user.data)
@@ -28,6 +29,7 @@ function Dashboard() {
   const userData = getUserDataFromLocalStorage();
   const [pseudoGitHub, setPseudoGitHub] = useState<string>('')
   const updateMessage = useAppSelector(state => state.user.successUpdate)
+  const successUpdateProject = useAppSelector(state => state.projects.successUpdate)
 
   const dispatch = useAppDispatch();
 
@@ -54,6 +56,12 @@ function Dashboard() {
     dispatch(getUserById())
     dispatch(resetSuccessUpdate())
   }, [updateMessage])
+
+  useEffect(() => {
+    if (successUpdateProject) {
+      dispatch(getAllProjects())
+    }
+  }, [successUpdateProject])
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -109,12 +117,12 @@ function Dashboard() {
               <span className="text-sm text-secondary20">{user.first_name} {user.last_name}</span>
               <span className="text-sm text-secondary20">{user.email}</span>
               <span style={{ borderColor: `${user.role.color}` }} className="bg-[white] border-2 border-solid text-sm px-3 rounded-full pt-[0.1em] pb-[0.1em]">{user.role.label}</span>
-              <div className="flex space-x-2 justify-center border-2 border-solid border-primary1 flex-wrap gap-2 pb-5 rounded w-[80%]">
-                <div className="p-5 mb-0 bg-primary1 w-[100%] font-bold text-center">Bio</div>
+              <div className="flex justify-center border-2 border-solid border-primary1 flex-wrap gap-2 rounded w-[60%]">
+                <div className="p-5 bg-primary1 w-[100%] font-bold text-center">Bio</div>
                 {!user.bio ? (
                   <div>Pas de biographie</div>
                 )
-                  : <div className="p-5 mb-0 bg-[white] w-[100%] text-center">{user.bio}</div>}
+                  : <div className="p-5 rounded bg-[white] text-center mb-5">{user.bio}</div>}
 
               </div>
               <div className="flex space-x-2 justify-center border-2 border-solid border-primary1 flex-wrap gap-2 pb-5 rounded w-[80%]">

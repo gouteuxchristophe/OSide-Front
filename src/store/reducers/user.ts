@@ -59,8 +59,8 @@ interface UserState {
   successUpdate: string
   errorUpdate: string
   member: Member
+  temporalyUserUpdate: UserUpdate
 }
-
 
 // Je créer mon interface pour le state de mon reducer
 export const initialState: UserState = {
@@ -107,6 +107,16 @@ export const initialState: UserState = {
     bio: '',
     ability: [],
   },
+  temporalyUserUpdate: {
+    id: 1,
+    first_name: '',
+    last_name: '',
+    email: '',
+    password: '',
+    passwordConfirm: '',
+    ability: [],
+    bio: '',
+  }
 };
 
 // Action creator qui me permet de créer un utilisateur
@@ -242,6 +252,10 @@ export const deleteUserByAdmin = createAppAsyncThunk(
   },
 );
 
+// On stocke temporairement les données d'update de l'utilisateur
+export const setTemporalyUserUpdate = createAction<UserUpdate>('user/SET_TEMPORALY_USER_UPDATE');
+// On vide les données d'update de l'utilisateur
+export const resetTemporalyUserUpdate = createAction('user/RESET_TEMPORALY_USER_UPDATE');
 // On créer une action pour l'update de l'utilisateur lors de la connexion
 export const setUser = createAction<User>('user/SET_USER');
 // On vide les messages de succès ou d'erreur
@@ -336,6 +350,12 @@ const userReducer = createReducer(initialState, (builder) => {
     .addCase(updateUser.fulfilled, (state, action) => {
       if (action.payload === undefined) return;
       state.successUpdate = action.payload!;
+    })
+    .addCase(setTemporalyUserUpdate, (state, action) => {
+      state.temporalyUserUpdate = action.payload;
+    })
+    .addCase(resetTemporalyUserUpdate, (state) => {
+      state.temporalyUserUpdate = initialState.temporalyUserUpdate;
     })
 });
 

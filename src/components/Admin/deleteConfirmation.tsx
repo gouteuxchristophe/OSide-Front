@@ -11,7 +11,8 @@ interface ModalDeleteProps {
   type: string;
 }
 
-function DeleteConfirmation({ id, type, closeModal }: ModalDeleteProps) {
+// Permet de supprimer une techno, un role, un projet ou un utilisateur
+const DeleteConfirmation = ({ id, type, closeModal }: ModalDeleteProps) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const handleConfirmationDeleted = () => {

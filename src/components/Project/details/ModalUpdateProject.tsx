@@ -1,10 +1,11 @@
 import { XCircle } from "react-feather"
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux"
-import { useState } from "react";
-import { updateProject } from "../../../store/reducers/projects";
+import { useEffect, useState } from "react";
+import { changeInputProject, updateProject } from "../../../store/reducers/projects";
 import { Project } from "../../../@types/project";
 import AddTechno from "../../Modals/AddTechno";
 import { emptySelectedTechnos, getAllTechnos } from "../../../store/reducers/techno";
+import { resetTemporalyUserUpdate } from "../../../store/reducers/user";
 
 interface updateProjectProps {
   project: Project ,
@@ -22,6 +23,23 @@ export default function ModalUpdateContent({ closeModal, project }: updateProjec
   const [updateTitle, setUpdateTitle] = useState('')
   const [updateContent, setUpdateContent] = useState('')
   const [updateStatus, setUpdateStatus] = useState('')
+  // On récupère le state qui va sauvegarder les inputs si on ouvre la modal techno
+  const temporalyUpdateProject = useAppSelector((state) => state.projects.temporaryUpdatedInputProject)
+
+  // Si une valeur d'input change on la passe dans le state temporalyUserUpdate
+  // pour la conserver si l'utilisateur ferme le modal addTechno
+  useEffect(() => {
+    // si les valeurs des champs sont renseignées on les passe dans le state temporalyUserUpdate
+    if (updateTitle !== '' || updateContent !== '' || updateStatus !== '' ) {
+      dispatch(changeInputProject({
+        id: project.id,
+        title: updateTitle,
+        content: updateContent,
+        status: updateStatus,
+      }))
+    }
+  }, [updateTitle, updateContent, updateStatus])
+ 
   const dispatch = useAppDispatch()
   // Mettre à jour un projet
   const handleUpdateUserSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
@@ -52,10 +70,16 @@ export default function ModalUpdateContent({ closeModal, project }: updateProjec
     ))
   )
 
+  const handleCancelUpdtated = () => {
+    dispatch(resetTemporalyUserUpdate())
+    dispatch(emptySelectedTechnos())
+    closeModal()
+  }
+
   return (
     <div className="rounded w-[80%] mx-auto pb-5 relative mt-2 pt-8 sm:pt-2">
       <button
-        onClick={closeModal}
+        onClick={handleCancelUpdtated}
         className="absolute top-3 right-2 "
       >{<XCircle />}
       </button>
@@ -76,15 +100,15 @@ export default function ModalUpdateContent({ closeModal, project }: updateProjec
                   <form onSubmit={handleUpdateUserSubmit} className="flex flex-col gap-5">
                     <div className="mb-2 sm:mb-6 flex flex-col items-center justify-center sm:gap-5 w-full">
                       <label htmlFor="firstname" className="w-[90%] text-center block text-sm font-medium sm:w-[90%] sm:pb-0 pb-2">Titre</label>
-                      <input onChange={(e) => setUpdateTitle(e.currentTarget.value)} defaultValue={project.title} type="text" className="shadow-sm text-sm rounded block p-2.5 sm:w-[40%]" placeholder="Titre" />
+                      <input onChange={(e) => setUpdateTitle(e.currentTarget.value)} defaultValue={temporalyUpdateProject.title || project.title } type="text" className="shadow-sm text-sm rounded block p-2.5 sm:w-[40%]" placeholder="Titre" />
                     </div>
                     <div className="mb-2 sm:mb-6 flex flex-col items-center justify-center sm:gap-5 w-full">
                       <label htmlFor="lastname" className="text-center block text-sm font-medium sm:w-[90%] sm:pb-0 pb-2">Description</label>
-                      <textarea rows={10} onChange={(e) => setUpdateContent(e.currentTarget.value)} defaultValue={project.content} className="shadow-sm text-sm rounded block p-2.5 w-full" placeholder="Description" />
+                      <textarea rows={10} onChange={(e) => setUpdateContent(e.currentTarget.value)} defaultValue={temporalyUpdateProject.content || project.content} className="shadow-sm text-sm rounded block p-2.5 w-full" placeholder="Description" />
                     </div>
                     <div className="mb-2 sm:mb-6 flex flex-col items-center justify-center sm:gap-5 w-full">
                       <label htmlFor="email" className="text-center block text-sm font-medium sm:w-[90%] sm:pb-0 pb-2">Status</label>
-                      <select onChange={(e) => setUpdateStatus(e.currentTarget.value)} defaultValue={project.status}>
+                      <select onChange={(e) => setUpdateStatus(e.currentTarget.value)} defaultValue={temporalyUpdateProject.status || project.status}>
                         <option value="Ouvert à la participation">Ouvert à la participation</option>
                         <option value="Equipe complète">Equipe complète</option>
                         <option value="Terminé">Terminé</option>

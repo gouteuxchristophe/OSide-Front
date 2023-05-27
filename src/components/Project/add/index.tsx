@@ -84,11 +84,14 @@ function AddProjects() {
         <AddTechno closeModal={() => setShowModalAddTechno(false)} />
       ) : (
         <div className="px-10 py-10 mt-[2rem] rounded w-full">
+          <button onClick={() => navigate(-1)} className="mb-2 inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-secondary20 rounded-lg focus:ring-4 focus:outline-none">
+            Retour
+          </button>
           <div className="w-full rounded-lg lg:rounded-l-lg lg:rounded-r-none shadow-xl bg-white opacity-75 mx-6 lg:mx-0 border-2 border-solid border-secondary10">
             <div className="p-4 md:p-12 text-center lg:text-left flex flex-col gap-7 relative">
               <div className="block rounded-full shadow-xl mx-auto -mt-16 md:-mt-24 h-24 w-24 bg-cover bg-center border-b-4 border-solid border-secondary10" style={{ backgroundImage: `url(${user.avatar_url})` }} />
               <div className="pb-5 border-b-2 border-solid border-secondary23 rounded">
-                <h2>Ajout d'un projet</h2>
+                <h2 className="text-center font-bold">Ajout d'un projet</h2>
                 <div className="flex items-center justify-between mb-3">
                   <h1 className="text-2xl font-bold lg:pt-0 text-left"></h1>
                 </div>
@@ -113,7 +116,7 @@ function AddProjects() {
                         ))}
                       </div>
                     </div>
-                    <div>
+                    <div className="flex justify-center">
                       <button className="bg-primary0 text-[white] font-medium rounded text-sm px-5 py-2.5 text-center" type="submit">Envoyer</button>
                     </div>
                   </form>

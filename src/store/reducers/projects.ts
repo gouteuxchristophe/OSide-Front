@@ -25,6 +25,7 @@ interface ProjectsState {
   credentialContent: string;
   successParticipate: boolean
   successLeave: boolean
+  temporaryUpdatedInputProject: UpdateProject
 }
 
 interface UpdateProject {
@@ -32,7 +33,7 @@ interface UpdateProject {
   title: string | undefined;
   content: string | undefined;
   status: string | undefined;
-  technoProjet: number[]
+  technoProjet?: number[]
 }
 
 interface ParticipateProject {
@@ -54,7 +55,13 @@ export const initialState: ProjectsState = {
   credentialTitle: '',
   credentialContent: '',
   successParticipate: false,
-  successLeave: false
+  successLeave: false,
+  temporaryUpdatedInputProject: {
+    id: 0,
+    title: '',
+    content: '',
+    status: '',
+  }
 };
 // Action creator qui me permet de récupérer tous les projets
 export const getAllProjects = createAppAsyncThunk('projects/GET_ALL_PROJECTS',
@@ -186,6 +193,11 @@ export const leaveProject = createAppAsyncThunk(
       }
     }
 });
+
+// On créer une action pour stocker les valeurs du formulaire update dans le state
+export const changeInputProject = createAction<UpdateProject>('project/CHANGE_INPUT_PROJECT');
+// On créer une action pour vider les valeurs du formulaire update dans le state
+export const resetInputProject = createAction('project/RESET_INPUT_PROJECT');
 // Action creator qui me permet de changer la valeur d'un champ de mon formulaire
 export const changeCredentialsTitle = createAction<string>('project/CHANGE_CREDENTIALS_TITLE');
 // Action creator qui me permet de changer la valeur d'un champ de mon formulaire
@@ -277,6 +289,14 @@ const projectsReducer = createReducer(initialState, (builder) => {
     .addCase(deleteMessageLeave, (state) => {
       state.successLeave = false
     })
+    .addCase(changeInputProject, (state, action) => {
+      state.temporaryUpdatedInputProject = action.payload;
+    }
+    )
+    .addCase(resetInputProject, (state) => {
+      state.temporaryUpdatedInputProject = initialState.temporaryUpdatedInputProject;
+    })
+
 });
 
 export default projectsReducer;

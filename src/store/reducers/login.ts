@@ -1,4 +1,4 @@
-import { PayloadAction, createAction, createReducer, isAnyOf } from '@reduxjs/toolkit';
+import { createAction, createReducer, isAnyOf } from '@reduxjs/toolkit';
 import { getUserDataFromLocalStorage, removeUserDataFromLocalStorage } from '../../utils/login';
 import createAppAsyncThunk from '../../utils/redux';
 import axiosInstance from '../../utils/axios';
@@ -163,6 +163,8 @@ const loginReducer = createReducer(initialState, (builder) => {
     .addMatcher(isAnyOf(login.fulfilled, loginOAuth.fulfilled), (state, action) => {
       // Je met à jour le state logged et token
       state.message = action.payload!.message;
+      state.role = action.payload!.role;
+      console.log(state.role);
       state.logged = true;
       state.token = action.payload!.token;
       state.errorLoginMessage = ''

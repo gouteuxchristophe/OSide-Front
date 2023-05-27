@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { deleteMessageAdd, deleteRole, deleteRoleErrorMessage, getAllRole } from "../../store/reducers/role";
+import { deleteMessageAdd, deleteRoleErrorMessage, getAllRole } from "../../store/reducers/role";
 import { Edit3, PlusSquare, Trash2 } from "react-feather";
 import ModalUpdateRole from "./ModalUpdateRole";
 import { toast } from "react-toastify";
@@ -11,10 +11,11 @@ import { Navigate, useNavigate } from "react-router-dom";
 
 function Admin_Roles() {
 
-  const rolesList = useAppSelector((state) => state.role.lists);
   // state des modals
   const [showModalUpdateRole, setShowModalUpdateRole] = useState(false);
   const [showModalAddRole, setShowModalAddRole] = useState(false);
+  // Permet de récupérer la liste des roles
+  const rolesList = useAppSelector((state) => state.role.lists);
   // state des roles
   const [selectedRoleId, setSelectedRoleId] = useState<number>();
   const [selectedRoleLabel, setSelectedRoleLabel] = useState<string>();
@@ -24,24 +25,26 @@ function Admin_Roles() {
   const successUpdate = useAppSelector((state) => state.role.successUpdate);
   const successAdd = useAppSelector((state) => state.role.successAdd);
   const errorAPIRole = useAppSelector((state) => state.role.errorAPIRole);
+  // state de la suppression
   const [deleteConfirmation, setDeleteConfirmation] = useState<boolean>(false);
-
+  // state qui permet de savoir si l'utilisateur est connecté
   const isLogged = useAppSelector(state => state.login.logged)
+  // state qui permet de savoir si l'utilisateur est admin
   const role = useAppSelector((state) => state.user.data.role);
+  // Permet le dispatch et le navigate
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
+  // Si l'utilisateur n'est pas connecté, il est redirigé vers la page de connexion
   if (!isLogged) {
     toast.warn('🦄 Veuillez vous connecter !');
     return <Navigate to="/login" replace />
   }
-
+  // Si l'utilisateur n'est pas admin, il est redirigé vers la page d'accueil
   if (role.id !== 3) {
     toast.warn('🦄 Vous n\'avez pas accès à cette page !');
     return <Navigate to="/home" replace />
   }
-
-
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
   // Récupérer la liste des roles
   useEffect(() => {
