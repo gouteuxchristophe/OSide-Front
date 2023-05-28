@@ -6,9 +6,10 @@ import { resetData } from '../../store/reducers/user';
 
 interface ModalUserProps {
   handleCloseModal: () => void;
+  devModeHeader: string
 }
 
-function ModalUser({ handleCloseModal }: ModalUserProps) {
+function ModalUser({ handleCloseModal, devModeHeader }: ModalUserProps) {
   // Permet de récupérer le rôle de l'utilisateur
   const role = useAppSelector((state) => state.user.data.role);
   const dispatch = useAppDispatch();
@@ -28,7 +29,7 @@ function ModalUser({ handleCloseModal }: ModalUserProps) {
   };
 
   return (
-    <div className="absolute z-10 bg-gradient-to-r from-emeral to-cyan w-full left-0 top-0 flex justify-center ">
+    <div className={`absolute z-10 ${devModeHeader} w-full left-0 top-0 flex justify-center`}>
       <nav className="flex items-center justify-center pb-10 flex-wrap gap-2 pt-10">
         <Link
           to="/dashboard"
