@@ -12,7 +12,6 @@ function AdminPage() {
   // Permet de récupérer l'url et de naviguer
   const location = useLocation();
   const navigate = useNavigate();
-  console.log(role);
   
   // Si l'utilisateur n'est pas connecté, il est redirigé vers la page de connexion
   useEffect(() => {

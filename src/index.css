@@ -2,12 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+div {
+  cursor: default;
+}
 
 .control-dots {
   top: 0;
   height: 10px;
 }
-
 
 .message--mine {
   text-align: right;

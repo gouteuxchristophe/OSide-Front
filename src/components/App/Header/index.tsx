@@ -12,6 +12,7 @@ function Header() {
   const githubLogin = useAppSelector((state) => state.user.data.github.login);
   const devModeHeader = (import.meta.env.VITE_DEVMODE === "true") ? 'bg-[orange]': 'bg-gradient-to-r from-emeral to-cyan';
 
+
   return (
     <div className={`flex items-center justify-between py-4 sticky top-0 z-10 ${devModeHeader}`}>
       <div>
