@@ -4,9 +4,10 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { Edit3, Eye, Trash2 } from "react-feather";
 import DeleteConfirmation from "./deleteConfirmation";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import ModalUpdateProject from "../Project/details/ModalUpdateProject";
 import { Project } from "../../@types/project";
+import { getUserDataFromLocalStorage } from "../../utils/login";
 
 function Admin_Projects() {
 
@@ -23,10 +24,24 @@ function Admin_Projects() {
   const successDelete = useAppSelector((state) => state.projects.successDelete);
   const successUpdate = useAppSelector((state) => state.projects.successUpdate);
   const successAdd = useAppSelector((state) => state.projects.successAdd);
-
+  const isLogged = useAppSelector(state => state.login.logged)
+  const sessionStorage = getUserDataFromLocalStorage()
+  const role = sessionStorage?.role
+  
   // Permet le dispatch et le navigate
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+   // Si l'utilisateur n'est pas connecté, il est redirigé vers la page de connexion
+   if (!isLogged) {
+    toast.warn('🦄 Veuillez vous connecter !');
+    return <Navigate to="/login" replace />
+  }
+  // Si l'utilisateur n'est pas admin, il est redirigé vers la page d'accueil
+  if (role !== 3) {
+    toast.warn('🦄 Vous n\'avez pas accès à cette page !');
+    return <Navigate to="/home" replace />
+  }
+
 
   // Récupérer la liste des projets
   useEffect(() => {

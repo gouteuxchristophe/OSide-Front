@@ -23,7 +23,6 @@ import Admin_Users from '../Admin/admin_user';
 import Admin_Roles from '../Admin/admin_roles';
 import Contact from '../Contact';
 import RGPD from '../RGPD';
-import { getUserDataFromLocalStorage } from '../../utils/login';
         
 function App() {
   // state pour les erreurs de l'API sur getprojet
