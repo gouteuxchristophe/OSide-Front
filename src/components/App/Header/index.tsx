@@ -10,9 +10,10 @@ function Header() {
   const isLogged = useAppSelector((state) => state.login.logged);
   const userName = useAppSelector((state) => state.user.data.username);
   const githubLogin = useAppSelector((state) => state.user.data.github.login);
+  const devModeHeader = (import.meta.env.VITE_DEVMODE === "true") ? 'bg-[orange]': 'bg-gradient-to-r from-emeral to-cyan';
 
   return (
-    <div className="flex items-center justify-between py-4 sticky top-0 z-10 bg-gradient-to-r from-emeral to-cyan">
+    <div className={`flex items-center justify-between py-4 sticky top-0 z-10 ${devModeHeader}`}>
       <div>
         <ToastContainer
         position="top-left"
@@ -40,7 +41,7 @@ function Header() {
       </div>
       <div className="rounded-full flex items-center">
         <div className="rounded-full">
-          <Menu />
+          <Menu devModeHeader={devModeHeader} />
         </div>
       </div>
     </div>
