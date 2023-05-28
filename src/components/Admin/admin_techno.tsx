@@ -42,7 +42,7 @@ function Admin_Techno() {
   // Permet de savoir si l'utilisateur est admin
   if (role !== 3) {
     toast.warn('🦄 Vous n\'avez pas accès à cette page !');
-    return <Navigate to="/home" replace />
+    return <Navigate to="/" replace />
   }
   // Récupérer la liste des technos
   useEffect(() => {
