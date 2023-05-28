@@ -168,7 +168,6 @@ const loginReducer = createReducer(initialState, (builder) => {
       }
       state.message = action.payload!.message;
       state.role = action.payload!.role;
-      console.log(state.role);
       state.logged = true;
       state.token = action.payload!.token;
       state.errorLoginMessage = ''
