@@ -21,6 +21,7 @@ import Admin_Techno from '../Admin/admin_techno';
 import Admin_Projects from '../Admin/admin_projects';
 import Admin_Users from '../Admin/admin_user';
 import Admin_Roles from '../Admin/admin_roles';
+import Admin_Comments from '../Admin/admin_comments';
 import Contact from '../Contact';
 import RGPD from '../RGPD';
 import { getUserDataFromLocalStorage } from '../../utils/login';
@@ -175,6 +176,13 @@ function App() {
           element={(
             // Affichage page ajout de projet
             <AddProjects />
+          )}
+        />        
+        <Route
+          path="/admin/comments"
+          element={(
+            // Affichage page ajout de projet
+            <Admin_Comments />
           )}
         />        
         <Route
