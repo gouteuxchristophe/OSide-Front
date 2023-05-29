@@ -19,6 +19,7 @@ import DeleteConfirmation from '../../Admin/deleteConfirmation';
 import ModalUpdateProject from './ModalUpdateProject';
 import ConfettiExplosion from 'react-confetti-explosion';
 import Comments from './comments';
+import { getAllComments } from '../../../store/reducers/comments';
 
 function ProjectDetail() {
   // Permet de savoir si l'utilisateur est connecté
@@ -46,7 +47,7 @@ function ProjectDetail() {
   if (!isLogged) {
     toast.warn('🦄 Veuillez vous connecter !');
     return <Navigate to="/login" replace />
-  }
+  }  
 
   // On récupère l'id du projet recherché
   const { id } = useParams();
@@ -249,7 +250,9 @@ function ProjectDetail() {
             <div className={`comment-content ${showComments ? 'active' : ''}`}>
               <Comments
                 comments={project.comment}
-                ownerProject={project.author.id} />
+                ownerProject={project.author.id}
+                projectId={project.id} />
+                
             </div>
           </div>
         </div>

@@ -3,7 +3,6 @@ import createAppAsyncThunk from '../../utils/redux';
 import axiosInstance from '../../utils/axios';
 import { User, IAbility } from '../../@types/user';
 import { getUserDataFromLocalStorage } from '../../utils/login';
-import fakeAvatar from '../../assets/fakeAvatar.png';
 import { logout } from './login';
 
 // Je récupère les données de l'utilisateur dans le localStorage
@@ -81,7 +80,6 @@ export const initialState: UserState = {
     },
     ability: [],
     created_at: '',
-    fakeAvatar: fakeAvatar,
     bio: '',
   },
   errorAPIUser: null,

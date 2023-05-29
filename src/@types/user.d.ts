@@ -14,7 +14,6 @@ export interface User {
   last_visited?: string
   role: Role
   ability: IAbility[],
-  fakeAvatar: string,
   bio: string,
 }
 
