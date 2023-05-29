@@ -8,6 +8,7 @@ import { deleteMessage, deleteMessageUpdate } from "../../store/reducers/role";
 import ModalAddRole from "./ModalAddRole";
 import DeleteConfirmation from "./deleteConfirmation";
 import { Navigate, useNavigate } from "react-router-dom";
+import { getUserDataFromLocalStorage } from "../../utils/login";
 
 function Admin_Roles() {
 
@@ -30,7 +31,10 @@ function Admin_Roles() {
   // state qui permet de savoir si l'utilisateur est connecté
   const isLogged = useAppSelector(state => state.login.logged)
   // state qui permet de savoir si l'utilisateur est admin
-  const role = useAppSelector((state) => state.user.data.role);
+  const sessionStorage = getUserDataFromLocalStorage()
+  const role = sessionStorage?.role
+  console.log(role);
+  
   // Permet le dispatch et le navigate
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -41,9 +45,9 @@ function Admin_Roles() {
     return <Navigate to="/login" replace />
   }
   // Si l'utilisateur n'est pas admin, il est redirigé vers la page d'accueil
-  if (role.id !== 3) {
+  if (role !== 3) {
     toast.warn('🦄 Vous n\'avez pas accès à cette page !');
-    return <Navigate to="/home" replace />
+    return <Navigate to="/" replace />
   }
 
   // Récupérer la liste des roles

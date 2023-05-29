@@ -19,6 +19,7 @@ import DeleteConfirmation from '../../Admin/deleteConfirmation';
 import ModalUpdateProject from './ModalUpdateProject';
 import ConfettiExplosion from 'react-confetti-explosion';
 import Comments from './comments';
+import { getAllComments } from '../../../store/reducers/comments';
 
 function ProjectDetail() {
   // Permet de savoir si l'utilisateur est connecté
@@ -46,8 +47,7 @@ function ProjectDetail() {
   if (!isLogged) {
     toast.warn('🦄 Veuillez vous connecter !');
     return <Navigate to="/login" replace />
-  }
-
+  }  
 
   // On récupère l'id du projet recherché
   const { id } = useParams();
@@ -87,6 +87,7 @@ function ProjectDetail() {
       toast.warn(`🦄 ${successLeave}`);
       dispatch(getProjectByID(id as unknown as number));
     }
+    
   }, [successDelete, successUpdate, errorApiProjects, successParticipate, successLeave]);
 
   const project = useAppSelector((state) => state.projects.projectByID)
@@ -134,8 +135,8 @@ function ProjectDetail() {
       {!showUpdateModal && (
         <div className="w-full lg:w-3/5 rounded-lg lg:rounded-l-lg lg:rounded-r-none shadow-xl bg-white opacity-75 mx-6 lg:mx-0 border-2 border-solid border-secondary10">
           <div className="p-4 md:p-12 text-center lg:text-left flex flex-col gap-7 relative">
-            <div
-              className="block rounded-full shadow-xl mx-auto -mt-16 md:-mt-24 h-24 w-24 bg-cover bg-center border-b-4 border-solid border-secondary10"
+            <div onClick={() => navigate(`/profile/${project.author.id}`)}
+              className="cursor-pointer block rounded-full shadow-xl mx-auto -mt-16 md:-mt-24 h-24 w-24 bg-cover bg-center border-b-4 border-solid border-secondary10"
               style={{ backgroundImage: `url(${project.author.avatar_url})` }}
             />
             <div className="pb-5 border-b-2 border-solid border-secondary23 rounded">
@@ -163,7 +164,7 @@ function ProjectDetail() {
                   <div>Aucun participant</div>
                 )
                   : project.memberProjet.map((member) => (
-                    <div className="relative w-12 h-12" key={member.id}>
+                    <div className="relative w-12 h-12 cursor-pointer" key={member.id}>
                       <img onClick={() => navigate(`/profile/${member.id}`)} onMouseOver={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}
                         className="rounded-full shadow-sm" src={member.avatar_url} alt={(member.github.login.length === 0) ? member.username : member.github.login} />
                       <>
@@ -249,7 +250,9 @@ function ProjectDetail() {
             <div className={`comment-content ${showComments ? 'active' : ''}`}>
               <Comments
                 comments={project.comment}
-                ownerProject={project.author.id} />
+                ownerProject={project.author.id}
+                projectId={project.id} />
+                
             </div>
           </div>
         </div>

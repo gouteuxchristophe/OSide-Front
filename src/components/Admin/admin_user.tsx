@@ -6,13 +6,15 @@ import ModalUpdateRole from "./ModalUpdateUser";
 import DeleteConfirmation from "./deleteConfirmation";
 import { toast } from "react-toastify";
 import { Navigate, useNavigate } from "react-router-dom";
+import { getUserDataFromLocalStorage } from "../../utils/login";
 
 
 function Admin_Users() {
 
   //  Permet de savoir si l'utilisateur est connecté et son rôle
   const isLogged = useAppSelector(state => state.login.logged)
-  const role = useAppSelector((state) => state.user.data.role);
+  const sessionStorage = getUserDataFromLocalStorage()
+  const role = sessionStorage?.role
   // Permet de récupérer la liste des utilisateurs
   const allUser = useAppSelector((state) => state.user.allUsers);
   // state des modals
@@ -34,9 +36,9 @@ function Admin_Users() {
     return <Navigate to="/login" replace />
   }
   // Si l'utilisateur n'est pas admin, il est redirigé vers la page d'accueil
-  if (role.id !== 3) {
+  if (role !== 3) {
     toast.warn('🦄 Vous n\'avez pas accès à cette page !');
-    return <Navigate to="/home" replace />
+    return <Navigate to="/" replace />
   }
   // Récupérer la liste des utilisateurs
   useEffect(() => {

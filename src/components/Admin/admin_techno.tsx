@@ -7,12 +7,14 @@ import { deleteMessage, deleteMessageUpdate, deleteMessageAdd, getAllTechnos, em
 import { toast } from "react-toastify";
 import DeleteConfirmation from "./deleteConfirmation";
 import { Navigate, useNavigate } from "react-router-dom";
+import { getUserDataFromLocalStorage } from "../../utils/login";
 
 function Admin_Techno() {
   // Permet de savoir si l'utilisateur est connecté
   const isLogged = useAppSelector(state => state.login.logged)
   // Permet de récupérer le role de l'utilisateur
-  const role = useAppSelector((state) => state.user.data.role);
+  const sessionStorage = getUserDataFromLocalStorage()
+  const role = sessionStorage?.role
   // Permet de récupérer la liste des technos
   const technoList = useAppSelector((state) => state.search.technoLists);
   // state des messages de succès ou d'erreur
@@ -38,9 +40,9 @@ function Admin_Techno() {
     return <Navigate to="/login" replace />
   }
   // Permet de savoir si l'utilisateur est admin
-  if (role.id !== 3) {
+  if (role !== 3) {
     toast.warn('🦄 Vous n\'avez pas accès à cette page !');
-    return <Navigate to="/home" replace />
+    return <Navigate to="/" replace />
   }
   // Récupérer la liste des technos
   useEffect(() => {

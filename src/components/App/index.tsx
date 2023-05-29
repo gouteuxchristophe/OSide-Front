@@ -24,7 +24,6 @@ import Admin_Roles from '../Admin/admin_roles';
 import Admin_Comments from '../Admin/admin_comments';
 import Contact from '../Contact';
 import RGPD from '../RGPD';
-import { getUserDataFromLocalStorage } from '../../utils/login';
         
 function App() {
   // state pour les erreurs de l'API sur getprojet

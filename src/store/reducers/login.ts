@@ -162,9 +162,12 @@ const loginReducer = createReducer(initialState, (builder) => {
     // Dans le cas où ma requête GitHub est réussie
     .addMatcher(isAnyOf(login.fulfilled, loginOAuth.fulfilled), (state, action) => {
       // Je met à jour le state logged et token
+      // Si le action.payload est undefined, je fais un message par défaut
+      if (action.payload?.message === undefined) {
+        state.message = 'Vous êtes connecté.';
+      }
       state.message = action.payload!.message;
       state.role = action.payload!.role;
-      console.log(state.role);
       state.logged = true;
       state.token = action.payload!.token;
       state.errorLoginMessage = ''
