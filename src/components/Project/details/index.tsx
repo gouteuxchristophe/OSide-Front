@@ -48,7 +48,6 @@ function ProjectDetail() {
     return <Navigate to="/login" replace />
   }
 
-
   // On récupère l'id du projet recherché
   const { id } = useParams();
   const idUser = useAppSelector((state) => state.user.data.id);
@@ -87,6 +86,7 @@ function ProjectDetail() {
       toast.warn(`🦄 ${successLeave}`);
       dispatch(getProjectByID(id as unknown as number));
     }
+    
   }, [successDelete, successUpdate, errorApiProjects, successParticipate, successLeave]);
 
   const project = useAppSelector((state) => state.projects.projectByID)
