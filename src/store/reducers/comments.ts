@@ -3,6 +3,7 @@ import { IComment } from "../../@types/project";
 import blacklist from "../moderation";
 import axiosInstance from "../../utils/axios";
 import createAppAsyncThunk from "../../utils/redux";
+import { log } from "console";
 
 interface PostCommentProps {
   project_id: number;
@@ -57,8 +58,11 @@ export const postComment = createAppAsyncThunk('comment/POST_COMMENT',
   async (comment : PostCommentProps, thunkAPI) => {
     try {
       const { data } = await axiosInstance.post(`/projet/${comment.project_id}/comment`, {
+        
+        
         content: comment.content,
       });
+      console.log(data);
       return data;
     } catch (err: any) {
       if (err) {
@@ -112,7 +116,7 @@ const commentReducer = createReducer(initialState, (builder) => {
     state.commentLists = action.payload;
   })
   .addCase(deleteComment.fulfilled, (state, action) => {
-    state.commentLists = state.commentLists.filter((comment) => comment.id !== action.payload.id);
+    state.successDelete = action.payload.message;
   })
   .addCase(deleteCommentErrorMessage, (state) => {
     state.errorAPIComments = '';
