@@ -1,4 +1,4 @@
-import { Navigate, useParams, useNavigate} from 'react-router-dom';
+import { Navigate, useParams, useNavigate } from 'react-router-dom';
 import { Settings, MessageCircle } from 'react-feather';
 import { toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
@@ -20,6 +20,7 @@ import ModalUpdateProject from './ModalUpdateProject';
 import ConfettiExplosion from 'react-confetti-explosion';
 import Comments from './comments';
 
+
 function ProjectDetail() {
   // Permet de savoir si l'utilisateur est connecté
   const isLogged = useAppSelector((state) => state.login.logged);
@@ -35,8 +36,8 @@ function ProjectDetail() {
   const successParticipate = useAppSelector((state) => state.projects.successParticipate)
   const successLeave = useAppSelector((state) => state.projects.successLeave)
   const [isExploding, setIsExploding] = useState(false);
-  // Permet d'afficher la bulle d'info du user
-  const [isHovered, setIsHovered] = useState(false);
+  const [isHovered, setIsHovered] = useState<boolean[]>([]);
+
   // Permet d'afficher ou masquer les commentaires
   const [showComments, setShowComments] = useState(false);
 
@@ -46,7 +47,8 @@ function ProjectDetail() {
   if (!isLogged) {
     toast.warn('🦄 Veuillez vous connecter !');
     return <Navigate to="/login" replace />
-  }  
+
+  }
 
   // On récupère l'id du projet recherché
   const { id } = useParams();
@@ -91,6 +93,8 @@ function ProjectDetail() {
 
   const project = useAppSelector((state) => state.projects.projectByID)
 
+  
+
   const handleParticipate = () => {
     const data = {
       id: project.id,
@@ -120,6 +124,7 @@ function ProjectDetail() {
   if (isLoading) {
     return <div>Loading...</div>
   }
+
   // Tableau des membres du projet qui retourne true si l'id de l'utilisateur est présent   
   const alreadyParticipated = project.memberProjet.some((member) => member.id === idUser)
 
@@ -127,6 +132,8 @@ function ProjectDetail() {
   if (!project) {
     return <Navigate to="/error" replace />;
   }
+
+  
 
   return (
 
@@ -162,12 +169,22 @@ function ProjectDetail() {
                 {project.memberProjet.length === 0 ? (
                   <div>Aucun participant</div>
                 )
-                  : project.memberProjet.map((member) => (
+                  : project.memberProjet.map((member, index) => (
                     <div className="relative w-12 h-12 cursor-pointer" key={member.id}>
-                      <img onClick={() => navigate(`/profile/${member.id}`)} onMouseOver={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}
+                      <img onClick={() => navigate(`/profile/${member.id}`)}
+                        onMouseOver={() => {
+                          const updateIsHovered = [...isHovered];
+                          updateIsHovered[index] = true;
+                          setIsHovered(updateIsHovered)
+                        }}
+                        onMouseLeave={() => {
+                          const updateIsHovered = [...isHovered];
+                          updateIsHovered[index] = false;
+                          setIsHovered(updateIsHovered)
+                        }}
                         className="rounded-full shadow-sm" src={member.avatar_url} alt={(member.github.login.length === 0) ? member.username : member.github.login} />
                       <>
-                        {isHovered && (
+                        {isHovered[index] && (
                           <div className='absolute bottom-0 left-20'>
                             <div className="w-full bg-[white] border border-solid border-primary0 rounded shadow px-5">
                               <div className="flex justify-end px-4 pt-4">

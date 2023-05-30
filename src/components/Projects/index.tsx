@@ -5,6 +5,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a lo
 import { Carousel } from 'react-responsive-carousel';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
+import { log } from 'console';
 
 function Projects() {
   const projectsList = useAppSelector((state) => state.projects.lists);
@@ -12,10 +13,13 @@ function Projects() {
   const projectsListWithOwner = projectsList.filter((project) => project.author.delete_at === null);
   // On filtre le projectsListWithOwner pour récupérer les projets dont le statut est différent de "Terminé"
   const projectsListWithOwnerAndNotFinish = projectsListWithOwner.filter((project) => project.status !== 'Terminé');
+  // je trie projectsListWithOwnerAndNotFinish par date de création
+  projectsListWithOwnerAndNotFinish.sort((a, b) => (a.created_at < b.created_at) ? 1 : -1);
   const errorApiProjects = useAppSelector((state) => state.projects.errorApiProjects);
   const location = useLocation();
   // Permet de récupérer les 3 derniers projets
   const lastProject = projectsListWithOwnerAndNotFinish.slice(0, 3);
+
 
    // Affiche la notification si la requête a échoué
  useEffect(() => {
