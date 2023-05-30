@@ -3,15 +3,10 @@ import { IComment } from "../../@types/project";
 import blacklist from "../moderation";
 import axiosInstance from "../../utils/axios";
 import createAppAsyncThunk from "../../utils/redux";
-import { log } from "console";
 
 interface PostCommentProps {
   project_id: number;
   content: string;
-}
-
-interface DeleteCommentProps {
-  id: number;
 }
 
 interface CommentState {
