@@ -4,14 +4,13 @@ import {
   getAllComments,
   deleteCommentErrorMessage,
   deleteMessage,
-  deleteComment,
 } from "../../store/reducers/comments";
 import { Trash2 } from "react-feather";
 import { toast } from "react-toastify";
 import DeleteConfirmation from "./deleteConfirmation";
 import { Navigate, useNavigate } from "react-router-dom";
 import { getUserDataFromLocalStorage } from "../../utils/login";
-import { log } from "console";
+
 
 function Admin_Comments() {
 
