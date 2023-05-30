@@ -14,7 +14,7 @@ function Projects() {
   // On filtre le projectsListWithOwner pour récupérer les projets dont le statut est différent de "Terminé"
   const projectsListWithOwnerAndNotFinish = projectsListWithOwner.filter((project) => project.status !== 'Terminé');
   // je trie projectsListWithOwnerAndNotFinish par date de création
-  projectsListWithOwnerAndNotFinish.sort((a, b) => (a.created_at < b.created_at) ? 1 : -1);
+  projectsListWithOwnerAndNotFinish.sort((a, b) => (a.created_at! < b.created_at!) ? 1 : -1);
   const errorApiProjects = useAppSelector((state) => state.projects.errorApiProjects);
   const location = useLocation();
   // Permet de récupérer les 3 derniers projets
