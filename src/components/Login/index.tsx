@@ -43,6 +43,8 @@ function Login() {
     toast.success(`🦄 ${messageLogin} !`);
   }
   if(errorLogin) {
+    console.log(errorLogin);
+    
     toast.error(errorLogin);
   }
 }, [isLogged, errorLogin]);

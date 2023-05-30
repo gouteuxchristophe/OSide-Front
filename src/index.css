@@ -2,12 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+div {
+  cursor: default;
+}
 
 .control-dots {
   top: 0;
   height: 10px;
 }
-
 
 .message--mine {
   text-align: right;
@@ -57,21 +59,21 @@
   max-height: 0;
   overflow: hidden;
   opacity: 0;
-  transition: max-height 3s ease, opacity 3s ease;
+  transition: max-height 1s ease, opacity 1s ease;
 }
 .comment-content.active {
   max-height: 1000px;
   opacity: 1;
-  transition: max-height 3s ease, opacity 3s ease;
+  transition: max-height 1s ease, opacity 1s ease;
 }
 
 .menu {
   width: 0;
   opacity: 0;
-  transition: opacity 1s ease;
+  transition: opacity 0.5s ease;
 }
 
 .menu.active {
   opacity: 1;
-  transition: opacity 1s ease;
+  transition: opacity 0.5s ease;
 } 
