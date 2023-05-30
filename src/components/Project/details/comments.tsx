@@ -8,8 +8,8 @@ import { getProjectByID } from "../../../store/reducers/projects";
 import { getAllUsers } from "../../../store/reducers/user";
 import { User } from "../../../@types/user";
 // Référence à la div des commentaires
-import TextInput from 'react-autocomplete-input';
-import 'react-autocomplete-input/dist/bundle.css';
+// import TextInput from 'react-autocomplete-input';
+// import 'react-autocomplete-input/dist/bundle.css';
 
 interface ICommentsProps {
   comments: IComment[];
@@ -133,14 +133,15 @@ function Comments({ comments, ownerProject, projectId }: ICommentsProps) {
         ))}
       </div>
       <form onSubmit={handleCommentSubmit} className="flex justify-center">
-        <TextInput
+        {/* <TextInput
           onChange={(e: string) => handleChangeValue(e)}
           value={selectedUser !== "" ? `@${selectedUser}` : comment}
           className="w-[80%] rounded-l-lg border-y-2 border-l-2 border-gray-300 p-2"
           placeholder="Ajouter un commentaire"
           trigger={["@", "@@"]}
           options={filtered.map((user: User) => user.github.login)}
-        />
+        /> */}
+        <input onChange={(e) => setComment(e.currentTarget.value)} value={comment} type="text" className="w-[80%] rounded-l-lg border-y-2 border-l-2 border-gray-300 p-2" />
         <button className="w-[10%] bg-[white] rounded-r-lg border-y-2 border-r-2 border-gray-300 p-2" type="submit"><Send /></button>
       </form>
     </>
