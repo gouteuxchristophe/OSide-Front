@@ -33,7 +33,7 @@ function AdminPage() {
     { value: "users", label: "Gestion des Utilisateurs" },
     { value: "projects", label: "Gestion des Projets" },
     { value: "roles", label: "Gestion des Rôles" },
-    { value: "comments", label: "Gestion des commentaires signalés" },
+    { value: "comments", label: "Gestion des commentaires" },
   ];
 
   // Permet de mettre à jour la section active
