@@ -5,7 +5,6 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a lo
 import { Carousel } from 'react-responsive-carousel';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { log } from 'console';
 
 function Projects() {
   const projectsList = useAppSelector((state) => state.projects.lists);
