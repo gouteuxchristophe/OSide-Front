@@ -7,8 +7,8 @@ import { useAppSelector } from '../../hooks/redux';
 import ModalUser from './ModalUser';
 
 
-function Menu({devModeHeader}: {devModeHeader: string}) {
-  
+function Menu({ devModeHeader }: { devModeHeader: string }) {
+
   // state du menu utilisateur
   const [displayMenu, setDisplayMenu] = useState<boolean>(false);
   // state qui permet de savoir si l'utilisateur est connecté
@@ -31,7 +31,7 @@ function Menu({devModeHeader}: {devModeHeader: string}) {
   const hideOrBlock = displayMenu ? 'hidden' : 'block';
   const burgerMode = displayMenu ? 'auto active' : 'none'
   const isActiveMenuUser = showModal ? 'auto active' : 'none';
-  const isDesktopView = showModal? 'sm:opacity-0' : ' sm:opacity-100'
+  const isDesktopView = showModal ? 'sm:opacity-0' : ' sm:opacity-100'
   return (
     <>
       {/* Permet d'afficher le menu standard*/}
@@ -39,76 +39,76 @@ function Menu({devModeHeader}: {devModeHeader: string}) {
         {/* Permet d'afficher le burger qui affiche/masque le menu général */}
         <div className="sm:hidden">
           <div className={`${hideOrBlock} cursor-pointer`}>
-          <Burger onClick={handleToogleMenu} />
-        </div>
-      </div>
-      <div className={`menu pointer-events-${isActiveMenuUser}`}>
-        <ModalUser
-          devModeHeader={devModeHeader}
-         handleCloseModal={closeModal} />
-      </div>
-      <div
-        className={`menu w-full block flex-grow sm:flex sm:items-center sm:w-auto sm:pointer-events-auto ${isDesktopView} pointer-events-${burgerMode}`}
-      >
-        <div className={`${devModeHeader} h-full text-sm flex flex-wrap gap-3 items-center justify-center absolute left-0 top-0 w-full sm:pb-0 sm:relative sm:flex-row  sm:flex-wrap sm:bg-none`}>
-          <Link
-            to="/"
-            onClick={handleToogleMenu}
-            className="block sm:inline-block sm:mt-0 text-white-200 border border-solid border-[white] rounded p-2 bg-cyan sm:bg-primary0 tracking-wider"
-          >
-            <Home />
-          </Link>
-          <Link
-            to="/projects"
-            onClick={handleToogleMenu}
-            className="block sm:inline-block sm:mt-0 text-white-200 border border-solid border-[white] rounded p-2 bg-cyan sm:bg-primary0 tracking-wider"
-          >
-            Projets
-          </Link>
-          <Link
-            to="/about"
-            onClick={handleToogleMenu}
-            className="block sm:inline-block sm:mt-0 text-white-200 border border-solid border-[white] rounded p-2 bg-cyan sm:bg-primary0 tracking-wider"
-          >
-            About
-          </Link>
-          <Link
-            to="/search"
-            onClick={handleToogleMenu}
-            className="block sm:inline-block sm:mt-0 text-white-200 border border-solid border-[white] rounded p-2 bg-cyan sm:bg-primary0 tracking-wider"
-          >
-            Rechercher
-          </Link>
-          <div className="sm:hidden ">
-            <button onClick={handleToogleMenu} className="absolute top-1 right-1 w-7 h-7 rounded-full border border-solid border-[red] bg-[red] text-[white]">
-              X
-            </button>
+            <Burger onClick={handleToogleMenu} />
           </div>
         </div>
-      </div>
-      {/* Affichage de cette partie si utilisateur connecté */}
-      {isLogged ? (
-        <button type="button" onClick={() => setShowModal(true)}>
-          <img src={avatarGitHub} className="rounded-full mx-auto h-12 w-12 bg-cover bg-center" alt={(githubLogin.length === 0) ? userName : githubLogin} />
-          {' '}
-        </button>
-      ) : (
-        <>
-          <Link
-            to="/login"
-            className="border border-solid border-[white] rounded-full p-1 bg-[white]"
-          >
-            <User />
-          </Link>
-          <Link
-            to="/register"
-            className="border border-solid border-[white] rounded-full p-1 bg-[white]"
-          >
-            <UserPlus />
-          </Link>
-        </>
-      )}
-    </nav >
+        <div className={`menu pointer-events-${isActiveMenuUser}`}>
+          <ModalUser
+            devModeHeader={devModeHeader}
+            handleCloseModal={closeModal} />
+        </div>
+        <div
+          className={`menu w-full block flex-grow sm:flex sm:items-center sm:w-auto sm:pointer-events-auto ${isDesktopView} pointer-events-${burgerMode}`}
+        >
+          <div className={`${devModeHeader} h-full text-sm flex flex-wrap gap-3 items-center justify-center absolute left-0 top-0 w-full sm:pb-0 sm:relative sm:flex-row  sm:flex-wrap sm:bg-none`}>
+            <Link
+              to="/"
+              onClick={handleToogleMenu}
+              className="block sm:inline-block sm:mt-0 text-white-200 border border-solid border-[white] rounded p-2 bg-cyan sm:bg-primary0 tracking-wider"
+            >
+              <Home />
+            </Link>
+            <Link
+              to="/projects"
+              onClick={handleToogleMenu}
+              className="block sm:inline-block sm:mt-0 text-white-200 border border-solid border-[white] rounded p-2 bg-cyan sm:bg-primary0 tracking-wider"
+            >
+              Projets
+            </Link>
+            <Link
+              to="/about"
+              onClick={handleToogleMenu}
+              className="block sm:inline-block sm:mt-0 text-white-200 border border-solid border-[white] rounded p-2 bg-cyan sm:bg-primary0 tracking-wider"
+            >
+              About
+            </Link>
+            <Link
+              to="/search"
+              onClick={handleToogleMenu}
+              className="block sm:inline-block sm:mt-0 text-white-200 border border-solid border-[white] rounded p-2 bg-cyan sm:bg-primary0 tracking-wider"
+            >
+              Rechercher
+            </Link>
+            <div className="sm:hidden ">
+              <button onClick={handleToogleMenu} className="absolute top-1 right-1 w-7 h-7 rounded-full border border-solid border-[red] bg-[red] text-[white]">
+                X
+              </button>
+            </div>
+          </div>
+        </div>
+        {/* Affichage de cette partie si utilisateur connecté */}
+        {isLogged ? (
+          <button type="button" onClick={() => setShowModal(true)}>
+            <img src={avatarGitHub} className="rounded-full mx-auto h-12 w-12 bg-cover bg-center" alt={(githubLogin.length === 0) ? userName : githubLogin} />
+            {' '}
+          </button>
+        ) : (
+          <>
+            <Link
+              to="/login"
+              className="border border-solid border-[white] rounded-full p-1 bg-[white]"
+            >
+              <User />
+            </Link>
+            <Link
+              to="/register"
+              className="border border-solid border-[white] rounded-full p-1 bg-[white]"
+            >
+              <UserPlus />
+            </Link>
+          </>
+        )}
+      </nav >
     </>
   );
 }

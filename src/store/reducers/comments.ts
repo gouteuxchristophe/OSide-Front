@@ -58,11 +58,8 @@ export const postComment = createAppAsyncThunk('comment/POST_COMMENT',
   async (comment : PostCommentProps, thunkAPI) => {
     try {
       const { data } = await axiosInstance.post(`/projet/${comment.project_id}/comment`, {
-        
-        
         content: comment.content,
       });
-      console.log(data);
       return data;
     } catch (err: any) {
       if (err) {

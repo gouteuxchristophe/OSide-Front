@@ -202,7 +202,6 @@ export const resetInputProject = createAction('project/RESET_INPUT_PROJECT');
 export const changeCredentialsTitle = createAction<string>('project/CHANGE_CREDENTIALS_TITLE');
 // Action creator qui me permet de changer la valeur d'un champ de mon formulaire
 export const changeCredentialsContent = createAction<string>('project/CHANGE_CREDENTIALS_CONTENT');
-
 // Action creator qui me permet de supprimer le message de succès d'ajout
 export const deleteMessageAdd = createAction('project/DELETE_SUCCESS_ADD');
 // Action creator qui me permet de supprimer le message de succès de modification

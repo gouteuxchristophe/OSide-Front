@@ -192,7 +192,12 @@ function ProjectDetail() {
                               <div className="flex flex-col items-center pb-10">
                                 <img className="w-24 h-24 rounded-full shadow-sm" src={member.avatar_url} alt={(member.github.login.length === 0) ? member.username : member.github.login} />
                                 <h5 className="mb-1 text-xl font-medium ">{member.github.login}</h5>
-                                <span className="text-sm">{member.bio}</span>
+                                {/* On raccourci la bio a 100 caractere */}
+                                {member.bio.length > 100 ? (
+                                  <span className="text-sm">{member.bio.slice(0, 100)}...</span>
+                                ) : (
+                                  <span className="text-sm">{member.bio}</span>
+                                )}
                               </div>
                             </div>
                           </div>

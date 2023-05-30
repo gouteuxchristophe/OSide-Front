@@ -78,7 +78,6 @@ export default function ModalUpdateContent({ closeModal }: { closeModal: () => v
       const technoFind = technoList.find((technoList) => technoList.label === techno.label);
       return technoFind?.id as number;
     })
-    console.log(idTechnoSelected);
 
     // Si le champ password est rempli, on vérifie que les deux champs password sont identiques
     if (updatePassword !== '' && updatePassword !== updateConfirmPassword) {
