@@ -19,6 +19,8 @@ import DeleteConfirmation from '../../Admin/deleteConfirmation';
 import ModalUpdateProject from './ModalUpdateProject';
 import ConfettiExplosion from 'react-confetti-explosion';
 import Comments from './comments';
+import { useSound } from '../../../hooks/sound';
+import messageSound from '../../../assets/applaudissements.wav';
 
 
 function ProjectDetail() {
@@ -37,7 +39,7 @@ function ProjectDetail() {
   const successLeave = useAppSelector((state) => state.projects.successLeave)
   const [isExploding, setIsExploding] = useState(false);
   const [isHovered, setIsHovered] = useState<boolean[]>([]);
-
+  
   // Permet d'afficher ou masquer les commentaires
   const [showComments, setShowComments] = useState(false);
 
@@ -59,6 +61,8 @@ function ProjectDetail() {
     dispatch(getProjectByID(id as unknown as number));
   }, [id, dispatch]);
 
+  const playSound = useSound(messageSound)
+
   // Afficher un toast si le projet a bien été supprimé
   useEffect(() => {
     if (successDelete) {
@@ -79,6 +83,7 @@ function ProjectDetail() {
     }
     if (successParticipate) {
       dispatch(deleteMessageParticipate())
+      playSound()
       setIsExploding(true)
       toast.success(`🦄 ${successParticipate}`);
       dispatch(getProjectByID(id as unknown as number));
