@@ -23,6 +23,7 @@ import Admin_Users from '../Admin/admin_user';
 import Admin_Roles from '../Admin/admin_roles';
 import Contact from '../Contact';
 import RGPD from '../RGPD';
+import { removeUserDataFromLocalStorage } from '../../utils/login';
         
 function App() {
   // state pour les erreurs de l'API sur getprojet
@@ -37,6 +38,14 @@ function App() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [location]);
+
+  // J'utilise un useEffect poour supprimer le localStorage après 1h
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      removeUserDataFromLocalStorage()
+    }, 3600000);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Permet de lancer la requête API
   const dispatch = useAppDispatch();

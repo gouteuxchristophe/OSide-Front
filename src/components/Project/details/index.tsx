@@ -49,7 +49,6 @@ function ProjectDetail() {
     return <Navigate to="/login" replace />
   }
 
-
   // On récupère l'id du projet recherché
   const { id } = useParams();
   const idUser = useAppSelector((state) => state.user.data.id);
