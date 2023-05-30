@@ -3,7 +3,14 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { Edit3, Trash2 } from "react-feather";
 import ModalUpdateTechno from "./ModalUpdateTechno";
 import AddTechno from "../Modals/AddTechno";
-import { deleteMessage, deleteMessageUpdate, deleteMessageAdd, getAllTechnos, emptySelectedTechnos, deleteTechnoErrorMessage } from "../../store/reducers/techno";
+import { 
+  deleteMessage,
+  deleteMessageUpdate,
+  deleteMessageAdd,
+  getAllTechnos,
+  emptySelectedTechnos,
+  deleteTechnoErrorMessage
+} from "../../store/reducers/techno";
 import { toast } from "react-toastify";
 import DeleteConfirmation from "./deleteConfirmation";
 import { Navigate, useNavigate } from "react-router-dom";
