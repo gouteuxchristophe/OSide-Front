@@ -9,7 +9,7 @@ export interface Project {
   comment : IComment[]
   technoProjet: ITechnoProjet[]
   memberProjet: User[]
-  created_at: string
+  created_at?: string
   updated_at?: string
 }
 
@@ -26,6 +26,7 @@ export interface IComment {
   projet_id: number
   created_at: string
   commentUser: IAuthorComment
+  flag: boolean
 }
 
 export interface IAuthorComment {

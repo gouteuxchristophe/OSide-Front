@@ -6,6 +6,7 @@ import loginReducer from './reducers/login';
 import userReducer from './reducers/user';
 import technoReducer from './reducers/techno';
 import roleReducer from './reducers/role';
+import commentReducer from './reducers/comments';
 
 // ConfigureStore me permet de créer mon store
 const store = configureStore({
@@ -16,7 +17,8 @@ const store = configureStore({
     login: loginReducer,
     user: userReducer,
     techno: technoReducer,
-    role: roleReducer
+    role: roleReducer,
+    comment: commentReducer,
   },
 });
 
