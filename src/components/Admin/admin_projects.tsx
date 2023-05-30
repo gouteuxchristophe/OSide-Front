@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { deleteMessageUpdate, deleteMessageAdd, getAllProjects, deleteMessageDelete } from "../../store/reducers/projects";
+import { 
+  deleteMessageUpdate,
+  deleteMessageAdd,
+  getAllProjects,
+  deleteMessageDelete
+ } from "../../store/reducers/projects";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { Edit3, Eye, Trash2 } from "react-feather";
 import DeleteConfirmation from "./deleteConfirmation";
@@ -27,12 +32,13 @@ function Admin_Projects() {
   const isLogged = useAppSelector(state => state.login.logged)
   const sessionStorage = getUserDataFromLocalStorage()
   const role = sessionStorage?.role
-  
+
+
   // Permet le dispatch et le navigate
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-   // Si l'utilisateur n'est pas connecté, il est redirigé vers la page de connexion
-   if (!isLogged) {
+  // Si l'utilisateur n'est pas connecté, il est redirigé vers la page de connexion
+  if (!isLogged) {
     toast.warn('🦄 Veuillez vous connecter !');
     return <Navigate to="/login" replace />
   }
@@ -52,7 +58,7 @@ function Admin_Projects() {
   const handleDeleteProject = () => {
     setDeleteConfirmation(true);
   }
-  
+
   // Permet d'afficher une notification si le projet a bien été supprimée, modifié, ajouté
   // et de recharger la liste des projets
   useEffect(() => {
@@ -79,10 +85,19 @@ function Admin_Projects() {
             <thead className="text-xs uppercase bg-secondary20">
               <tr>
                 <th scope="col" className="px-2 py-2">
-                  Technologie
+                  Titre Project
                 </th>
                 <th scope="col" className="px-2 py-2">
-                  Couleur
+                  Status
+                </th>
+                <th scope="col" className="px-2 py-2">
+                  Nb Comments
+                </th>
+                <th scope="col" className="px-2 py-2">
+                  Date de Création
+                </th>
+                <th scope="col" className="px-2 py-2">
+                  Last Update
                 </th>
                 <th scope="col" className="px-2 py-2">
                   Actions
@@ -101,6 +116,21 @@ function Admin_Projects() {
                     <td className="align-middle">
                       <div className="rounded">
                         {project.status}
+                      </div>
+                    </td>
+                    <td className="align-middle">
+                      <div className="rounded">
+                        {project.comment.length}
+                      </div>
+                    </td>
+                    <td className="align-middle">
+                      <div className="rounded">
+                        {new Date (project.created_at as string).toLocaleDateString()}
+                      </div>
+                    </td>
+                    <td className="align-middle">
+                      <div className="rounded">
+                        {(project.updated_at)? new Date (project.updated_at as string).toLocaleDateString() : '-'}
                       </div>
                     </td>
                     <td className="flex justify-around">
@@ -137,16 +167,17 @@ function Admin_Projects() {
           <div className="flex justify-center mt-4">
             <button onClick={() => navigate(-1)} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-[white] bg-secondary20 rounded-lg focus:ring-4 focus:outline-none">Retour</button>
           </div>
-        </div>
+        </div >
       ) : (
-        <div>
-          {showUpdateModal && (
-            <ModalUpdateProject
-              project={projetItem!}
-              closeModal={() => setShowUpdateModal(false)} />
-          )}
-        </div>
+    <div>
+      {showUpdateModal && (
+        <ModalUpdateProject
+          project={projetItem!}
+          closeModal={() => setShowUpdateModal(false)} />
       )}
+    </div>
+  )
+}
 
     </>
   );

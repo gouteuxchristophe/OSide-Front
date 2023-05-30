@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { getAllUsers, resetSuccessDelete } from "../../store/reducers/user";
+import {
+  getAllUsers,
+  resetSuccessDelete
+} from "../../store/reducers/user";
 import { Edit3, Eye, Trash2 } from "react-feather";
 import ModalUpdateRole from "./ModalUpdateUser";
 import DeleteConfirmation from "./deleteConfirmation";

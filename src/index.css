@@ -30,7 +30,6 @@ div {
   background-color: white;
   padding: 1rem 1rem;
   border-radius: 2rem;
-  color: blue;
   display: inline-block;
   min-width: 10rem;
   position: relative;
@@ -62,7 +61,8 @@ div {
   transition: max-height 1s ease, opacity 1s ease;
 }
 .comment-content.active {
-  max-height: 1000px;
+  max-height: 500px;
+  overflow-y: scroll;
   opacity: 1;
   transition: max-height 1s ease, opacity 1s ease;
 }
@@ -77,3 +77,13 @@ div {
   opacity: 1;
   transition: opacity 0.5s ease;
 } 
+
+.react-autocomplete-input {
+  position: absolute;
+  top: 0;
+  padding: 0.5rem 1rem;
+  height: auto;
+  margin-left: 5%;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+}

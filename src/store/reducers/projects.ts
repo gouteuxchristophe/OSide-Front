@@ -23,9 +23,9 @@ interface ProjectsState {
   idNewProject: number;
   credentialTitle: string;
   credentialContent: string;
-  successParticipate: boolean
-  successLeave: boolean
-  temporaryUpdatedInputProject: UpdateProject
+  successParticipate: boolean;
+  successLeave: boolean;
+  temporaryUpdatedInputProject: UpdateProject;
 }
 
 interface UpdateProject {
@@ -61,7 +61,7 @@ export const initialState: ProjectsState = {
     title: '',
     content: '',
     status: '',
-  }
+  },
 };
 // Action creator qui me permet de récupérer tous les projets
 export const getAllProjects = createAppAsyncThunk('projects/GET_ALL_PROJECTS',

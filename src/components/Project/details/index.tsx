@@ -47,6 +47,7 @@ function ProjectDetail() {
   if (!isLogged) {
     toast.warn('🦄 Veuillez vous connecter !');
     return <Navigate to="/login" replace />
+
   }
 
   // On récupère l'id du projet recherché
@@ -87,6 +88,7 @@ function ProjectDetail() {
       toast.warn(`🦄 ${successLeave}`);
       dispatch(getProjectByID(id as unknown as number));
     }
+    
   }, [successDelete, successUpdate, errorApiProjects, successParticipate, successLeave]);
 
   const project = useAppSelector((state) => state.projects.projectByID)
@@ -252,7 +254,7 @@ function ProjectDetail() {
               <div onClick={() => setShowComments(true)} className=" cursor-pointer flex justify-center items-center py-2 px-4 rounded bg-secondary20 text-[white] w-[50%] self-center">
                 <MessageCircle />
                 {' '}
-                Voir les commentaires
+                Voir les commentaires ({project.comment.length})
               </div>
             ) : (
               <div onClick={() => setShowComments(false)} className="cursor-pointer flex justify-center items-center py-2 px-4 rounded bg-secondary20 text-[white] w-[50%] self-center">
@@ -264,7 +266,9 @@ function ProjectDetail() {
             <div className={`comment-content ${showComments ? 'active' : ''}`}>
               <Comments
                 comments={project.comment}
-                ownerProject={project.author.id} />
+                ownerProject={project.author.id}
+                projectId={project.id} />
+                
             </div>
           </div>
         </div>
